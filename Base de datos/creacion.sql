@@ -23,7 +23,7 @@ CREATE TABLE GD_CLINICA.Usuario
 
 CREATE TABLE GD_CLINICA.Tipo_doc
 (
-		doc_id 			numeric(18,0) IDENTITY(1,1) PRIMARY KEY,
+		doc_id 		 numeric(18,0) IDENTITY(1,1) PRIMARY KEY,
 		doc_descrip: varchar(255)
 
 	);
