@@ -37,6 +37,8 @@ IF OBJECT_ID('NUL.Tipo_cancelacion', 'U') IS NOT NULL
 		DROP TABLE NUL.Tipo_cancelacion;
 IF OBJECT_ID('NUL.Bono', 'U') IS NOT NULL
 		DROP TABLE NUL.Bono;
+IF OBJECT_ID('NUL.Historial_plan_med', 'U') IS NOT NULL
+		DROP TABLE NUL.Historial_plan_med;
 IF OBJECT_ID('NUL.Bono_compra', 'U') IS NOT NULL
 		DROP TABLE NUL.Bono_compra;
 IF OBJECT_ID('NUL.Afiliado', 'U') IS NOT NULL
@@ -171,6 +173,19 @@ CREATE TABLE NUL.Bono_compra
 		CONSTRAINT FK_bono_compra FOREIGN KEY (bonoc_id_usuario) REFERENCES NUL.Afiliado (afil_id)
 	);
 
+CREATE TABLE NUL.Historial_plan_med
+(
+		histo_plan_id			 numeric(18,0),
+		histo_afil_id			 numeric(18,0),
+		histo_fecha_id			 date,
+		histo_descrip			 varchar(255),
+
+		CONSTRAINT pk_plan_med PRIMARY KEY (histo_plan_id,histo_afil_id,histo_fecha_id),
+
+		CONSTRAINT FK_histo_plan_id FOREIGN KEY (histo_plan_id) REFERENCES NUL.Plan_medico (plan_id),
+		CONSTRAINT FK_histo_afil_id FOREIGN KEY (histo_afil_id) REFERENCES NUL.Afiliado (afil_id)
+	);
+
 CREATE TABLE NUL.Bono
 (
 		bono_id 				numeric(18,0) IDENTITY(1,1) PRIMARY KEY,
@@ -201,9 +216,12 @@ CREATE TABLE NUL.Cancelacion
 CREATE TABLE NUL.Consulta
 (
 		cons_id 				numeric(18,0) IDENTITY(1,1) PRIMARY KEY,
+		cons_bono_usado		 	numeric(18,0),
 		cons_fecha_hora			datetime,
 		cons_sintomas			varchar(255),
 		cons_enfermedades		varchar(255),
+
+		CONSTRAINT FK_bono_usado  FOREIGN KEY (cons_bono_usado) REFERENCES NUL.Bono (bono_id)
 	);
 
 CREATE TABLE NUL.Tipo_esp
@@ -244,7 +262,6 @@ CREATE TABLE NUL.Turno
 		turno_afiliado		 	numeric(18,0),
 		turno_profesional	 	numeric(18,0),
 		turno_especialidad	 	numeric(18,0),
-		turno_bono_usado	 	numeric(18,0),
 		turno_consulta		 	numeric(18,0),
 		turno_fecha_hora	 	datetime,
 		turno_llegada		 	time,
@@ -252,7 +269,6 @@ CREATE TABLE NUL.Turno
 		CONSTRAINT FK_turno_afiliado 	 FOREIGN KEY (turno_afiliado) 	  REFERENCES NUL.Afiliado (afil_id),
 		CONSTRAINT FK_turno_profesional  FOREIGN KEY (turno_profesional)  REFERENCES NUL.Profesional (prof_id),
 		CONSTRAINT FK_turno_especialidad FOREIGN KEY (turno_especialidad) REFERENCES NUL.Especialidad (esp_id),
-		CONSTRAINT FK_bono_usado 		 FOREIGN KEY (turno_bono_usado)	  REFERENCES NUL.Bono (bono_id),
 		CONSTRAINT FK_consulta 			 FOREIGN KEY (turno_consulta) 	  REFERENCES NUL.Consulta (cons_id)
 	);
 
@@ -268,6 +284,7 @@ CREATE TABLE NUL.Agenda
 (
 		agenda_id 				numeric(18,0) IDENTITY(1,1) PRIMARY KEY,
 		agenda_prof_id			numeric(18,0),
+		agenda_prof_esp_id		numeric(18,0),
 		agenda_disp_desde 		date,
 		agenda_desp_hasta		date,
 
