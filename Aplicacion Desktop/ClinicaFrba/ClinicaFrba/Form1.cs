@@ -25,9 +25,11 @@ namespace ClinicaFrba
             InitializeComponent();
 
 
-            //comboBoxRol.DataSource = Recibe DataRow;
+            //comboBoxRol.DataSource = Recibe DataRow de roles;
 
             ID_Usuario.Text = usuario;
+
+
 
         }
 
@@ -49,6 +51,11 @@ namespace ClinicaFrba
         private void comboBoxRol_SelectedIndexChanged(object sender, EventArgs e)
         {
             //aca calcularia que puede hacer en cada rol
+            
+            //buttonAltaAfiliado.Visible = "Aca va a validar el boton en funcion del rol";
+
+
+
         }
 
         private void buttonModificarAfiliado_Click(object sender, EventArgs e)
@@ -59,6 +66,15 @@ namespace ClinicaFrba
         private void buttonModificarRol_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void buttonAltaAfiliado_Click(object sender, EventArgs e)
+        {
+            Abm_Afiliado.AltaAfiliado form = new Abm_Afiliado.AltaAfiliado();
+
+            form.Show();
+
+            this.Hide();
         }
     }
 }

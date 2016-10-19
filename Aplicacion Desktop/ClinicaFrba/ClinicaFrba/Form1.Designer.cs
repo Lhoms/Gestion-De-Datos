@@ -32,6 +32,9 @@
             this.ID_Usuario = new System.Windows.Forms.Label();
             this.buttonCerrarSesion = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.groupBoxAtencionMedica = new System.Windows.Forms.GroupBox();
+            this.buttonRegistrarLlegada = new System.Windows.Forms.Button();
+            this.buttonRegistrarResultado = new System.Windows.Forms.Button();
             this.groupBoxTurno = new System.Windows.Forms.GroupBox();
             this.buttonCancelarTurno = new System.Windows.Forms.Button();
             this.buttonCompraBono = new System.Windows.Forms.Button();
@@ -41,20 +44,17 @@
             this.buttonModificarAfiliado = new System.Windows.Forms.Button();
             this.buttonBajaAfiliado = new System.Windows.Forms.Button();
             this.buttonAltaAfiliado = new System.Windows.Forms.Button();
-            this.buttonRegistrarResultado = new System.Windows.Forms.Button();
             this.groupBoxRol = new System.Windows.Forms.GroupBox();
             this.buttonModificarRol = new System.Windows.Forms.Button();
             this.buttonBajaRol = new System.Windows.Forms.Button();
             this.buttonAltaRol = new System.Windows.Forms.Button();
-            this.buttonRegistrarLlegada = new System.Windows.Forms.Button();
             this.comboBoxRol = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
-            this.groupBoxAtencionMedica = new System.Windows.Forms.GroupBox();
             this.groupBox1.SuspendLayout();
+            this.groupBoxAtencionMedica.SuspendLayout();
             this.groupBoxTurno.SuspendLayout();
             this.groupBoxAfiliado.SuspendLayout();
             this.groupBoxRol.SuspendLayout();
-            this.groupBoxAtencionMedica.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
@@ -101,6 +101,35 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Funcionalidades";
             this.groupBox1.Enter += new System.EventHandler(this.groupBox1_Enter);
+            // 
+            // groupBoxAtencionMedica
+            // 
+            this.groupBoxAtencionMedica.Controls.Add(this.buttonRegistrarLlegada);
+            this.groupBoxAtencionMedica.Controls.Add(this.buttonRegistrarResultado);
+            this.groupBoxAtencionMedica.Location = new System.Drawing.Point(11, 246);
+            this.groupBoxAtencionMedica.Name = "groupBoxAtencionMedica";
+            this.groupBoxAtencionMedica.Size = new System.Drawing.Size(256, 72);
+            this.groupBoxAtencionMedica.TabIndex = 8;
+            this.groupBoxAtencionMedica.TabStop = false;
+            this.groupBoxAtencionMedica.Text = "Atencion Medica";
+            // 
+            // buttonRegistrarLlegada
+            // 
+            this.buttonRegistrarLlegada.Location = new System.Drawing.Point(17, 20);
+            this.buttonRegistrarLlegada.Name = "buttonRegistrarLlegada";
+            this.buttonRegistrarLlegada.Size = new System.Drawing.Size(103, 33);
+            this.buttonRegistrarLlegada.TabIndex = 5;
+            this.buttonRegistrarLlegada.Text = "Registrar llegada";
+            this.buttonRegistrarLlegada.UseVisualStyleBackColor = true;
+            // 
+            // buttonRegistrarResultado
+            // 
+            this.buttonRegistrarResultado.Location = new System.Drawing.Point(137, 19);
+            this.buttonRegistrarResultado.Name = "buttonRegistrarResultado";
+            this.buttonRegistrarResultado.Size = new System.Drawing.Size(103, 33);
+            this.buttonRegistrarResultado.TabIndex = 4;
+            this.buttonRegistrarResultado.Text = "Registrar resultado";
+            this.buttonRegistrarResultado.UseVisualStyleBackColor = true;
             // 
             // groupBoxTurno
             // 
@@ -191,15 +220,7 @@
             this.buttonAltaAfiliado.TabIndex = 0;
             this.buttonAltaAfiliado.Text = "Alta Afiliado";
             this.buttonAltaAfiliado.UseVisualStyleBackColor = true;
-            // 
-            // buttonRegistrarResultado
-            // 
-            this.buttonRegistrarResultado.Location = new System.Drawing.Point(137, 19);
-            this.buttonRegistrarResultado.Name = "buttonRegistrarResultado";
-            this.buttonRegistrarResultado.Size = new System.Drawing.Size(103, 33);
-            this.buttonRegistrarResultado.TabIndex = 4;
-            this.buttonRegistrarResultado.Text = "Registrar resultado";
-            this.buttonRegistrarResultado.UseVisualStyleBackColor = true;
+            this.buttonAltaAfiliado.Click += new System.EventHandler(this.buttonAltaAfiliado_Click);
             // 
             // groupBoxRol
             // 
@@ -242,15 +263,6 @@
             this.buttonAltaRol.Text = "Alta Rol";
             this.buttonAltaRol.UseVisualStyleBackColor = true;
             // 
-            // buttonRegistrarLlegada
-            // 
-            this.buttonRegistrarLlegada.Location = new System.Drawing.Point(17, 20);
-            this.buttonRegistrarLlegada.Name = "buttonRegistrarLlegada";
-            this.buttonRegistrarLlegada.Size = new System.Drawing.Size(103, 33);
-            this.buttonRegistrarLlegada.TabIndex = 5;
-            this.buttonRegistrarLlegada.Text = "Registrar llegada";
-            this.buttonRegistrarLlegada.UseVisualStyleBackColor = true;
-            // 
             // comboBoxRol
             // 
             this.comboBoxRol.FormattingEnabled = true;
@@ -269,17 +281,6 @@
             this.label2.TabIndex = 5;
             this.label2.Text = "Rol seleccionado:";
             // 
-            // groupBoxAtencionMedica
-            // 
-            this.groupBoxAtencionMedica.Controls.Add(this.buttonRegistrarLlegada);
-            this.groupBoxAtencionMedica.Controls.Add(this.buttonRegistrarResultado);
-            this.groupBoxAtencionMedica.Location = new System.Drawing.Point(11, 246);
-            this.groupBoxAtencionMedica.Name = "groupBoxAtencionMedica";
-            this.groupBoxAtencionMedica.Size = new System.Drawing.Size(256, 72);
-            this.groupBoxAtencionMedica.TabIndex = 8;
-            this.groupBoxAtencionMedica.TabStop = false;
-            this.groupBoxAtencionMedica.Text = "Atencion Medica";
-            // 
             // Form1
             // 
             this.AllowDrop = true;
@@ -295,10 +296,10 @@
             this.Name = "Form1";
             this.Text = "Clinica Frba - Home";
             this.groupBox1.ResumeLayout(false);
+            this.groupBoxAtencionMedica.ResumeLayout(false);
             this.groupBoxTurno.ResumeLayout(false);
             this.groupBoxAfiliado.ResumeLayout(false);
             this.groupBoxRol.ResumeLayout(false);
-            this.groupBoxAtencionMedica.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
