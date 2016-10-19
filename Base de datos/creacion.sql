@@ -315,7 +315,7 @@ BEGIN TRANSACTION
 
 
 INSERT INTO NUL.Usuario (user_username, user_pass)
-	SELECT DISTINCT M.Paciente_Mail, HASHBYTES('SHA2_256', M.Paciente_Dni)
+	SELECT DISTINCT M.Paciente_Mail, M.Paciente_Dni --ver como usar la funcion HASHBYTES('SHA2_256',) para encriptarlo
 	FROM gd_esquema.Maestra M
 
 
@@ -344,16 +344,47 @@ INSERT INTO NUL.Funcionalidad (func_descrip) VALUES
 			('Listado estadístico');
 
 INSERT INTO NUL.Rol (rol_descrip) VALUES
-			('Afiliado'),
 			('Administrativo'),
+			('Afiliado'),
 			('Profesional');
 
 
 
+INSERT INTO NUL.Rol_funcionalidad(rol_id, func_id) VALUES
+			(1,1),(1,2),(1,3),(1,4),(1,5),(1,6),(1,7),(1,8),
+			(2,3),(2,4),(2,7),
+			(3,5),(3,6),(3,7);
+
+
+
+/* Falta migrar:
+
+	|Agenda_dia
+	|Agenda
+	|Dia
+	|Turno
+	|Profesional_especialidad
+	|Profesional
+	|Especialidad
+	|Tipo_esp
+	|Consulta
+	|Cancelacion
+	|Tipo_cancelacion
+	|Bono
+	|Historial_plan_med
+	|Bono_compra
+	|Afiliado
+	|Plan_medico
+	|Estado
+	|User_rol
+
+*/
 
 
 
 
+GO
+COMMIT TRANSACTION
 
 
 -- Re-enable constraints for all tables:
