@@ -70,10 +70,10 @@ GO
 CREATE TABLE NUL.Usuario
 (
 		user_id				numeric(18,0) IDENTITY(1,1) PRIMARY KEY,
-		user_username 		varchar(255),
-		user_pass	 		varchar(255),
-		user_log_fallidos	tinyint,
-		user_habilitado  	bit
+		user_username 		varchar(255) NOT NULL,
+		user_pass	 		varchar(255) NOT NULL,
+		user_log_fallidos	tinyint DEFAULT 0,
+		user_habilitado  	bit DEFAULT 1
 	);
 
 
@@ -85,15 +85,15 @@ CREATE TABLE NUL.Tipo_doc
 
 CREATE TABLE NUL.Persona
 (
-		pers_id 			numeric(18,0) IDENTITY(1,1) PRIMARY KEY,
-		pers_nombre 		varchar(255),
-		pers_apellido 		varchar(255),
-		pers_tipo_doc		numeric(18,0),
-		pers_doc 			numeric(18,0),
+		pers_id 			numeric(18,0) PRIMARY KEY,
+		pers_nombre 		varchar(255) NOT NULL,
+		pers_apellido 		varchar(255) NOT NULL,
+		pers_tipo_doc		numeric(18,0) DEFAULT 1,
+		pers_doc 			numeric(18,0) NOT NULL,
 		pers_dire 			varchar(255),
 		pers_tel			numeric(18,0),
-		pers_mail 			varchar(255),
-		pers_sexo 			char(1),
+		pers_mail 			varchar(255) NOT NULL UNIQUE,
+		pers_sexo 			char(1) DEFAULT 'M',
 		pers_fecha_nac 		datetime,
 
 		CONSTRAINT FK_tipo_doc FOREIGN KEY (pers_tipo_doc) REFERENCES NUL.Tipo_doc (doc_id)
@@ -109,7 +109,7 @@ CREATE TABLE NUL.Rol
 (
 		rol_id 				numeric(18,0) IDENTITY(1,1) PRIMARY KEY,
 		rol_descrip			varchar(255),
-		rol_habilitado  	bit
+		rol_habilitado  	bit DEFAULT 1
 	);
 
 CREATE TABLE NUL.Rol_funcionalidad
@@ -151,7 +151,7 @@ CREATE TABLE NUL.Plan_medico
 
 CREATE TABLE NUL.Afiliado
 (
-		afil_id 				numeric(18,0) IDENTITY(1,1) PRIMARY KEY,
+		afil_id 				numeric(18,0) PRIMARY KEY,
 		afil_estado 			numeric(18,0),
 		afil_plan_med 			numeric(18,0),
 		afil_nro_afiliado		numeric(18,0),
@@ -241,7 +241,7 @@ CREATE TABLE NUL.Especialidad
 
 CREATE TABLE NUL.Profesional
 (
-		prof_id				numeric(18,0) IDENTITY(1,1) PRIMARY KEY,
+		prof_id				numeric(18,0) PRIMARY KEY,
 		prof_matric			numeric(18,0)
 	);
 
@@ -305,6 +305,56 @@ CREATE TABLE NUL.Agenda_dia
 	);
 
 GO
+
+
+
+
+--Migración de datos
+BEGIN TRANSACTION	
+
+
+
+INSERT INTO NUL.Usuario (user_username, user_pass)
+	SELECT DISTINCT M.Paciente_Mail, HASHBYTES('SHA2_256', M.Paciente_Dni)
+	FROM gd_esquema.Maestra M
+
+
+INSERT INTO NUL.Tipo_doc (doc_descrip) VALUES
+			('DNI'),
+			('PAS'),
+			('CI'),
+			('LC'),
+			('LE');
+
+INSERT INTO NUL.Persona (pers_id ,pers_nombre, pers_apellido, pers_doc, pers_dire, pers_tel, pers_mail, pers_fecha_nac)
+		SELECT DISTINCT U.user_id,  M.Paciente_Nombre, M.Paciente_Apellido, M.Paciente_Dni, M.Paciente_Direccion, M.Paciente_Telefono,
+						M.Paciente_Mail, M.Paciente_Fecha_Nac
+		FROM gd_esquema.Maestra M LEFT JOIN  NUL.Usuario U ON M.Paciente_Mail = U.user_username
+
+
+
+INSERT INTO NUL.Funcionalidad (func_descrip) VALUES
+			('ABM Rol'),
+			('Abm Afiliado'),
+			('Compra de bonos'),
+			('Pedir turno'),
+			('Registro de llegada para atención médica '),
+			('Registrar resultado para atención médica'),
+			('Cancelar atención médica'),
+			('Listado estadístico');
+
+INSERT INTO NUL.Rol (rol_descrip) VALUES
+			('Afiliado'),
+			('Administrativo'),
+			('Profesional');
+
+
+
+
+
+
+
+
 
 -- Re-enable constraints for all tables:
 EXEC sp_msforeachtable 'ALTER TABLE ? WITH CHECK CHECK CONSTRAINT all'
