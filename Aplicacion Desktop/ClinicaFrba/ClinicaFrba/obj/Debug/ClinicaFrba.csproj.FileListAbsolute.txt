@@ -39,7 +39,6 @@ Z:\Facultad\Gestión de datos\TP\TP CLINICA FRBA 1.0 - 2C 2016-1\Repo\TP-Datos\A
 Z:\Facultad\Gestión de datos\TP\TP CLINICA FRBA 1.0 - 2C 2016-1\Repo\TP-Datos\Aplicacion Desktop\ClinicaFrba\ClinicaFrba\obj\Debug\ClinicaFrba.Login.Login.resources
 Z:\Facultad\Gestión de datos\TP\TP CLINICA FRBA 1.0 - 2C 2016-1\Repo\TP-Datos\Aplicacion Desktop\ClinicaFrba\ClinicaFrba\obj\Debug\ClinicaFrba.Properties.Resources.resources
 Z:\Facultad\Gestión de datos\TP\TP CLINICA FRBA 1.0 - 2C 2016-1\Repo\TP-Datos\Aplicacion Desktop\ClinicaFrba\ClinicaFrba\obj\Debug\ClinicaFrba.csproj.GenerateResource.Cache
-C:\Users\Lucas2\workspace-gdd\TP-Datos\Aplicacion Desktop\ClinicaFrba\ClinicaFrba\obj\Debug\ClinicaFrba.Abm_Afiliado.Form1.resources
 C:\Users\Lucas2\workspace-gdd\TP-Datos\Aplicacion Desktop\ClinicaFrba\ClinicaFrba\obj\Debug\ClinicaFrba.Form1.resources
 C:\Users\Lucas2\workspace-gdd\TP-Datos\Aplicacion Desktop\ClinicaFrba\ClinicaFrba\obj\Debug\ClinicaFrba.Login.Login.resources
 C:\Users\Lucas2\workspace-gdd\TP-Datos\Aplicacion Desktop\ClinicaFrba\ClinicaFrba\obj\Debug\ClinicaFrba.Properties.Resources.resources
@@ -57,3 +56,5 @@ C:\Users\user1\workspace\TP-Datos\Aplicacion Desktop\ClinicaFrba\ClinicaFrba\obj
 C:\Users\user1\workspace\TP-Datos\Aplicacion Desktop\ClinicaFrba\ClinicaFrba\obj\Debug\ClinicaFrba.Properties.Resources.resources
 C:\Users\user1\workspace\TP-Datos\Aplicacion Desktop\ClinicaFrba\ClinicaFrba\obj\Debug\ClinicaFrba.csproj.GenerateResource.Cache
 C:\Users\user1\workspace\TP-Datos\Aplicacion Desktop\ClinicaFrba\ClinicaFrba\obj\Debug\ClinicaFrba.Abm_Afiliado.AltaAfiliado.resources
+C:\Users\Lucas2\workspace-gdd\TP-Datos\Aplicacion Desktop\ClinicaFrba\ClinicaFrba\obj\Debug\ClinicaFrba.csprojResolveAssemblyReference.cache
+C:\Users\Lucas2\workspace-gdd\TP-Datos\Aplicacion Desktop\ClinicaFrba\ClinicaFrba\obj\Debug\ClinicaFrba.Abm_Afiliado.AltaAfiliado.resources

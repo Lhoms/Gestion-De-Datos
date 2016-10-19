@@ -8,11 +8,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace ClinicaFrba.Compra_Bono
+namespace ClinicaFrba.Cancelar_Atencion
 {
-    public partial class Form1 : Form
+    public partial class CancelarAtencion : Form
     {
-        public Form1()
+        public CancelarAtencion()
         {
             InitializeComponent();
         }

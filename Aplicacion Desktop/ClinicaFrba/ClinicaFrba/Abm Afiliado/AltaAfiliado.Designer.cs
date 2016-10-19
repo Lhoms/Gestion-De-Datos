@@ -29,40 +29,42 @@
         private void InitializeComponent()
         {
             this.groupBoxAltaAfiliado = new System.Windows.Forms.GroupBox();
-            this.textBoxNombre = new System.Windows.Forms.TextBox();
-            this.textBoxApellido = new System.Windows.Forms.TextBox();
-            this.textBoxDocumento = new System.Windows.Forms.TextBox();
-            this.textBoxMail = new System.Windows.Forms.TextBox();
-            this.textBoxDireccion = new System.Windows.Forms.TextBox();
-            this.labelNombre = new System.Windows.Forms.Label();
-            this.labelApellido = new System.Windows.Forms.Label();
-            this.labelDocumento = new System.Windows.Forms.Label();
+            this.labelCantHijos = new System.Windows.Forms.Label();
+            this.labelTelefono = new System.Windows.Forms.Label();
+            this.textBoxTelefono = new System.Windows.Forms.TextBox();
+            this.comboBoxPlanMedico = new System.Windows.Forms.ComboBox();
+            this.comboBoxEstadoCivil = new System.Windows.Forms.ComboBox();
+            this.dateTimePickerNacimiento = new System.Windows.Forms.DateTimePicker();
+            this.comboBoxSexo = new System.Windows.Forms.ComboBox();
+            this.labelSexo = new System.Windows.Forms.Label();
+            this.comboBoxTipoDoc = new System.Windows.Forms.ComboBox();
+            this.labelTipoDoc = new System.Windows.Forms.Label();
+            this.labelPlanMedico = new System.Windows.Forms.Label();
+            this.labelEstadoCivil = new System.Windows.Forms.Label();
             this.labelMail = new System.Windows.Forms.Label();
             this.labelDireccion = new System.Windows.Forms.Label();
             this.labelNacimiento = new System.Windows.Forms.Label();
-            this.labelPlanMedico = new System.Windows.Forms.Label();
-            this.labelEstadoCivil = new System.Windows.Forms.Label();
-            this.labelTipoDoc = new System.Windows.Forms.Label();
-            this.comboBoxTipoDoc = new System.Windows.Forms.ComboBox();
-            this.labelSexo = new System.Windows.Forms.Label();
-            this.comboBoxSexo = new System.Windows.Forms.ComboBox();
-            this.dateTimePickerNacimiento = new System.Windows.Forms.DateTimePicker();
-            this.comboBoxEstadoCivil = new System.Windows.Forms.ComboBox();
-            this.comboBoxPlanMedico = new System.Windows.Forms.ComboBox();
-            this.labelTelefono = new System.Windows.Forms.Label();
-            this.textBoxTelefono = new System.Windows.Forms.TextBox();
-            this.labelCantHijos = new System.Windows.Forms.Label();
-            this.textBoxCantHijos = new System.Windows.Forms.TextBox();
+            this.labelDocumento = new System.Windows.Forms.Label();
+            this.labelApellido = new System.Windows.Forms.Label();
+            this.labelNombre = new System.Windows.Forms.Label();
+            this.textBoxMail = new System.Windows.Forms.TextBox();
+            this.textBoxDireccion = new System.Windows.Forms.TextBox();
+            this.textBoxDocumento = new System.Windows.Forms.TextBox();
+            this.textBoxApellido = new System.Windows.Forms.TextBox();
+            this.textBoxNombre = new System.Windows.Forms.TextBox();
             this.buttonAceptar = new System.Windows.Forms.Button();
             this.buttonCancelar = new System.Windows.Forms.Button();
             this.buttonAgregarConyuge = new System.Windows.Forms.Button();
             this.buttonAgregarHijo = new System.Windows.Forms.Button();
+            this.buttonLimpiar = new System.Windows.Forms.Button();
+            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
             this.groupBoxAltaAfiliado.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.SuspendLayout();
             // 
             // groupBoxAltaAfiliado
             // 
-            this.groupBoxAltaAfiliado.Controls.Add(this.textBoxCantHijos);
+            this.groupBoxAltaAfiliado.Controls.Add(this.numericUpDown1);
             this.groupBoxAltaAfiliado.Controls.Add(this.labelCantHijos);
             this.groupBoxAltaAfiliado.Controls.Add(this.labelTelefono);
             this.groupBoxAltaAfiliado.Controls.Add(this.textBoxTelefono);
@@ -93,67 +95,107 @@
             this.groupBoxAltaAfiliado.TabStop = false;
             this.groupBoxAltaAfiliado.Text = "Alta Afiliado";
             // 
-            // textBoxNombre
+            // labelCantHijos
             // 
-            this.textBoxNombre.Location = new System.Drawing.Point(124, 15);
-            this.textBoxNombre.Name = "textBoxNombre";
-            this.textBoxNombre.Size = new System.Drawing.Size(200, 20);
-            this.textBoxNombre.TabIndex = 0;
+            this.labelCantHijos.AutoSize = true;
+            this.labelCantHijos.Location = new System.Drawing.Point(337, 180);
+            this.labelCantHijos.Name = "labelCantHijos";
+            this.labelCantHijos.Size = new System.Drawing.Size(56, 13);
+            this.labelCantHijos.TabIndex = 28;
+            this.labelCantHijos.Text = "Cant hijos:";
             // 
-            // textBoxApellido
+            // labelTelefono
             // 
-            this.textBoxApellido.Location = new System.Drawing.Point(408, 11);
-            this.textBoxApellido.Name = "textBoxApellido";
-            this.textBoxApellido.Size = new System.Drawing.Size(142, 20);
-            this.textBoxApellido.TabIndex = 1;
+            this.labelTelefono.AutoSize = true;
+            this.labelTelefono.Location = new System.Drawing.Point(337, 128);
+            this.labelTelefono.Name = "labelTelefono";
+            this.labelTelefono.Size = new System.Drawing.Size(52, 13);
+            this.labelTelefono.TabIndex = 27;
+            this.labelTelefono.Text = "Telefono:";
             // 
-            // textBoxDocumento
+            // textBoxTelefono
             // 
-            this.textBoxDocumento.Location = new System.Drawing.Point(124, 42);
-            this.textBoxDocumento.Name = "textBoxDocumento";
-            this.textBoxDocumento.Size = new System.Drawing.Size(147, 20);
-            this.textBoxDocumento.TabIndex = 2;
+            this.textBoxTelefono.Location = new System.Drawing.Point(408, 125);
+            this.textBoxTelefono.Name = "textBoxTelefono";
+            this.textBoxTelefono.Size = new System.Drawing.Size(147, 20);
+            this.textBoxTelefono.TabIndex = 26;
             // 
-            // textBoxMail
+            // comboBoxPlanMedico
             // 
-            this.textBoxMail.Location = new System.Drawing.Point(124, 151);
-            this.textBoxMail.Name = "textBoxMail";
-            this.textBoxMail.Size = new System.Drawing.Size(147, 20);
-            this.textBoxMail.TabIndex = 5;
+            this.comboBoxPlanMedico.FormattingEnabled = true;
+            this.comboBoxPlanMedico.Location = new System.Drawing.Point(124, 204);
+            this.comboBoxPlanMedico.Name = "comboBoxPlanMedico";
+            this.comboBoxPlanMedico.Size = new System.Drawing.Size(147, 21);
+            this.comboBoxPlanMedico.TabIndex = 25;
             // 
-            // textBoxDireccion
+            // comboBoxEstadoCivil
             // 
-            this.textBoxDireccion.Location = new System.Drawing.Point(124, 125);
-            this.textBoxDireccion.Name = "textBoxDireccion";
-            this.textBoxDireccion.Size = new System.Drawing.Size(200, 20);
-            this.textBoxDireccion.TabIndex = 4;
+            this.comboBoxEstadoCivil.FormattingEnabled = true;
+            this.comboBoxEstadoCivil.Location = new System.Drawing.Point(124, 177);
+            this.comboBoxEstadoCivil.Name = "comboBoxEstadoCivil";
+            this.comboBoxEstadoCivil.Size = new System.Drawing.Size(147, 21);
+            this.comboBoxEstadoCivil.TabIndex = 24;
             // 
-            // labelNombre
+            // dateTimePickerNacimiento
             // 
-            this.labelNombre.AutoSize = true;
-            this.labelNombre.Location = new System.Drawing.Point(7, 25);
-            this.labelNombre.Name = "labelNombre";
-            this.labelNombre.Size = new System.Drawing.Size(47, 13);
-            this.labelNombre.TabIndex = 9;
-            this.labelNombre.Text = "Nombre:";
+            this.dateTimePickerNacimiento.Location = new System.Drawing.Point(124, 72);
+            this.dateTimePickerNacimiento.Name = "dateTimePickerNacimiento";
+            this.dateTimePickerNacimiento.Size = new System.Drawing.Size(200, 20);
+            this.dateTimePickerNacimiento.TabIndex = 23;
             // 
-            // labelApellido
+            // comboBoxSexo
             // 
-            this.labelApellido.AutoSize = true;
-            this.labelApellido.Location = new System.Drawing.Point(336, 18);
-            this.labelApellido.Name = "labelApellido";
-            this.labelApellido.Size = new System.Drawing.Size(47, 13);
-            this.labelApellido.TabIndex = 10;
-            this.labelApellido.Text = "Apellido:";
+            this.comboBoxSexo.FormattingEnabled = true;
+            this.comboBoxSexo.Location = new System.Drawing.Point(124, 98);
+            this.comboBoxSexo.Name = "comboBoxSexo";
+            this.comboBoxSexo.Size = new System.Drawing.Size(90, 21);
+            this.comboBoxSexo.TabIndex = 22;
             // 
-            // labelDocumento
+            // labelSexo
             // 
-            this.labelDocumento.AutoSize = true;
-            this.labelDocumento.Location = new System.Drawing.Point(8, 49);
-            this.labelDocumento.Name = "labelDocumento";
-            this.labelDocumento.Size = new System.Drawing.Size(65, 13);
-            this.labelDocumento.TabIndex = 11;
-            this.labelDocumento.Text = "Documento:";
+            this.labelSexo.AutoSize = true;
+            this.labelSexo.Location = new System.Drawing.Point(8, 101);
+            this.labelSexo.Name = "labelSexo";
+            this.labelSexo.Size = new System.Drawing.Size(34, 13);
+            this.labelSexo.TabIndex = 21;
+            this.labelSexo.Text = "Sexo:";
+            // 
+            // comboBoxTipoDoc
+            // 
+            this.comboBoxTipoDoc.FormattingEnabled = true;
+            this.comboBoxTipoDoc.Location = new System.Drawing.Point(408, 38);
+            this.comboBoxTipoDoc.Name = "comboBoxTipoDoc";
+            this.comboBoxTipoDoc.Size = new System.Drawing.Size(90, 21);
+            this.comboBoxTipoDoc.TabIndex = 20;
+            this.comboBoxTipoDoc.SelectedIndexChanged += new System.EventHandler(this.comboBoxTipoDoc_SelectedIndexChanged);
+            // 
+            // labelTipoDoc
+            // 
+            this.labelTipoDoc.AutoSize = true;
+            this.labelTipoDoc.Location = new System.Drawing.Point(337, 42);
+            this.labelTipoDoc.Name = "labelTipoDoc";
+            this.labelTipoDoc.Size = new System.Drawing.Size(31, 13);
+            this.labelTipoDoc.TabIndex = 19;
+            this.labelTipoDoc.Text = "Tipo:";
+            this.labelTipoDoc.Click += new System.EventHandler(this.labelTipoDoc_Click);
+            // 
+            // labelPlanMedico
+            // 
+            this.labelPlanMedico.AutoSize = true;
+            this.labelPlanMedico.Location = new System.Drawing.Point(8, 206);
+            this.labelPlanMedico.Name = "labelPlanMedico";
+            this.labelPlanMedico.Size = new System.Drawing.Size(68, 13);
+            this.labelPlanMedico.TabIndex = 16;
+            this.labelPlanMedico.Text = "Plan medico:";
+            // 
+            // labelEstadoCivil
+            // 
+            this.labelEstadoCivil.AutoSize = true;
+            this.labelEstadoCivil.Location = new System.Drawing.Point(6, 180);
+            this.labelEstadoCivil.Name = "labelEstadoCivil";
+            this.labelEstadoCivil.Size = new System.Drawing.Size(64, 13);
+            this.labelEstadoCivil.TabIndex = 15;
+            this.labelEstadoCivil.Text = "Estado civil:";
             // 
             // labelMail
             // 
@@ -182,118 +224,71 @@
             this.labelNacimiento.TabIndex = 12;
             this.labelNacimiento.Text = "Fecha de nacimiento:";
             // 
-            // labelPlanMedico
+            // labelDocumento
             // 
-            this.labelPlanMedico.AutoSize = true;
-            this.labelPlanMedico.Location = new System.Drawing.Point(8, 206);
-            this.labelPlanMedico.Name = "labelPlanMedico";
-            this.labelPlanMedico.Size = new System.Drawing.Size(68, 13);
-            this.labelPlanMedico.TabIndex = 16;
-            this.labelPlanMedico.Text = "Plan medico:";
+            this.labelDocumento.AutoSize = true;
+            this.labelDocumento.Location = new System.Drawing.Point(8, 49);
+            this.labelDocumento.Name = "labelDocumento";
+            this.labelDocumento.Size = new System.Drawing.Size(65, 13);
+            this.labelDocumento.TabIndex = 11;
+            this.labelDocumento.Text = "Documento:";
             // 
-            // labelEstadoCivil
+            // labelApellido
             // 
-            this.labelEstadoCivil.AutoSize = true;
-            this.labelEstadoCivil.Location = new System.Drawing.Point(6, 180);
-            this.labelEstadoCivil.Name = "labelEstadoCivil";
-            this.labelEstadoCivil.Size = new System.Drawing.Size(64, 13);
-            this.labelEstadoCivil.TabIndex = 15;
-            this.labelEstadoCivil.Text = "Estado civil:";
+            this.labelApellido.AutoSize = true;
+            this.labelApellido.Location = new System.Drawing.Point(336, 18);
+            this.labelApellido.Name = "labelApellido";
+            this.labelApellido.Size = new System.Drawing.Size(47, 13);
+            this.labelApellido.TabIndex = 10;
+            this.labelApellido.Text = "Apellido:";
             // 
-            // labelTipoDoc
+            // labelNombre
             // 
-            this.labelTipoDoc.AutoSize = true;
-            this.labelTipoDoc.Location = new System.Drawing.Point(337, 42);
-            this.labelTipoDoc.Name = "labelTipoDoc";
-            this.labelTipoDoc.Size = new System.Drawing.Size(31, 13);
-            this.labelTipoDoc.TabIndex = 19;
-            this.labelTipoDoc.Text = "Tipo:";
-            this.labelTipoDoc.Click += new System.EventHandler(this.labelTipoDoc_Click);
+            this.labelNombre.AutoSize = true;
+            this.labelNombre.Location = new System.Drawing.Point(7, 25);
+            this.labelNombre.Name = "labelNombre";
+            this.labelNombre.Size = new System.Drawing.Size(47, 13);
+            this.labelNombre.TabIndex = 9;
+            this.labelNombre.Text = "Nombre:";
             // 
-            // comboBoxTipoDoc
+            // textBoxMail
             // 
-            this.comboBoxTipoDoc.FormattingEnabled = true;
-            this.comboBoxTipoDoc.Location = new System.Drawing.Point(408, 38);
-            this.comboBoxTipoDoc.Name = "comboBoxTipoDoc";
-            this.comboBoxTipoDoc.Size = new System.Drawing.Size(90, 21);
-            this.comboBoxTipoDoc.TabIndex = 20;
-            this.comboBoxTipoDoc.SelectedIndexChanged += new System.EventHandler(this.comboBoxTipoDoc_SelectedIndexChanged);
+            this.textBoxMail.Location = new System.Drawing.Point(124, 151);
+            this.textBoxMail.Name = "textBoxMail";
+            this.textBoxMail.Size = new System.Drawing.Size(147, 20);
+            this.textBoxMail.TabIndex = 5;
             // 
-            // labelSexo
+            // textBoxDireccion
             // 
-            this.labelSexo.AutoSize = true;
-            this.labelSexo.Location = new System.Drawing.Point(8, 101);
-            this.labelSexo.Name = "labelSexo";
-            this.labelSexo.Size = new System.Drawing.Size(34, 13);
-            this.labelSexo.TabIndex = 21;
-            this.labelSexo.Text = "Sexo:";
+            this.textBoxDireccion.Location = new System.Drawing.Point(124, 125);
+            this.textBoxDireccion.Name = "textBoxDireccion";
+            this.textBoxDireccion.Size = new System.Drawing.Size(200, 20);
+            this.textBoxDireccion.TabIndex = 4;
             // 
-            // comboBoxSexo
+            // textBoxDocumento
             // 
-            this.comboBoxSexo.FormattingEnabled = true;
-            this.comboBoxSexo.Location = new System.Drawing.Point(124, 98);
-            this.comboBoxSexo.Name = "comboBoxSexo";
-            this.comboBoxSexo.Size = new System.Drawing.Size(90, 21);
-            this.comboBoxSexo.TabIndex = 22;
+            this.textBoxDocumento.Location = new System.Drawing.Point(124, 42);
+            this.textBoxDocumento.Name = "textBoxDocumento";
+            this.textBoxDocumento.Size = new System.Drawing.Size(147, 20);
+            this.textBoxDocumento.TabIndex = 2;
             // 
-            // dateTimePickerNacimiento
+            // textBoxApellido
             // 
-            this.dateTimePickerNacimiento.Location = new System.Drawing.Point(124, 72);
-            this.dateTimePickerNacimiento.Name = "dateTimePickerNacimiento";
-            this.dateTimePickerNacimiento.Size = new System.Drawing.Size(200, 20);
-            this.dateTimePickerNacimiento.TabIndex = 23;
+            this.textBoxApellido.Location = new System.Drawing.Point(408, 11);
+            this.textBoxApellido.Name = "textBoxApellido";
+            this.textBoxApellido.Size = new System.Drawing.Size(142, 20);
+            this.textBoxApellido.TabIndex = 1;
             // 
-            // comboBoxEstadoCivil
+            // textBoxNombre
             // 
-            this.comboBoxEstadoCivil.FormattingEnabled = true;
-            this.comboBoxEstadoCivil.Location = new System.Drawing.Point(124, 177);
-            this.comboBoxEstadoCivil.Name = "comboBoxEstadoCivil";
-            this.comboBoxEstadoCivil.Size = new System.Drawing.Size(147, 21);
-            this.comboBoxEstadoCivil.TabIndex = 24;
-            // 
-            // comboBoxPlanMedico
-            // 
-            this.comboBoxPlanMedico.FormattingEnabled = true;
-            this.comboBoxPlanMedico.Location = new System.Drawing.Point(124, 204);
-            this.comboBoxPlanMedico.Name = "comboBoxPlanMedico";
-            this.comboBoxPlanMedico.Size = new System.Drawing.Size(147, 21);
-            this.comboBoxPlanMedico.TabIndex = 25;
-            // 
-            // labelTelefono
-            // 
-            this.labelTelefono.AutoSize = true;
-            this.labelTelefono.Location = new System.Drawing.Point(337, 128);
-            this.labelTelefono.Name = "labelTelefono";
-            this.labelTelefono.Size = new System.Drawing.Size(52, 13);
-            this.labelTelefono.TabIndex = 27;
-            this.labelTelefono.Text = "Telefono:";
-            // 
-            // textBoxTelefono
-            // 
-            this.textBoxTelefono.Location = new System.Drawing.Point(408, 125);
-            this.textBoxTelefono.Name = "textBoxTelefono";
-            this.textBoxTelefono.Size = new System.Drawing.Size(147, 20);
-            this.textBoxTelefono.TabIndex = 26;
-            // 
-            // labelCantHijos
-            // 
-            this.labelCantHijos.AutoSize = true;
-            this.labelCantHijos.Location = new System.Drawing.Point(337, 180);
-            this.labelCantHijos.Name = "labelCantHijos";
-            this.labelCantHijos.Size = new System.Drawing.Size(56, 13);
-            this.labelCantHijos.TabIndex = 28;
-            this.labelCantHijos.Text = "Cant hijos:";
-            // 
-            // textBoxCantHijos
-            // 
-            this.textBoxCantHijos.Location = new System.Drawing.Point(408, 177);
-            this.textBoxCantHijos.Name = "textBoxCantHijos";
-            this.textBoxCantHijos.Size = new System.Drawing.Size(100, 20);
-            this.textBoxCantHijos.TabIndex = 29;
+            this.textBoxNombre.Location = new System.Drawing.Point(124, 15);
+            this.textBoxNombre.Name = "textBoxNombre";
+            this.textBoxNombre.Size = new System.Drawing.Size(200, 20);
+            this.textBoxNombre.TabIndex = 0;
             // 
             // buttonAceptar
             // 
-            this.buttonAceptar.Location = new System.Drawing.Point(453, 329);
+            this.buttonAceptar.Location = new System.Drawing.Point(431, 329);
             this.buttonAceptar.Name = "buttonAceptar";
             this.buttonAceptar.Size = new System.Drawing.Size(75, 23);
             this.buttonAceptar.TabIndex = 30;
@@ -302,7 +297,7 @@
             // 
             // buttonCancelar
             // 
-            this.buttonCancelar.Location = new System.Drawing.Point(544, 329);
+            this.buttonCancelar.Location = new System.Drawing.Point(522, 329);
             this.buttonCancelar.Name = "buttonCancelar";
             this.buttonCancelar.Size = new System.Drawing.Size(75, 23);
             this.buttonCancelar.TabIndex = 31;
@@ -327,21 +322,39 @@
             this.buttonAgregarHijo.Text = "Agregar Hijo";
             this.buttonAgregarHijo.UseVisualStyleBackColor = true;
             // 
+            // buttonLimpiar
+            // 
+            this.buttonLimpiar.Location = new System.Drawing.Point(318, 329);
+            this.buttonLimpiar.Name = "buttonLimpiar";
+            this.buttonLimpiar.Size = new System.Drawing.Size(75, 23);
+            this.buttonLimpiar.TabIndex = 34;
+            this.buttonLimpiar.Text = "Limpiar";
+            this.buttonLimpiar.UseVisualStyleBackColor = true;
+            // 
+            // numericUpDown1
+            // 
+            this.numericUpDown1.Location = new System.Drawing.Point(408, 178);
+            this.numericUpDown1.Name = "numericUpDown1";
+            this.numericUpDown1.Size = new System.Drawing.Size(120, 20);
+            this.numericUpDown1.TabIndex = 30;
+            // 
             // AltaAfiliado
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(631, 364);
+            this.ClientSize = new System.Drawing.Size(609, 364);
+            this.Controls.Add(this.buttonLimpiar);
             this.Controls.Add(this.buttonAgregarHijo);
             this.Controls.Add(this.buttonAgregarConyuge);
             this.Controls.Add(this.groupBoxAltaAfiliado);
             this.Controls.Add(this.buttonCancelar);
             this.Controls.Add(this.buttonAceptar);
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "AltaAfiliado";
             this.Text = "Alta Afiliado";
             this.groupBoxAltaAfiliado.ResumeLayout(false);
             this.groupBoxAltaAfiliado.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -371,11 +384,12 @@
         private System.Windows.Forms.ComboBox comboBoxPlanMedico;
         private System.Windows.Forms.Label labelTelefono;
         private System.Windows.Forms.TextBox textBoxTelefono;
-        private System.Windows.Forms.TextBox textBoxCantHijos;
         private System.Windows.Forms.Label labelCantHijos;
         private System.Windows.Forms.Button buttonAceptar;
         private System.Windows.Forms.Button buttonCancelar;
         private System.Windows.Forms.Button buttonAgregarConyuge;
         private System.Windows.Forms.Button buttonAgregarHijo;
+        private System.Windows.Forms.Button buttonLimpiar;
+        private System.Windows.Forms.NumericUpDown numericUpDown1;
     }
 }
