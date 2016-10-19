@@ -188,7 +188,7 @@ CREATE TABLE NUL.Historial_plan_med
 
 CREATE TABLE NUL.Bono
 (
-		bono_id 				numeric(18,0) IDENTITY(1,1) PRIMARY KEY,
+		bono_id 				numeric(18,0) PRIMARY KEY,
 		bono_compra 			numeric(18,0),
 		bono_plan				numeric(18,0),
 		bono_nro_consulta	    numeric(18,0),
@@ -390,9 +390,10 @@ INSERT INTO NUL.Plan_medico(plan_id, plan_descrip, plan_precio_bono_cons, plan_p
 
 INSERT INTO NUL.Afiliado(afil_id, afil_estado, afil_plan_med, afil_nro_afiliado, afil_familiares, afil_nro_consulta)
 (
-	SELECT DISTINCT U.user_id, '1', M.Plan_Med_Codigo, (M.Paciente_Dni*100), '0', ISNULL((SELECT MAX (M2.Bono_Consulta_Numero)
+	SELECT DISTINCT U.user_id, '1', M.Plan_Med_Codigo, (M.Paciente_Dni*100), '0', ISNULL((SELECT COUNT(M2.Bono_Consulta_Numero)
 																							FROM gd_esquema.Maestra M2
 																							WHERE M2.Paciente_Mail = M.Paciente_Mail
+																							  AND ISNULL(M2.Bono_Consulta_Numero,0) <> 0
 																							GROUP BY M2.Paciente_Mail),0)
 	FROM gd_esquema.Maestra M JOIN  NUL.Usuario U ON M.Paciente_Mail = U.user_username);
 
@@ -410,11 +411,12 @@ INSERT INTO NUL.Historial_plan_med(histo_plan_id, histo_afil_id, histo_fecha_id,
 	GROUP BY M.Plan_Med_Codigo, U.user_id );
 
 /*  */
-INSERT INTO NUL.Bono(bono_compra, bono_plan, bono_nro_consulta, bono_usado)
+INSERT INTO NUL.Bono(bono_id, bono_compra, bono_plan, bono_nro_consulta, bono_usado)
 (
-	SELECT DISTINCT BC.bonoc_id, M.Plan_Med_Codigo, M.Bono_Consulta_Numero, 1
+	SELECT DISTINCT M.Bono_Consulta_Numero, BC.bonoc_id, M.Plan_Med_Codigo, COUNT(BC.bonoc_id) + 1, 1
 	FROM gd_esquema.Maestra M JOIN  NUL.Usuario U ON M.Paciente_Mail = U.user_username
 	                          JOIN  NUL.Bono_compra BC ON U.user_id = BC.Bonoc_id_usuario
+								GROUP BY BC.bonoc_id_usuario
 );
 
 INSERT INTO NUL.Tipo_cancelacion(tipo_cancel_detalle) VALUES
