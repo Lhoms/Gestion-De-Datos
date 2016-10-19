@@ -24,10 +24,29 @@ namespace ClinicaFrba.Login
 
         private void button1_Click(object sender, EventArgs e)
         {
-            Form1 form = new Form1();
-            form.Show();
 
-            this.Hide();
+            try
+            {
+
+                if (string.IsNullOrEmpty(textBoxUser.Text))
+                    throw new Exception("El campo usuario no puede estar vacio");
+
+
+                if (string.IsNullOrEmpty(textBoxPass.Text))
+                    throw new Exception("El campo contraseña no puede estar vacio");
+
+                Form1 form = new Form1(textBoxUser.Text);
+
+                form.Show();
+
+                this.Hide();
+            }
+
+            catch (Exception exc)
+            {
+                MessageBox.Show(exc.Message);
+            }
+
         }
     }
 }
