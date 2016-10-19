@@ -143,7 +143,7 @@ CREATE TABLE NUL.Estado
 
 CREATE TABLE NUL.Plan_medico
 (
-		plan_id 				numeric(18,0) IDENTITY(1,1) PRIMARY KEY,
+		plan_id 				numeric(18,0) PRIMARY KEY,
 		plan_descrip 			varchar(255),
 		plan_precio_bono_cons	numeric(18,2),
 		plan_precio_bono_farm   numeric(18,2),
@@ -313,11 +313,16 @@ GO
 BEGIN TRANSACTION	
 
 
-
 INSERT INTO NUL.Usuario (user_username, user_pass)
-	SELECT DISTINCT M.Paciente_Mail, M.Paciente_Dni --ver como usar la funcion HASHBYTES('SHA2_256',) para encriptarlo
+	SELECT DISTINCT M.Paciente_Mail, HASHBYTES('SHA2_256', convert(varchar(200), M.Paciente_Dni) 
 	FROM gd_esquema.Maestra M
 
+INSERT INTO NUL.Usuario (user_username, user_pass)
+	SELECT DISTINCT M.Medico_Mail, HASHBYTES('SHA2_256', convert(varchar(200), M.Medico_Dni) 
+	FROM gd_esquema.Maestra M
+
+INSERT INTO NUL.Usuario (user_username, user_pass) VALUES
+			('admin', HASHBYTES('SHA2_256','w23e'))
 
 INSERT INTO NUL.Tipo_doc (doc_descrip) VALUES
 			('DNI'),
@@ -329,7 +334,7 @@ INSERT INTO NUL.Tipo_doc (doc_descrip) VALUES
 INSERT INTO NUL.Persona (pers_id ,pers_nombre, pers_apellido, pers_doc, pers_dire, pers_tel, pers_mail, pers_fecha_nac)
 		SELECT DISTINCT U.user_id,  M.Paciente_Nombre, M.Paciente_Apellido, M.Paciente_Dni, M.Paciente_Direccion, M.Paciente_Telefono,
 						M.Paciente_Mail, M.Paciente_Fecha_Nac
-		FROM gd_esquema.Maestra M LEFT JOIN  NUL.Usuario U ON M.Paciente_Mail = U.user_username
+		FROM gd_esquema.Maestra M JOIN  NUL.Usuario U ON M.Paciente_Mail = U.user_username
 
 
 
@@ -356,6 +361,55 @@ INSERT INTO NUL.Rol_funcionalidad(rol_id, func_id) VALUES
 			(3,5),(3,6),(3,7);
 
 
+-- JM
+INSERT INTO NUL.User_rol(rol_id, user_id)
+(
+	SELECT 1, user_id FROM NUL.Usuario 
+	WHERE user_username = 'admin' );
+
+INSERT INTO NUL.User_rol(rol_id, user_id)
+(
+	SELECT DISTINCT 2, M.Paciente_Mail
+	FROM gd_esquema.Maestra M );
+
+INSERT INTO NUL.User_rol(rol_id, user_id)
+(
+	SELECT DISTINCT 3, M.Medico_Mail
+	FROM gd_esquema.Maestra M );
+
+INSERT INTO NUL.Estado(estado_descrip) VALUES
+		('Soltero'),
+		('Casado'),
+		('Viudo'),
+		('Concubinato'),
+		('Divorciado');
+
+INSERT INTO NUL.Plan_medico(plan_id, plan_descrip, plan_precio_bono_cons, plan_precio_bono_farm)
+( 
+  SELECT DISTINCT M.Plan_Med_Codigo, M.Plan_Med_Descripcion, M.Plan_Med_Precio_Bono_Consulta, M.Plan_Med_Precio_Bono_Farmacia
+    FROM gd_esquema.Maestra M
+);
+
+INSERT INTO NUL.Afiliado(afil_id, afil_estado, afil_plan_med, afil_nro_afiliado, afil_familiares, afil_nro_consulta)
+(
+	SELECT DISTINCT U.user_id, '1', M.Plan_Med_Codigo, (M.Paciente_Dni*100), '0', ISNULL((SELECT MAX (M2.Bono_Consulta_Numero)
+																							FROM gd_esquema.Maestra M2
+																							WHERE M2.Paciente_Mail = M.Paciente_Mail
+																							GROUP BY M2.Paciente_Mail),0)
+	FROM gd_esquema.Maestra M JOIN  NUL.Usuario U ON M.Paciente_Mail = U.user_username);
+
+INSERT INTO NUL.Bono_compra(bonoc_id_usuario, bonoc_fecha, bonoc_cantidad, bonoc_monto_total) 
+(
+	SELECT DISTINCT U.user_id, M.Compra_Bono_Fecha, COUNT(*), (COUNT(*) * M.Plan_Med_Precio_Bono_Consulta) 
+	FROM gd_esquema.Maestra M JOIN  NUL.Usuario U ON M.Paciente_Mail = U.user_username
+	GROUP BY U.user_id, M.Compra_Bono_Fecha, M.Plan_Med_Precio_Bono_Consulta
+);
+
+INSERT INTO NUL.Historial_plan_med(histo_plan_id, histo_afil_id, histo_fecha_id, histo_descrip)
+(
+	SELECT DISTINCT M.Plan_Med_Codigo, U.user_id, MIN(M.Turno_Fecha), 'Nose'
+    FROM gd_esquema.Maestra M JOIN  NUL.Usuario U ON M.Paciente_Mail = U.user_username
+	GROUP BY M.Plan_Med_Codigo, U.user_id );
 
 /* Falta migrar:
 
@@ -371,12 +425,12 @@ INSERT INTO NUL.Rol_funcionalidad(rol_id, func_id) VALUES
 	|Cancelacion
 	|Tipo_cancelacion
 	|Bono
-	|Historial_plan_med
-	|Bono_compra
-	|Afiliado
-	|Plan_medico
-	|Estado
-	|User_rol
+	|Historial_plan_med       X
+	|Bono_compra		      X	  
+	|Afiliado				  X
+	|Plan_medico              X
+	|Estado                   X 
+	|User_rol                 X
 
 */
 

@@ -30,3 +30,12 @@ D:\GDD\TP-Datos\Aplicacion Desktop\ClinicaFrba\ClinicaFrba\obj\Debug\ClinicaFrba
 D:\GDD\TP-Datos\Aplicacion Desktop\ClinicaFrba\ClinicaFrba\obj\Debug\ClinicaFrba.Login.Login.resources
 D:\GDD\TP-Datos\Aplicacion Desktop\ClinicaFrba\ClinicaFrba\obj\Debug\ClinicaFrba.Properties.Resources.resources
 D:\GDD\TP-Datos\Aplicacion Desktop\ClinicaFrba\ClinicaFrba\obj\Debug\ClinicaFrba.csproj.GenerateResource.Cache
+Z:\Facultad\Gestión de datos\TP\TP CLINICA FRBA 1.0 - 2C 2016-1\Repo\TP-Datos\Aplicacion Desktop\ClinicaFrba\ClinicaFrba\bin\Debug\ClinicaFrba.exe.config
+Z:\Facultad\Gestión de datos\TP\TP CLINICA FRBA 1.0 - 2C 2016-1\Repo\TP-Datos\Aplicacion Desktop\ClinicaFrba\ClinicaFrba\obj\Debug\ClinicaFrba.exe
+Z:\Facultad\Gestión de datos\TP\TP CLINICA FRBA 1.0 - 2C 2016-1\Repo\TP-Datos\Aplicacion Desktop\ClinicaFrba\ClinicaFrba\obj\Debug\ClinicaFrba.pdb
+Z:\Facultad\Gestión de datos\TP\TP CLINICA FRBA 1.0 - 2C 2016-1\Repo\TP-Datos\Aplicacion Desktop\ClinicaFrba\ClinicaFrba\obj\Debug\ClinicaFrba.csprojResolveAssemblyReference.cache
+Z:\Facultad\Gestión de datos\TP\TP CLINICA FRBA 1.0 - 2C 2016-1\Repo\TP-Datos\Aplicacion Desktop\ClinicaFrba\ClinicaFrba\obj\Debug\ClinicaFrba.Abm_Afiliado.Form1.resources
+Z:\Facultad\Gestión de datos\TP\TP CLINICA FRBA 1.0 - 2C 2016-1\Repo\TP-Datos\Aplicacion Desktop\ClinicaFrba\ClinicaFrba\obj\Debug\ClinicaFrba.Form1.resources
+Z:\Facultad\Gestión de datos\TP\TP CLINICA FRBA 1.0 - 2C 2016-1\Repo\TP-Datos\Aplicacion Desktop\ClinicaFrba\ClinicaFrba\obj\Debug\ClinicaFrba.Login.Login.resources
+Z:\Facultad\Gestión de datos\TP\TP CLINICA FRBA 1.0 - 2C 2016-1\Repo\TP-Datos\Aplicacion Desktop\ClinicaFrba\ClinicaFrba\obj\Debug\ClinicaFrba.Properties.Resources.resources
+Z:\Facultad\Gestión de datos\TP\TP CLINICA FRBA 1.0 - 2C 2016-1\Repo\TP-Datos\Aplicacion Desktop\ClinicaFrba\ClinicaFrba\obj\Debug\ClinicaFrba.csproj.GenerateResource.Cache
