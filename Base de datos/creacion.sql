@@ -19,6 +19,8 @@ IF OBJECT_ID('NUL.Agenda', 'U') IS NOT NULL
 		DROP TABLE NUL.Agenda;
 IF OBJECT_ID('NUL.Dia', 'U') IS NOT NULL
 		DROP TABLE NUL.Dia;
+IF OBJECT_ID('NUL.Consulta', 'U') IS NOT NULL
+		DROP TABLE NUL.Consulta;
 IF OBJECT_ID('NUL.Turno', 'U') IS NOT NULL
 		DROP TABLE NUL.Turno;
 IF OBJECT_ID('NUL.Profesional_especialidad', 'U') IS NOT NULL
@@ -29,8 +31,6 @@ IF OBJECT_ID('NUL.Especialidad', 'U') IS NOT NULL
 		DROP TABLE NUL.Especialidad;
 IF OBJECT_ID('NUL.Tipo_esp', 'U') IS NOT NULL
 		DROP TABLE NUL.Tipo_esp;
-IF OBJECT_ID('NUL.Consulta', 'U') IS NOT NULL
-		DROP TABLE NUL.Consulta;
 IF OBJECT_ID('NUL.Cancelacion', 'U') IS NOT NULL
 		DROP TABLE NUL.Cancelacion;
 IF OBJECT_ID('NUL.Tipo_cancelacion', 'U') IS NOT NULL
@@ -213,15 +213,31 @@ CREATE TABLE NUL.Cancelacion
 		CONSTRAINT FK_cancelacion_tipo FOREIGN KEY (cancel_tipo) REFERENCES NUL.Tipo_cancelacion (tipo_cancel_id)
 	);
 
+CREATE TABLE NUL.Turno
+(
+		turno_id			 	numeric(18,0) PRIMARY KEY,
+		turno_afiliado		 	numeric(18,0),
+		turno_profesional	 	numeric(18,0),
+		turno_especialidad	 	numeric(18,0),
+		turno_fecha_hora	 	datetime,
+		turno_llegada		 	time,
+
+		CONSTRAINT FK_turno_afiliado 	 FOREIGN KEY (turno_afiliado) 	  REFERENCES NUL.Afiliado (afil_id),
+		CONSTRAINT FK_turno_profesional  FOREIGN KEY (turno_profesional)  REFERENCES NUL.Profesional (prof_id),
+		CONSTRAINT FK_turno_especialidad FOREIGN KEY (turno_especialidad) REFERENCES NUL.Especialidad (esp_id)
+	);
+
 CREATE TABLE NUL.Consulta
 (
 		cons_id 				numeric(18,0) IDENTITY(1,1) PRIMARY KEY,
+		cons_turno_id			numeric(18,0),
 		cons_bono_usado		 	numeric(18,0),
 		cons_fecha_hora			datetime,
 		cons_sintomas			varchar(255),
 		cons_enfermedades		varchar(255),
 
-		CONSTRAINT FK_bono_usado  FOREIGN KEY (cons_bono_usado) REFERENCES NUL.Bono (bono_id)
+		CONSTRAINT FK_bono_usado  FOREIGN KEY (cons_bono_usado) REFERENCES NUL.Bono (bono_id),
+		CONSTRAINT FK_turno       FOREIGN KEY (cons_turno_id)   REFERENCES NUL.Turno (turno_id)
 	);
 
 CREATE TABLE NUL.Tipo_esp
@@ -255,24 +271,6 @@ CREATE TABLE NUL.Profesional_especialidad
 		CONSTRAINT FK_especialidad_pe FOREIGN KEY (esp_id) REFERENCES NUL.Especialidad (esp_id),
 		CONSTRAINT FK_profesional_pe  FOREIGN KEY (prof_id)  REFERENCES NUL.Profesional (prof_id)
 	);
-
-CREATE TABLE NUL.Turno
-(
-		turno_id			 	numeric(18,0) IDENTITY(1,1) PRIMARY KEY,
-		turno_afiliado		 	numeric(18,0),
-		turno_profesional	 	numeric(18,0),
-		turno_especialidad	 	numeric(18,0),
-		turno_consulta		 	numeric(18,0),
-		turno_fecha_hora	 	datetime,
-		turno_llegada		 	time,
-
-		CONSTRAINT FK_turno_afiliado 	 FOREIGN KEY (turno_afiliado) 	  REFERENCES NUL.Afiliado (afil_id),
-		CONSTRAINT FK_turno_profesional  FOREIGN KEY (turno_profesional)  REFERENCES NUL.Profesional (prof_id),
-		CONSTRAINT FK_turno_especialidad FOREIGN KEY (turno_especialidad) REFERENCES NUL.Especialidad (esp_id),
-		CONSTRAINT FK_consulta 			 FOREIGN KEY (turno_consulta) 	  REFERENCES NUL.Consulta (cons_id)
-	);
-
-
 
 CREATE TABLE NUL.Dia
 (
@@ -411,20 +409,85 @@ INSERT INTO NUL.Historial_plan_med(histo_plan_id, histo_afil_id, histo_fecha_id,
     FROM gd_esquema.Maestra M JOIN  NUL.Usuario U ON M.Paciente_Mail = U.user_username
 	GROUP BY M.Plan_Med_Codigo, U.user_id );
 
+/*  */
+INSERT INTO NUL.Bono(bono_compra, bono_plan, bono_nro_consulta, bono_usado)
+(
+	SELECT DISTINCT BC.bonoc_id, M.Plan_Med_Codigo, M.Bono_Consulta_Numero, 1
+	FROM gd_esquema.Maestra M JOIN  NUL.Usuario U ON M.Paciente_Mail = U.user_username
+	                          JOIN  NUL.Bono_compra BC ON U.user_id = BC.Bonoc_id_usuario
+);
+
+INSERT INTO NUL.Tipo_cancelacion(tipo_cancel_detalle) VALUES
+('Cancelada por el afiliado'),
+('Cancelada por el médico');
+
+/* Cancelación queda vacía por ahora */
+
+INSERT INTO NUL.Tipo_esp(tipo_esp_id, tipo_esp_descrip)
+(
+	SELECT DISTINCT M.Tipo_Especialidad_Codigo, M.Tipo_Especialidad_Descripcion
+			FROM gd_esquema.Maestra M
+);
+
+INSERT INTO NUL.Especialidad(esp_id, esp_tipo, esp_descrip)
+(
+	SELECT DISTINCT M.Especialidad_Codigo, M.Tipo_Especialidad_Codigo, M.Especialidad_Descripcion
+			FROM gd_esquema.Maestra M
+);
+
+INSERT INTO NUL.Profesional (prof_id, prof_matric)
+(
+	SELECT DISTINCT U.user_id, 0
+	FROM gd_esquema.Maestra M JOIN NUL.Usuario U ON M.Medico_Mail = U.user_username
+
+);
+
+INSERT INTO NUL.Profesional_Especialidad (esp_id, prof_id)
+(
+	SELECT DISTINCT M.Especialidad_Codigo, U.user_id
+	FROM gd_esquema.Maestra M JOIN NUL.Usuario U ON M.Medico_Mail = U.user_username
+
+);
+
+INSERT INTO NUL.Turno(turno_id, turno_afiliado, turno_profesional, turno_especialidad, turno_fecha_hora, turno_llegada)
+(
+	SELECT DISTINCT M.Turno_Numero, U.user_id, U2.user_id, E.esp_id, M.Turno_Fecha, CAST(M.Turno_Fecha as time)
+	FROM gd_esquema.Maestra M JOIN  NUL.Usuario U  ON M.Paciente_Mail = U.user_username
+							  JOIN  NUL.Usuario U2 ON M.Medico_Mail = U2.user_username
+							  JOIN  NUL.Especialidad E ON M.Especialidad_Codigo = E.esp_id
+);
+
+INSERT INTO NUL.Consulta(cons_bono_usado, cons_turno_id, cons_fecha_hora, cons_sintomas, cons_enfermedades)
+(
+	SELECT DISTINCT M.Bono_Consulta_Numero, M.Turno_Numero, M.Turno_Fecha, M.Consulta_Sintomas, M.Consulta_Enfermedades
+	FROM gd_esquema.Maestra M
+	WHERE ISNULL(M.Consulta_Enfermedades,0) <> 0
+	   OR ISNULL(M.Consulta_Sintomas,0) <> 0
+);
+
+INSERT INTO NUL.Dia(dia_nombre) VALUES
+	('Lunes'),
+	('Martes'),
+	('Miércoles'),
+	('Jueves'),
+	('Viernes'),
+	('Sábado'),
+	('Domingo');
+
 /* Falta migrar:
 
-	|Agenda_dia
-	|Agenda
-	|Dia
-	|Turno
-	|Profesional_especialidad
-	|Profesional
-	|Especialidad
-	|Tipo_esp
-	|Consulta
-	|Cancelacion
-	|Tipo_cancelacion
-	|Bono
+	|Agenda_dia                 /
+	|Agenda                     /
+	|Dia					  X
+	|Consulta				  X
+	|Turno					  X
+	|Profesional_especialidad X
+	|Profesional			  X
+	|Especialidad			  X
+	|Tipo_esp				  X
+	|Cancelacion			  /
+	|Tipo_cancelacion		  X
+	|Bono				      X
 	|Historial_plan_med       X
 	|Bono_compra		      X	  
 	|Afiliado				  X
