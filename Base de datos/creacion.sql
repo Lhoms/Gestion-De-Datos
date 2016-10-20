@@ -476,10 +476,27 @@ INSERT INTO NUL.Dia(dia_nombre) VALUES
 	('Sábado'),
 	('Domingo');
 
+INSERT INTO NUL.Agenda(agenda_prof_id, agenda_prof_esp_id, agenda_disp_desde, agenda_disp_hasta)
+(
+	SELECT DISTINCT U.user_id, M.Especialidad_Codigo, CAST(getdate() as date), '2099-10-19'
+	FROM gd_esquema.Maestra M JOIN NUL.Usuario U ON M.Medico_Mail = U.user_username
+);
+
+INSERT INTO NUL.Agenda_dia(dia_id, agenda_id, dia_hora_inicio, dia_hora_fin)
+(
+	SELECT DISTINCT DATEPART(dw, M.Turno_Fecha), A.agenda_id, MIN(CAST(M.Turno_Fecha as time)), MAX(CAST(M.Turno_Fecha as time))
+	FROM gd_esquema.Maestra M JOIN NUL.Usuario U ON M.Medico_Mail = U.user_username
+							  JOIN NUL.Agenda  A ON A.agenda_prof_id = U.user_id
+							                    AND A.agenda_prof_esp_id = M.Especialidad_Codigo
+	GROUP BY DATEPART(dw, M.Turno_Fecha), A.agenda_id
+	HAVING DATEPART(dw, M.Turno_Fecha) <> 7
+
+);
+
 /* Falta migrar:
 
-	|Agenda_dia                 /
-	|Agenda                     /
+	|Agenda_dia               X
+	|Agenda                   X
 	|Dia					  X
 	|Consulta				  X
 	|Turno					  X
