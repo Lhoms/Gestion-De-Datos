@@ -213,6 +213,27 @@ CREATE TABLE NUL.Cancelacion
 		CONSTRAINT FK_cancelacion_tipo FOREIGN KEY (cancel_tipo) REFERENCES NUL.Tipo_cancelacion (tipo_cancel_id)
 	);
 
+CREATE TABLE NUL.Tipo_esp
+(
+		tipo_esp_id 			numeric(18,0) IDENTITY(1,1) PRIMARY KEY,
+		tipo_esp_descrip 		varchar(255)
+	);
+
+CREATE TABLE NUL.Especialidad
+(
+		esp_id 				numeric(18,0) IDENTITY(1,1) PRIMARY KEY,
+		esp_tipo			numeric(18,0),
+		esp_descrip 		varchar(255),
+
+		CONSTRAINT FK_especialidad_esp FOREIGN KEY (esp_tipo) REFERENCES NUL.Tipo_esp (tipo_esp_id)
+	);
+
+CREATE TABLE NUL.Profesional
+(
+		prof_id				numeric(18,0) PRIMARY KEY,
+		prof_matric			numeric(18,0)
+	);
+
 CREATE TABLE NUL.Turno
 (
 		turno_id			 	numeric(18,0) PRIMARY KEY,
@@ -238,27 +259,6 @@ CREATE TABLE NUL.Consulta
 
 		CONSTRAINT FK_bono_usado  FOREIGN KEY (cons_bono_usado) REFERENCES NUL.Bono (bono_id),
 		CONSTRAINT FK_turno       FOREIGN KEY (cons_turno_id)   REFERENCES NUL.Turno (turno_id)
-	);
-
-CREATE TABLE NUL.Tipo_esp
-(
-		tipo_esp_id 			numeric(18,0) IDENTITY(1,1) PRIMARY KEY,
-		tipo_esp_descrip 		varchar(255)
-	);
-
-CREATE TABLE NUL.Especialidad
-(
-		esp_id 				numeric(18,0) IDENTITY(1,1) PRIMARY KEY,
-		esp_tipo			numeric(18,0),
-		esp_descrip 		varchar(255),
-
-		CONSTRAINT FK_especialidad_esp FOREIGN KEY (esp_tipo) REFERENCES NUL.Tipo_esp (tipo_esp_id)
-	);
-
-CREATE TABLE NUL.Profesional
-(
-		prof_id				numeric(18,0) PRIMARY KEY,
-		prof_matric			numeric(18,0)
 	);
 
 CREATE TABLE NUL.Profesional_especialidad
@@ -312,11 +312,11 @@ BEGIN TRANSACTION
 
 
 INSERT INTO NUL.Usuario (user_username, user_pass)
-	SELECT DISTINCT M.Paciente_Mail, HASHBYTES('SHA2_256', convert(varchar(200), M.Paciente_Dni) 
+	SELECT DISTINCT M.Paciente_Mail, HASHBYTES('SHA2_256', convert(varchar(200), M.Paciente_Dni)) 
 	FROM gd_esquema.Maestra M
 
 INSERT INTO NUL.Usuario (user_username, user_pass)
-	SELECT DISTINCT M.Medico_Mail, HASHBYTES('SHA2_256', convert(varchar(200), M.Medico_Dni) 
+	SELECT DISTINCT M.Medico_Mail, HASHBYTES('SHA2_256', convert(varchar(200), M.Medico_Dni))
 	FROM gd_esquema.Maestra M
 
 INSERT INTO NUL.Usuario (user_username, user_pass) VALUES
@@ -416,7 +416,7 @@ INSERT INTO NUL.Bono(bono_id, bono_compra, bono_plan, bono_nro_consulta, bono_us
 	SELECT DISTINCT M.Bono_Consulta_Numero, BC.bonoc_id, M.Plan_Med_Codigo, COUNT(BC.bonoc_id) + 1, 1
 	FROM gd_esquema.Maestra M JOIN  NUL.Usuario U ON M.Paciente_Mail = U.user_username
 	                          JOIN  NUL.Bono_compra BC ON U.user_id = BC.Bonoc_id_usuario
-								GROUP BY BC.bonoc_id_usuario
+								GROUP BY BC.bonoc_id_usuario, 
 );
 
 INSERT INTO NUL.Tipo_cancelacion(tipo_cancel_detalle) VALUES
