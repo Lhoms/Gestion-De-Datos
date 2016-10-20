@@ -275,7 +275,7 @@ CREATE TABLE NUL.Profesional_especialidad
 CREATE TABLE NUL.Dia
 (
 		dia_id 					numeric(18,0) IDENTITY(1,1) PRIMARY KEY,
-		plan_nombre				varchar(255)
+		dia_nombre				varchar(255)
 	);
 
 CREATE TABLE NUL.Agenda
@@ -284,7 +284,7 @@ CREATE TABLE NUL.Agenda
 		agenda_prof_id			numeric(18,0),
 		agenda_prof_esp_id		numeric(18,0),
 		agenda_disp_desde 		date,
-		agenda_desp_hasta		date,
+		agenda_disp_hasta		date,
 
 		CONSTRAINT FK_agenda_profesional FOREIGN KEY (agenda_prof_id) REFERENCES NUL.Profesional (prof_id)
 	);
@@ -314,10 +314,12 @@ BEGIN TRANSACTION
 INSERT INTO NUL.Usuario (user_username, user_pass)
 	SELECT DISTINCT M.Paciente_Mail, HASHBYTES('SHA2_256', convert(varchar(200), M.Paciente_Dni)) 
 	FROM gd_esquema.Maestra M
+	WHERE M.Paciente_Mail IS NOT NULL
 
 INSERT INTO NUL.Usuario (user_username, user_pass)
 	SELECT DISTINCT M.Medico_Mail, HASHBYTES('SHA2_256', convert(varchar(200), M.Medico_Dni))
 	FROM gd_esquema.Maestra M
+	WHERE M.Medico_Mail IS NOT NULL
 
 INSERT INTO NUL.Usuario (user_username, user_pass) VALUES
 			('admin', HASHBYTES('SHA2_256','w23e'))
@@ -416,7 +418,7 @@ INSERT INTO NUL.Bono(bono_id, bono_compra, bono_plan, bono_nro_consulta, bono_us
 	SELECT DISTINCT M.Bono_Consulta_Numero, BC.bonoc_id, M.Plan_Med_Codigo, COUNT(BC.bonoc_id) + 1, 1
 	FROM gd_esquema.Maestra M JOIN  NUL.Usuario U ON M.Paciente_Mail = U.user_username
 	                          JOIN  NUL.Bono_compra BC ON U.user_id = BC.Bonoc_id_usuario
-								GROUP BY BC.bonoc_id_usuario, 
+								GROUP BY BC.bonoc_id_usuario, M.Bono_Consulta_Numero, BC.bonoc_id, M.Plan_Med_Codigo
 );
 
 INSERT INTO NUL.Tipo_cancelacion(tipo_cancel_detalle) VALUES
@@ -519,7 +521,7 @@ INSERT INTO NUL.Agenda_dia(dia_id, agenda_id, dia_hora_inicio, dia_hora_fin)
 
 
 
-GO
+
 COMMIT TRANSACTION
 
 
