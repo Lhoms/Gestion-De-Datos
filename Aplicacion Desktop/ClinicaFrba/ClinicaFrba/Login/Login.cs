@@ -45,6 +45,8 @@ namespace ClinicaFrba.Login
                 if (string.IsNullOrEmpty(comboBoxTipo.Text ))
                     throw new Exception("El campo tipo de documento no puede estar vacio");
 
+                //Validar aca el usuario+tipo y que la contraseña sea esa con un SP
+
                 Form1 form = new Form1(comboBoxTipo.Text, textBoxUser.Text );
 
                 form.Show();

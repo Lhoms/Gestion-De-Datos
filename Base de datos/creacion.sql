@@ -57,10 +57,11 @@ IF OBJECT_ID('NUL.Funcionalidad', 'U') IS NOT NULL
 		DROP TABLE NUL.Funcionalidad;
 IF OBJECT_ID('NUL.Persona', 'U') IS NOT NULL
 		DROP TABLE NUL.Persona;
-IF OBJECT_ID('NUL.Tipo_doc', 'U') IS NOT NULL
-		DROP TABLE NUL.Tipo_doc;		
 IF OBJECT_ID('NUL.Usuario', 'U') IS NOT NULL
 		DROP TABLE NUL.Usuario;
+IF OBJECT_ID('NUL.Tipo_doc', 'U') IS NOT NULL
+		DROP TABLE NUL.Tipo_doc;		
+
 
 GO
 
@@ -82,7 +83,7 @@ CREATE TABLE NUL.Usuario
 		user_log_fallidos	tinyint DEFAULT 0,
 		user_habilitado  	bit DEFAULT 1,
 
-		CONSTRAINT FK_tipo_doc FOREIGN KEY (user_tipodoc) REFERENCES NUL.Tipo_doc(doc_id)
+		CONSTRAINT FK_tipo_doc_usuario FOREIGN KEY (user_tipodoc) REFERENCES NUL.Tipo_doc(doc_id)
 	);
 
 CREATE TABLE NUL.Persona
@@ -94,7 +95,7 @@ CREATE TABLE NUL.Persona
 		pers_doc 			numeric(18,0) NOT NULL,
 		pers_dire 			varchar(255),
 		pers_tel			numeric(18,0),
-		pers_mail 			varchar(255) NOT NULL UNIQUE,
+		pers_mail 			varchar(255),
 		pers_sexo 			char(1) DEFAULT 'M',
 		pers_fecha_nac 		datetime,
 
@@ -217,13 +218,13 @@ CREATE TABLE NUL.Cancelacion
 
 CREATE TABLE NUL.Tipo_esp
 (
-		tipo_esp_id 			numeric(18,0) IDENTITY(1,1) PRIMARY KEY,
+		tipo_esp_id 			numeric(18,0) PRIMARY KEY,
 		tipo_esp_descrip 		varchar(255)
 	);
 
 CREATE TABLE NUL.Especialidad
 (
-		esp_id 				numeric(18,0) IDENTITY(1,1) PRIMARY KEY,
+		esp_id 				numeric(18,0) PRIMARY KEY,
 		esp_tipo			numeric(18,0),
 		esp_descrip 		varchar(255),
 
@@ -336,14 +337,14 @@ INSERT INTO NUL.Usuario (user_tipodoc, user_username, user_pass)
 INSERT INTO NUL.Usuario (user_tipodoc, user_username, user_pass) VALUES
 			(1, 'admin', HASHBYTES('SHA2_256','w23e'))
 
+
 INSERT INTO NUL.Persona (pers_id ,pers_nombre, pers_apellido, pers_doc, pers_dire, pers_tel, pers_mail, pers_fecha_nac)
 (
-		SELECT DISTINCT U.user_id,  M.Paciente_Nombre, M.Paciente_Apellido, M.Paciente_Dni, M.Paciente_Direccion, M.Paciente_Telefono,
+		SELECT DISTINCT M.Paciente_Dni,  M.Paciente_Nombre, M.Paciente_Apellido, M.Paciente_Dni, M.Paciente_Direccion, M.Paciente_Telefono,
 						M.Paciente_Mail, M.Paciente_Fecha_Nac
-		FROM gd_esquema.Maestra M JOIN  NUL.Usuario U ON M.Paciente_Dni = U.user_username
-		                                             AND U.user_tipodoc  = 1
+		FROM gd_esquema.Maestra M JOIN  NUL.Usuario U ON CAST(M.Paciente_Dni AS CHAR) = U.user_username
+		WHERE U.user_tipodoc  = 1
 );		                                             
-													
 
 
 
@@ -380,7 +381,7 @@ INSERT INTO NUL.User_rol(rol_id, user_id)
 (
 	SELECT DISTINCT 2, user_id
 	FROM gd_esquema.Maestra M
-	JOIN NUL.Usuario U ON M.Paciente_Dni = U.user_username
+	JOIN NUL.Usuario U ON CAST(M.Paciente_Dni AS CHAR) = U.user_username
 	                  AND U.user_tipodoc = 1
 
 );
@@ -389,7 +390,7 @@ INSERT INTO NUL.User_rol(rol_id, user_id)
 (
 	SELECT DISTINCT 3, user_id
 	FROM gd_esquema.Maestra M
-	JOIN NUL.Usuario U ON M.Medico_Dni = U.user_username
+	JOIN NUL.Usuario U ON CAST(M.Medico_Dni AS CHAR) = U.user_username
 	                  AND U.user_tipodoc = 1
 );
 
@@ -413,22 +414,22 @@ INSERT INTO NUL.Afiliado(afil_id, afil_estado, afil_plan_med, afil_nro_afiliado,
 																							WHERE M2.Paciente_Mail = M.Paciente_Mail
 																							  AND ISNULL(M2.Bono_Consulta_Numero,0) <> 0
 																							GROUP BY M2.Paciente_Mail),0)
-	FROM gd_esquema.Maestra M JOIN  NUL.Usuario U ON M.Paciente_Dni = U.user_username
+	FROM gd_esquema.Maestra M JOIN  NUL.Usuario U ON CAST(M.Paciente_Dni AS CHAR) = U.user_username
 												 AND U.user_tipodoc  = 1
 );
 
 INSERT INTO NUL.Bono_compra(bonoc_id_usuario, bonoc_fecha, bonoc_cantidad, bonoc_monto_total) 
 (
 	SELECT DISTINCT U.user_id, M.Compra_Bono_Fecha, COUNT(*), (COUNT(*) * M.Plan_Med_Precio_Bono_Consulta) 
-	FROM gd_esquema.Maestra M JOIN  NUL.Usuario U ON M.Paciente_Dni = U.user_username
+	FROM gd_esquema.Maestra M JOIN  NUL.Usuario U ON CAST(M.Paciente_Dni AS CHAR) = U.user_username
 											     AND U.user_tipodoc = 1
 	GROUP BY U.user_id, M.Compra_Bono_Fecha, M.Plan_Med_Precio_Bono_Consulta
 );
 
 INSERT INTO NUL.Historial_plan_med(histo_plan_id, histo_afil_id, histo_fecha_id, histo_descrip)
 (
-	SELECT DISTINCT M.Plan_Med_Codigo, U.user_id, MIN(M.Turno_Fecha), 'Nose'
-    FROM gd_esquema.Maestra M JOIN  NUL.Usuario U ON M.Paciente_Dni = U.user_username
+	SELECT DISTINCT M.Plan_Med_Codigo, U.user_id, MIN(M.Turno_Fecha), ' '
+    FROM gd_esquema.Maestra M JOIN  NUL.Usuario U ON CAST(M.Paciente_Dni AS CHAR) = U.user_username
 												AND U.user_tipodoc  = 1
 	GROUP BY M.Plan_Med_Codigo, U.user_id );
 
@@ -436,10 +437,11 @@ INSERT INTO NUL.Historial_plan_med(histo_plan_id, histo_afil_id, histo_fecha_id,
 INSERT INTO NUL.Bono(bono_id, bono_compra, bono_plan, bono_nro_consulta, bono_usado)
 (
 	SELECT DISTINCT M.Bono_Consulta_Numero, BC.bonoc_id, M.Plan_Med_Codigo, COUNT(BC.bonoc_id) + 1, 1
-	FROM gd_esquema.Maestra M JOIN  NUL.Usuario U ON M.Paciente_Dni = U.user_username
+	FROM gd_esquema.Maestra M JOIN  NUL.Usuario U ON CAST(M.Paciente_Dni AS CHAR) = U.user_username
 												 AND U.user_tipodoc  = 1
 	                          JOIN  NUL.Bono_compra BC ON U.user_id = BC.Bonoc_id_usuario
-								GROUP BY BC.bonoc_id_usuario, M.Bono_Consulta_Numero, BC.bonoc_id, M.Plan_Med_Codigo
+	GROUP BY BC.bonoc_id_usuario, M.Bono_Consulta_Numero, BC.bonoc_id, M.Plan_Med_Codigo
+	HAVING Bono_Consulta_Numero != NULL AND bonoc_id != NULL
 );
 
 INSERT INTO NUL.Tipo_cancelacion(tipo_cancel_detalle) VALUES
@@ -452,18 +454,22 @@ INSERT INTO NUL.Tipo_esp(tipo_esp_id, tipo_esp_descrip)
 (
 	SELECT DISTINCT M.Tipo_Especialidad_Codigo, M.Tipo_Especialidad_Descripcion
 			FROM gd_esquema.Maestra M
+			WHERE M.Tipo_Especialidad_Codigo IS NOT NULL
+			GROUP BY M.Tipo_Especialidad_Codigo, M.Tipo_Especialidad_Descripcion
+
 );
 
 INSERT INTO NUL.Especialidad(esp_id, esp_tipo, esp_descrip)
 (
 	SELECT DISTINCT M.Especialidad_Codigo, M.Tipo_Especialidad_Codigo, M.Especialidad_Descripcion
 			FROM gd_esquema.Maestra M
+			WHERE M.Especialidad_Codigo IS NOT NULL
 );
 
 INSERT INTO NUL.Profesional (prof_id, prof_matric)
 (
 	SELECT DISTINCT U.user_id, 0
-	FROM gd_esquema.Maestra M JOIN NUL.Usuario U ON M.Medico_Dni = U.user_username
+	FROM gd_esquema.Maestra M JOIN NUL.Usuario U ON CAST(M.Medico_Dni AS CHAR) = U.user_username
 											 AND U.user_tipodoc  = 1
 
 );
@@ -471,7 +477,7 @@ INSERT INTO NUL.Profesional (prof_id, prof_matric)
 INSERT INTO NUL.Profesional_Especialidad (esp_id, prof_id)
 (
 	SELECT DISTINCT M.Especialidad_Codigo, U.user_id
-	FROM gd_esquema.Maestra M JOIN NUL.Usuario U ON M.Medico_Dni = U.user_username
+	FROM gd_esquema.Maestra M JOIN NUL.Usuario U ON CAST(M.Medico_Dni AS CHAR) = U.user_username
 												AND U.user_tipodoc  = 1
 
 );
@@ -479,9 +485,9 @@ INSERT INTO NUL.Profesional_Especialidad (esp_id, prof_id)
 INSERT INTO NUL.Turno(turno_id, turno_afiliado, turno_profesional, turno_especialidad, turno_fecha_hora, turno_llegada)
 (
 	SELECT DISTINCT M.Turno_Numero, U.user_id, U2.user_id, E.esp_id, M.Turno_Fecha, CAST(M.Turno_Fecha as time)
-	FROM gd_esquema.Maestra M JOIN  NUL.Usuario U  ON M.Paciente_Dni = U.user_username
+	FROM gd_esquema.Maestra M JOIN  NUL.Usuario U  ON CAST(M.Paciente_Dni AS CHAR)= U.user_username
 												  AND U.user_tipodoc  = 1
-							  JOIN  NUL.Usuario U2 ON M.Medico_Dni = U2.user_username
+							  JOIN  NUL.Usuario U2 ON CAST(M.Medico_Dni AS CHAR) = U2.user_username
 												  AND U2.user_tipodoc  = 1
 							  JOIN  NUL.Especialidad E ON M.Especialidad_Codigo = E.esp_id
 );
@@ -490,8 +496,8 @@ INSERT INTO NUL.Consulta(cons_bono_usado, cons_turno_id, cons_fecha_hora, cons_s
 (
 	SELECT DISTINCT M.Bono_Consulta_Numero, M.Turno_Numero, M.Turno_Fecha, M.Consulta_Sintomas, M.Consulta_Enfermedades
 	FROM gd_esquema.Maestra M
-	WHERE ISNULL(M.Consulta_Enfermedades,0) <> 0
-	   OR ISNULL(M.Consulta_Sintomas,0) <> 0
+	WHERE ISNULL(M.Consulta_Enfermedades, NULL) <> NULL
+	   OR ISNULL(M.Consulta_Sintomas, NULL) <> NULL
 );
 
 INSERT INTO NUL.Dia(dia_nombre) VALUES
@@ -506,7 +512,7 @@ INSERT INTO NUL.Dia(dia_nombre) VALUES
 INSERT INTO NUL.Agenda(agenda_prof_id, agenda_prof_esp_id, agenda_disp_desde, agenda_disp_hasta)
 (
 	SELECT DISTINCT U.user_id, M.Especialidad_Codigo, CAST(getdate() as date), '2099-10-19'
-	FROM gd_esquema.Maestra M JOIN NUL.Usuario U ON M.Medico_Dni = U.user_username
+	FROM gd_esquema.Maestra M JOIN NUL.Usuario U ON CAST(M.Medico_Dni AS CHAR) = U.user_username
 												AND U.user_tipodoc  = 1
 );
 
@@ -536,7 +542,7 @@ GO
 
 --stored procedures
 
-CREATE PROCEDURE get_tipo_doc
+CREATE PROCEDURE NUL.get_tipo_doc
 
 AS
 BEGIN
@@ -549,14 +555,3 @@ BEGIN
 
 END
 GO
-
-
-
-
-
-
-
-
-
-
-
