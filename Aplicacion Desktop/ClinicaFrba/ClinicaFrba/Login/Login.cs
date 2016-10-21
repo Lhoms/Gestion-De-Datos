@@ -30,12 +30,14 @@ namespace ClinicaFrba.Login
 
                 if (string.IsNullOrEmpty(textBoxUser.Text))
                     throw new Exception("El campo usuario no puede estar vacio");
-
-
+                
                 if (string.IsNullOrEmpty(textBoxPass.Text))
                     throw new Exception("El campo contraseña no puede estar vacio");
 
-                Form1 form = new Form1(textBoxUser.Text);
+                if (string.IsNullOrEmpty(comboBoxTipo.Text ))
+                    throw new Exception("El campo tipo de documento no puede estar vacio");
+
+                Form1 form = new Form1(comboBoxTipo.Text, textBoxUser.Text );
 
                 form.Show();
 

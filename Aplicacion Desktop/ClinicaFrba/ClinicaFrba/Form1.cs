@@ -12,6 +12,10 @@ namespace ClinicaFrba
 {
     public partial class Form1 : Form
     {
+        string username;
+        string tipo_doc_usuario;
+
+
         public Form1()
         {
 
@@ -19,7 +23,7 @@ namespace ClinicaFrba
 
         }
 
-        public Form1(String usuario)
+        public Form1(String tipo_doc_usuario, String username)
         {
 
             InitializeComponent();
@@ -27,7 +31,10 @@ namespace ClinicaFrba
 
             //comboBoxRol.DataSource = Recibe DataRow de roles;
 
-            ID_Usuario.Text = usuario;
+            this.tipo_doc_usuario = tipo_doc_usuario;
+            this.username = username;
+
+            ID_Usuario.Text = tipo_doc_usuario + " - " + username;
 
 
 
@@ -70,7 +77,7 @@ namespace ClinicaFrba
 
         private void buttonAltaAfiliado_Click(object sender, EventArgs e)
         {
-            Abm_Afiliado.AltaAfiliado form = new Abm_Afiliado.AltaAfiliado();
+            Abm_Afiliado.AltaAfiliado form = new Abm_Afiliado.AltaAfiliado(tipo_doc_usuario, username);
 
             form.Show();
 
