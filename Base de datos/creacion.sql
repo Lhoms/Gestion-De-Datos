@@ -495,30 +495,6 @@ INSERT INTO NUL.Agenda_dia(dia_id, agenda_id, dia_hora_inicio, dia_hora_fin)
 
 );
 
-/* Falta migrar:
-
-	|Agenda_dia               X
-	|Agenda                   X
-	|Dia					  X
-	|Consulta				  X
-	|Turno					  X
-	|Profesional_especialidad X
-	|Profesional			  X
-	|Especialidad			  X
-	|Tipo_esp				  X
-	|Cancelacion			  /
-	|Tipo_cancelacion		  X
-	|Bono				      X
-	|Historial_plan_med       X
-	|Bono_compra		      X	  
-	|Afiliado				  X
-	|Plan_medico              X
-	|Estado                   X 
-	|User_rol                 X
-
-*/
-
-
 
 
 
@@ -529,3 +505,31 @@ COMMIT TRANSACTION
 EXEC sp_msforeachtable 'ALTER TABLE ? WITH CHECK CHECK CONSTRAINT all'
 
 GO
+
+
+--stored procedures
+
+CREATE PROCEDURE get_tipo_doc
+
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    -- Insert statements for procedure here
+	SELECT doc_descrip FROM NUL.Tipo_doc
+
+END
+GO
+
+
+
+
+
+
+
+
+
+
+
