@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Data.SqlClient;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -15,6 +16,18 @@ namespace ClinicaFrba.Abm_Afiliado
         public BusquedaAfiliado()
         {
             InitializeComponent();
+
+            
+
         }
+
+
+        public static DataSet getAfiliadosSegun()
+        {
+            return new DataSet();
+
+        }
+
+
     }
 }

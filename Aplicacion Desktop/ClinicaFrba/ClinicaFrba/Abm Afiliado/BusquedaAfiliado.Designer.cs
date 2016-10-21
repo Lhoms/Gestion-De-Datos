@@ -41,9 +41,9 @@
             this.labelDni = new System.Windows.Forms.Label();
             this.labelApellido = new System.Windows.Forms.Label();
             this.labelNombre = new System.Windows.Forms.Label();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.dataGridViewAfiliados = new System.Windows.Forms.DataGridView();
             this.groupBox1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewAfiliados)).BeginInit();
             this.SuspendLayout();
             // 
             // groupBox1
@@ -167,26 +167,26 @@
             this.labelNombre.TabIndex = 0;
             this.labelNombre.Text = "Nombre:";
             // 
-            // dataGridView1
+            // dataGridViewAfiliados
             // 
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(13, 155);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(512, 237);
-            this.dataGridView1.TabIndex = 1;
+            this.dataGridViewAfiliados.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridViewAfiliados.Location = new System.Drawing.Point(13, 155);
+            this.dataGridViewAfiliados.Name = "dataGridViewAfiliados";
+            this.dataGridViewAfiliados.Size = new System.Drawing.Size(512, 237);
+            this.dataGridViewAfiliados.TabIndex = 1;
             // 
             // BusquedaAfiliado
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(537, 404);
-            this.Controls.Add(this.dataGridView1);
+            this.Controls.Add(this.dataGridViewAfiliados);
             this.Controls.Add(this.groupBox1);
             this.Name = "BusquedaAfiliado";
             this.Text = "ModificarAfiliado";
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewAfiliados)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -206,6 +206,6 @@
         private System.Windows.Forms.Label labelDni;
         private System.Windows.Forms.Label labelApellido;
         private System.Windows.Forms.Label labelNombre;
-        private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.DataGridView dataGridViewAfiliados;
     }
 }

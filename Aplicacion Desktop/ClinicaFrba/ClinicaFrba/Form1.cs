@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Data.SqlClient;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -28,8 +29,8 @@ namespace ClinicaFrba
 
             InitializeComponent();
 
-
-            //comboBoxRol.DataSource = Recibe DataRow de roles;
+            comboBoxRol.ValueMember = "rol_descrip";
+            comboBoxRol.DataSource = rolesDelUsuario(username, tipo_doc_usuario).Tables[0];
 
             this.tipo_doc_usuario = tipo_doc_usuario;
             this.username = username;
@@ -38,6 +39,15 @@ namespace ClinicaFrba
 
 
 
+        }
+
+        private DataSet rolesDelUsuario(string username, string tipo_doc_usuario)
+        {
+            SqlParameter[] dbParams = new SqlParameter[]
+                    {
+                    };
+
+            return DAL.Classes.DBHelper.ExecuteDataSet("NUL.get_roles_disponibles", dbParams);
         }
 
         private void groupBox1_Enter(object sender, EventArgs e)

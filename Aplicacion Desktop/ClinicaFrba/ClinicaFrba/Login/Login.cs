@@ -18,7 +18,7 @@ namespace ClinicaFrba.Login
         {
             InitializeComponent();
 
-            DataSet ds = GetTipoDoc();
+            DataSet ds = getTipoDoc();
 
             comboBoxTipo.ValueMember = "doc_descrip";
             comboBoxTipo.DataSource = ds.Tables[0];
@@ -67,7 +67,7 @@ namespace ClinicaFrba.Login
 
             catch (Exception exc)
             {
-                MessageBox.Show(exc.Message);
+                MessageBox.Show(exc.Message, "Aviso", MessageBoxButtons.OK);
             }
 
         }
@@ -88,7 +88,7 @@ namespace ClinicaFrba.Login
             return true;
         }
 
-        public static DataSet GetTipoDoc()
+        public static DataSet getTipoDoc()
         {
                 SqlParameter[] dbParams = new SqlParameter[]
                     {
