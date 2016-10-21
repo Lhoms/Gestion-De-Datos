@@ -57,11 +57,11 @@
     <Compile Include="Abm Afiliado\BajaAfiliado.Designer.cs">
       <DependentUpon>BajaAfiliado.cs</DependentUpon>
     </Compile>
-    <Compile Include="Abm Afiliado\ModificarAfiliado.cs">
+    <Compile Include="Abm Afiliado\BusquedaAfiliado.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Abm Afiliado\ModificarAfiliado.Designer.cs">
-      <DependentUpon>ModificarAfiliado.cs</DependentUpon>
+    <Compile Include="Abm Afiliado\BusquedaAfiliado.Designer.cs">
+      <DependentUpon>BusquedaAfiliado.cs</DependentUpon>
     </Compile>
     <Compile Include="AbmRol\AltaRol.cs">
       <SubType>Form</SubType>
@@ -136,8 +136,8 @@
     <EmbeddedResource Include="Abm Afiliado\AltaAfiliado.resx">
       <DependentUpon>AltaAfiliado.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Abm Afiliado\ModificarAfiliado.resx">
-      <DependentUpon>ModificarAfiliado.cs</DependentUpon>
+    <EmbeddedResource Include="Abm Afiliado\BusquedaAfiliado.resx">
+      <DependentUpon>BusquedaAfiliado.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>

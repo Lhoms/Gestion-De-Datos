@@ -45,13 +45,24 @@ namespace ClinicaFrba.Login
                 if (string.IsNullOrEmpty(comboBoxTipo.Text ))
                     throw new Exception("El campo tipo de documento no puede estar vacio");
 
-                //Validar aca el usuario+tipo y que la contraseña sea esa con un SP
+                if (validarUsuario(textBoxUser.Text, comboBoxTipo.Text, textBoxPass.Text))
+                {
+                    if (intentosDisponibles(textBoxUser.Text, comboBoxTipo.Text, textBoxPass.Text) > 0)
+                    {
 
-                Form1 form = new Form1(comboBoxTipo.Text, textBoxUser.Text );
+                    Form1 form = new Form1(comboBoxTipo.Text, textBoxUser.Text);
 
-                form.Show();
+                    form.Show();
 
-                this.Hide();
+                    this.Hide();
+                    }
+
+                    else throw new Exception("No dispone de intentos, contacte un administrador");
+                }
+
+                else throw new Exception("Login fallido, intente nuevamente\nQuedan "
+                                     + intentosDisponibles(textBoxUser.Text, comboBoxTipo.Text, textBoxPass.Text).ToString()
+                                     + " intentos");
             }
 
             catch (Exception exc)
@@ -61,15 +72,31 @@ namespace ClinicaFrba.Login
 
         }
 
+        private int intentosDisponibles(string user, string tipoDoc, string password)
+        {
+
+            //llamar a sp y preguntarle
+
+            return 3;
+        }
+
+        private bool validarUsuario (string user, string tipoDoc, string password)
+        {
+
+            //llamar a store y pedir esos datos y preguntar has rows
+
+            return true;
+        }
+
         public static DataSet GetTipoDoc()
         {
                 SqlParameter[] dbParams = new SqlParameter[]
                     {
-                       //aca van los parametros
+                       
                     };
 
 
-            return DAL.Classes.DBHelper.ExecuteDataSet("get_tipo_doc", dbParams);
+            return DAL.Classes.DBHelper.ExecuteDataSet("NUL.get_tipo_doc", dbParams);
 
         }
 

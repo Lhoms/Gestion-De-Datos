@@ -29,18 +29,18 @@
         private void InitializeComponent()
         {
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.labelNombre = new System.Windows.Forms.Label();
-            this.labelApellido = new System.Windows.Forms.Label();
+            this.cmdBuscar = new System.Windows.Forms.Button();
+            this.comboBoxPlan = new System.Windows.Forms.ComboBox();
+            this.cmdLimpiar = new System.Windows.Forms.Button();
+            this.labelPlan = new System.Windows.Forms.Label();
+            this.comboBoxTipo = new System.Windows.Forms.ComboBox();
+            this.textBoxNombre = new System.Windows.Forms.TextBox();
+            this.textBoxApellido = new System.Windows.Forms.TextBox();
+            this.textBoxDni = new System.Windows.Forms.TextBox();
             this.labelTipo = new System.Windows.Forms.Label();
             this.labelDni = new System.Windows.Forms.Label();
-            this.textBoxDni = new System.Windows.Forms.TextBox();
-            this.textBoxApellido = new System.Windows.Forms.TextBox();
-            this.textBoxNombre = new System.Windows.Forms.TextBox();
-            this.comboBoxTipo = new System.Windows.Forms.ComboBox();
-            this.comboBoxPlan = new System.Windows.Forms.ComboBox();
-            this.labelPlan = new System.Windows.Forms.Label();
-            this.cmdBuscar = new System.Windows.Forms.Button();
-            this.cmdLimpiar = new System.Windows.Forms.Button();
+            this.labelApellido = new System.Windows.Forms.Label();
+            this.labelNombre = new System.Windows.Forms.Label();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
@@ -67,23 +67,69 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Busqueda afiliado";
             // 
-            // labelNombre
+            // cmdBuscar
             // 
-            this.labelNombre.AutoSize = true;
-            this.labelNombre.Location = new System.Drawing.Point(-1, 22);
-            this.labelNombre.Name = "labelNombre";
-            this.labelNombre.Size = new System.Drawing.Size(47, 13);
-            this.labelNombre.TabIndex = 0;
-            this.labelNombre.Text = "Nombre:";
+            this.cmdBuscar.Location = new System.Drawing.Point(431, 106);
+            this.cmdBuscar.Name = "cmdBuscar";
+            this.cmdBuscar.Size = new System.Drawing.Size(75, 23);
+            this.cmdBuscar.TabIndex = 4;
+            this.cmdBuscar.Text = "Buscar";
+            this.cmdBuscar.UseVisualStyleBackColor = true;
             // 
-            // labelApellido
+            // comboBoxPlan
             // 
-            this.labelApellido.AutoSize = true;
-            this.labelApellido.Location = new System.Drawing.Point(262, 22);
-            this.labelApellido.Name = "labelApellido";
-            this.labelApellido.Size = new System.Drawing.Size(47, 13);
-            this.labelApellido.TabIndex = 1;
-            this.labelApellido.Text = "Apellido:";
+            this.comboBoxPlan.FormattingEnabled = true;
+            this.comboBoxPlan.Location = new System.Drawing.Point(56, 73);
+            this.comboBoxPlan.Name = "comboBoxPlan";
+            this.comboBoxPlan.Size = new System.Drawing.Size(85, 21);
+            this.comboBoxPlan.TabIndex = 7;
+            // 
+            // cmdLimpiar
+            // 
+            this.cmdLimpiar.Location = new System.Drawing.Point(333, 106);
+            this.cmdLimpiar.Name = "cmdLimpiar";
+            this.cmdLimpiar.Size = new System.Drawing.Size(75, 23);
+            this.cmdLimpiar.TabIndex = 3;
+            this.cmdLimpiar.Text = "Limpiar";
+            this.cmdLimpiar.UseVisualStyleBackColor = true;
+            // 
+            // labelPlan
+            // 
+            this.labelPlan.AutoSize = true;
+            this.labelPlan.Location = new System.Drawing.Point(3, 76);
+            this.labelPlan.Name = "labelPlan";
+            this.labelPlan.Size = new System.Drawing.Size(31, 13);
+            this.labelPlan.TabIndex = 8;
+            this.labelPlan.Text = "Plan:";
+            // 
+            // comboBoxTipo
+            // 
+            this.comboBoxTipo.FormattingEnabled = true;
+            this.comboBoxTipo.Location = new System.Drawing.Point(315, 47);
+            this.comboBoxTipo.Name = "comboBoxTipo";
+            this.comboBoxTipo.Size = new System.Drawing.Size(85, 21);
+            this.comboBoxTipo.TabIndex = 1;
+            // 
+            // textBoxNombre
+            // 
+            this.textBoxNombre.Location = new System.Drawing.Point(56, 19);
+            this.textBoxNombre.Name = "textBoxNombre";
+            this.textBoxNombre.Size = new System.Drawing.Size(200, 20);
+            this.textBoxNombre.TabIndex = 6;
+            // 
+            // textBoxApellido
+            // 
+            this.textBoxApellido.Location = new System.Drawing.Point(315, 19);
+            this.textBoxApellido.Name = "textBoxApellido";
+            this.textBoxApellido.Size = new System.Drawing.Size(154, 20);
+            this.textBoxApellido.TabIndex = 5;
+            // 
+            // textBoxDni
+            // 
+            this.textBoxDni.Location = new System.Drawing.Point(56, 47);
+            this.textBoxDni.Name = "textBoxDni";
+            this.textBoxDni.Size = new System.Drawing.Size(200, 20);
+            this.textBoxDni.TabIndex = 4;
             // 
             // labelTipo
             // 
@@ -103,86 +149,40 @@
             this.labelDni.TabIndex = 2;
             this.labelDni.Text = "Dni:";
             // 
-            // textBoxDni
+            // labelApellido
             // 
-            this.textBoxDni.Location = new System.Drawing.Point(56, 47);
-            this.textBoxDni.Name = "textBoxDni";
-            this.textBoxDni.Size = new System.Drawing.Size(200, 20);
-            this.textBoxDni.TabIndex = 4;
+            this.labelApellido.AutoSize = true;
+            this.labelApellido.Location = new System.Drawing.Point(262, 22);
+            this.labelApellido.Name = "labelApellido";
+            this.labelApellido.Size = new System.Drawing.Size(47, 13);
+            this.labelApellido.TabIndex = 1;
+            this.labelApellido.Text = "Apellido:";
             // 
-            // textBoxApellido
+            // labelNombre
             // 
-            this.textBoxApellido.Location = new System.Drawing.Point(315, 19);
-            this.textBoxApellido.Name = "textBoxApellido";
-            this.textBoxApellido.Size = new System.Drawing.Size(154, 20);
-            this.textBoxApellido.TabIndex = 5;
-            // 
-            // textBoxNombre
-            // 
-            this.textBoxNombre.Location = new System.Drawing.Point(56, 19);
-            this.textBoxNombre.Name = "textBoxNombre";
-            this.textBoxNombre.Size = new System.Drawing.Size(200, 20);
-            this.textBoxNombre.TabIndex = 6;
-            // 
-            // comboBoxTipo
-            // 
-            this.comboBoxTipo.FormattingEnabled = true;
-            this.comboBoxTipo.Location = new System.Drawing.Point(315, 47);
-            this.comboBoxTipo.Name = "comboBoxTipo";
-            this.comboBoxTipo.Size = new System.Drawing.Size(85, 21);
-            this.comboBoxTipo.TabIndex = 1;
-            // 
-            // comboBoxPlan
-            // 
-            this.comboBoxPlan.FormattingEnabled = true;
-            this.comboBoxPlan.Location = new System.Drawing.Point(56, 73);
-            this.comboBoxPlan.Name = "comboBoxPlan";
-            this.comboBoxPlan.Size = new System.Drawing.Size(85, 21);
-            this.comboBoxPlan.TabIndex = 7;
-            // 
-            // labelPlan
-            // 
-            this.labelPlan.AutoSize = true;
-            this.labelPlan.Location = new System.Drawing.Point(3, 76);
-            this.labelPlan.Name = "labelPlan";
-            this.labelPlan.Size = new System.Drawing.Size(31, 13);
-            this.labelPlan.TabIndex = 8;
-            this.labelPlan.Text = "Plan:";
-            // 
-            // cmdBuscar
-            // 
-            this.cmdBuscar.Location = new System.Drawing.Point(431, 106);
-            this.cmdBuscar.Name = "cmdBuscar";
-            this.cmdBuscar.Size = new System.Drawing.Size(75, 23);
-            this.cmdBuscar.TabIndex = 4;
-            this.cmdBuscar.Text = "Buscar";
-            this.cmdBuscar.UseVisualStyleBackColor = true;
-            // 
-            // cmdLimpiar
-            // 
-            this.cmdLimpiar.Location = new System.Drawing.Point(333, 106);
-            this.cmdLimpiar.Name = "cmdLimpiar";
-            this.cmdLimpiar.Size = new System.Drawing.Size(75, 23);
-            this.cmdLimpiar.TabIndex = 3;
-            this.cmdLimpiar.Text = "Limpiar";
-            this.cmdLimpiar.UseVisualStyleBackColor = true;
+            this.labelNombre.AutoSize = true;
+            this.labelNombre.Location = new System.Drawing.Point(-1, 22);
+            this.labelNombre.Name = "labelNombre";
+            this.labelNombre.Size = new System.Drawing.Size(47, 13);
+            this.labelNombre.TabIndex = 0;
+            this.labelNombre.Text = "Nombre:";
             // 
             // dataGridView1
             // 
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Location = new System.Drawing.Point(13, 155);
             this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(512, 202);
+            this.dataGridView1.Size = new System.Drawing.Size(512, 237);
             this.dataGridView1.TabIndex = 1;
             // 
-            // ModificarAfiliado
+            // BusquedaAfiliado
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(537, 404);
             this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.groupBox1);
-            this.Name = "ModificarAfiliado";
+            this.Name = "BusquedaAfiliado";
             this.Text = "ModificarAfiliado";
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
