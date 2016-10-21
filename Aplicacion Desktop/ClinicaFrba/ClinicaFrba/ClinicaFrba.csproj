@@ -94,6 +94,7 @@
       <DependentUpon>CompraBono.cs</DependentUpon>
     </Compile>
     <Compile Include="extras\Config.cs" />
+    <Compile Include="extras\DBHelper.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -161,7 +162,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

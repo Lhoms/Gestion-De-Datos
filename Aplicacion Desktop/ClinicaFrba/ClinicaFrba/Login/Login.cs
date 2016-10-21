@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Data.SqlClient;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -15,6 +17,12 @@ namespace ClinicaFrba.Login
         public Login()
         {
             InitializeComponent();
+
+            DataSet ds = GetTipoDoc();
+
+            comboBoxTipo.ValueMember = "doc_descrip";
+            comboBoxTipo.DataSource = ds.Tables[0];
+
         }
 
         private void textBox1_TextChanged(object sender, EventArgs e)
@@ -50,5 +58,18 @@ namespace ClinicaFrba.Login
             }
 
         }
+
+        public static DataSet GetTipoDoc()
+        {
+                SqlParameter[] dbParams = new SqlParameter[]
+                    {
+                       //aca van los parametros
+                    };
+
+
+            return DAL.Classes.DBHelper.ExecuteDataSet("get_tipo_doc", dbParams);
+
+        }
+
     }
 }
