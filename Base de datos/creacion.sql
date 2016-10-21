@@ -554,4 +554,20 @@ BEGIN
 	SELECT doc_descrip FROM NUL.Tipo_doc
 
 END
+
+
+
+CREATE PROCEDURE NUL.get_roles_disponibles
+
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    -- Insert statements for procedure here
+	SELECT rol_descrip FROM NUL.Rol
+
+END
 GO
+
