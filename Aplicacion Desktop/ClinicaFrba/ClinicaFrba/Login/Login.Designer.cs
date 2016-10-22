@@ -31,27 +31,27 @@
             this.labelUsuario = new System.Windows.Forms.Label();
             this.labelContraseña = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.labelTipo = new System.Windows.Forms.Label();
+            this.comboBoxTipo = new System.Windows.Forms.ComboBox();
             this.buttonLogin = new System.Windows.Forms.Button();
             this.textBoxPass = new System.Windows.Forms.TextBox();
             this.textBoxUser = new System.Windows.Forms.TextBox();
-            this.comboBoxTipo = new System.Windows.Forms.ComboBox();
-            this.labelTipo = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // labelUsuario
             // 
             this.labelUsuario.AutoSize = true;
-            this.labelUsuario.Location = new System.Drawing.Point(16, 30);
+            this.labelUsuario.Location = new System.Drawing.Point(6, 83);
             this.labelUsuario.Name = "labelUsuario";
-            this.labelUsuario.Size = new System.Drawing.Size(26, 13);
+            this.labelUsuario.Size = new System.Drawing.Size(68, 13);
             this.labelUsuario.TabIndex = 0;
-            this.labelUsuario.Text = "Dni:";
+            this.labelUsuario.Text = "Numero doc:";
             // 
             // labelContraseña
             // 
             this.labelContraseña.AutoSize = true;
-            this.labelContraseña.Location = new System.Drawing.Point(16, 80);
+            this.labelContraseña.Location = new System.Drawing.Point(6, 128);
             this.labelContraseña.Name = "labelContraseña";
             this.labelContraseña.Size = new System.Drawing.Size(64, 13);
             this.labelContraseña.TabIndex = 1;
@@ -68,14 +68,31 @@
             this.groupBox1.Controls.Add(this.labelContraseña);
             this.groupBox1.Location = new System.Drawing.Point(12, 12);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(219, 182);
+            this.groupBox1.Size = new System.Drawing.Size(217, 211);
             this.groupBox1.TabIndex = 2;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Login";
             // 
+            // labelTipo
+            // 
+            this.labelTipo.AutoSize = true;
+            this.labelTipo.Location = new System.Drawing.Point(18, 38);
+            this.labelTipo.Name = "labelTipo";
+            this.labelTipo.Size = new System.Drawing.Size(52, 13);
+            this.labelTipo.TabIndex = 6;
+            this.labelTipo.Text = "Tipo doc:";
+            // 
+            // comboBoxTipo
+            // 
+            this.comboBoxTipo.FormattingEnabled = true;
+            this.comboBoxTipo.Location = new System.Drawing.Point(76, 35);
+            this.comboBoxTipo.Name = "comboBoxTipo";
+            this.comboBoxTipo.Size = new System.Drawing.Size(57, 21);
+            this.comboBoxTipo.TabIndex = 5;
+            // 
             // buttonLogin
             // 
-            this.buttonLogin.Location = new System.Drawing.Point(19, 140);
+            this.buttonLogin.Location = new System.Drawing.Point(76, 169);
             this.buttonLogin.Name = "buttonLogin";
             this.buttonLogin.Size = new System.Drawing.Size(101, 23);
             this.buttonLogin.TabIndex = 4;
@@ -85,7 +102,7 @@
             // 
             // textBoxPass
             // 
-            this.textBoxPass.Location = new System.Drawing.Point(19, 96);
+            this.textBoxPass.Location = new System.Drawing.Point(76, 125);
             this.textBoxPass.Name = "textBoxPass";
             this.textBoxPass.PasswordChar = '*';
             this.textBoxPass.Size = new System.Drawing.Size(100, 20);
@@ -93,34 +110,17 @@
             // 
             // textBoxUser
             // 
-            this.textBoxUser.Location = new System.Drawing.Point(19, 46);
+            this.textBoxUser.Location = new System.Drawing.Point(76, 80);
             this.textBoxUser.Name = "textBoxUser";
             this.textBoxUser.Size = new System.Drawing.Size(100, 20);
             this.textBoxUser.TabIndex = 2;
             this.textBoxUser.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
             // 
-            // comboBoxTipo
-            // 
-            this.comboBoxTipo.FormattingEnabled = true;
-            this.comboBoxTipo.Location = new System.Drawing.Point(135, 46);
-            this.comboBoxTipo.Name = "comboBoxTipo";
-            this.comboBoxTipo.Size = new System.Drawing.Size(57, 21);
-            this.comboBoxTipo.TabIndex = 5;
-            // 
-            // labelTipo
-            // 
-            this.labelTipo.AutoSize = true;
-            this.labelTipo.Location = new System.Drawing.Point(132, 30);
-            this.labelTipo.Name = "labelTipo";
-            this.labelTipo.Size = new System.Drawing.Size(31, 13);
-            this.labelTipo.TabIndex = 6;
-            this.labelTipo.Text = "Tipo:";
-            // 
             // Login
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(241, 206);
+            this.ClientSize = new System.Drawing.Size(241, 235);
             this.Controls.Add(this.groupBox1);
             this.Name = "Login";
             this.Text = "Clinica Frba - Login";
