@@ -10,6 +10,8 @@ namespace DAL.Classes
 {
     public class DBHelper
     {
+        private static SqlConnection _conexion = new SqlConnection();
+
         public DBHelper()
         {
             //
@@ -22,8 +24,11 @@ namespace DAL.Classes
             DataSet ds = null;
             //try
             //{
+                 
+
                 ds = new DataSet();
-                SqlConnection cn = new SqlConnection(ConfigurationManager.AppSettings.Get("connectionString"));
+                SqlConnection cn = getConexion();   
+
                 SqlCommand cmd = new SqlCommand(sqlSpName, cn);
 				cmd.CommandTimeout = 600;
                 
@@ -44,6 +49,20 @@ namespace DAL.Classes
             //    throw;
             //}
             return ds;
+        }
+
+        private static SqlConnection getConexion()
+        {   
+            
+            if (_conexion.State == ConnectionState.Closed)
+            {
+                _conexion = new SqlConnection(ConfigurationManager.AppSettings.Get("connectionString"));
+                _conexion.Open();
+            }
+
+
+            return _conexion;
+            
         }
 
         public static bool ExecuteXml(string sqlSpName, SqlParameter[] dbParams, System.Xml.XmlDocument dXml)

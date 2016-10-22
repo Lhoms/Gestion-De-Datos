@@ -18,10 +18,10 @@ namespace ClinicaFrba.Login
         {
             InitializeComponent();
 
-            DataSet ds = getTipoDoc();
+            //DataSet ds = getTipoDoc();
 
             comboBoxTipo.ValueMember = "doc_descrip";
-            comboBoxTipo.DataSource = ds.Tables[0];
+            //comboBoxTipo.DataSource = ds.Tables[0];
 
         }
 
