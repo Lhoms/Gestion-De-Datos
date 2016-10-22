@@ -30,7 +30,7 @@ namespace ClinicaFrba
             InitializeComponent();
 
             comboBoxRol.ValueMember = "rol_descrip";
-            comboBoxRol.DataSource = rolesDelUsuario(username, tipo_doc_usuario).Tables[0];
+            //comboBoxRol.DataSource = rolesDelUsuario(username, tipo_doc_usuario).Tables[0];
 
             this.tipo_doc_usuario = tipo_doc_usuario;
             this.username = username;
