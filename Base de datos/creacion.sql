@@ -322,14 +322,14 @@ INSERT INTO NUL.Tipo_doc (doc_descrip) VALUES
 
 INSERT INTO NUL.Usuario (user_tipodoc, user_username, user_pass)
 (
-	SELECT DISTINCT 1, M.Paciente_Dni, HASHBYTES('SHA2_256', convert(varchar(200), M.Paciente_Dni)) 
+	SELECT DISTINCT 1, M.Paciente_Dni, HASHBYTES('SHA2_256','w23e') 
 	FROM gd_esquema.Maestra M
 	WHERE M.Paciente_Mail IS NOT NULL
 );
 
 INSERT INTO NUL.Usuario (user_tipodoc, user_username, user_pass)
 (
-	SELECT DISTINCT 1, M.Medico_Dni, HASHBYTES('SHA2_256', convert(varchar(200), M.Medico_Dni))
+	SELECT DISTINCT 1, M.Medico_Dni, HASHBYTES('SHA2_256','w23e')
 	FROM gd_esquema.Maestra M
 	WHERE M.Medico_Mail IS NOT NULL
 );
