@@ -149,7 +149,7 @@ CREATE TABLE NUL.Plan_medico
 		plan_id 				numeric(18,0) PRIMARY KEY,
 		plan_descrip 			varchar(255),
 		plan_precio_bono_cons	numeric(18,2),
-		plan_precio_bono_farm   numeric(18,2), 														//ver
+		plan_precio_bono_farm   numeric(18,2), 										
 	);
 
 CREATE TABLE NUL.Afiliado
