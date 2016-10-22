@@ -401,9 +401,9 @@ INSERT INTO NUL.Estado(estado_descrip) VALUES
 		('Concubinato'),
 		('Divorciado');
 
-INSERT INTO NUL.Plan_medico(plan_id, plan_descrip, plan_precio_bono_cons, plan_precio_bono_farm)
+INSERT INTO NUL.Plan_medico(plan_id, plan_descrip, plan_precio_bono_cons, plan_precio_bono_farm, plan_precio_bono_farm)
 ( 
-  SELECT DISTINCT M.Plan_Med_Codigo, M.Plan_Med_Descripcion, M.Plan_Med_Precio_Bono_Consulta, M.Plan_Med_Precio_Bono_Farmacia
+  SELECT DISTINCT M.Plan_Med_Codigo, M.Plan_Med_Descripcion, M.Plan_Med_Precio_Bono_Consulta, M.Plan_Med_Precio_Bono_Farmacia, M.Plan_Med_Precio_Bono_Farmacia
     FROM gd_esquema.Maestra M
 );
 
@@ -440,8 +440,8 @@ INSERT INTO NUL.Bono(bono_id, bono_compra, bono_plan, bono_nro_consulta, bono_us
 	FROM gd_esquema.Maestra M JOIN  NUL.Usuario U ON CAST(M.Paciente_Dni AS CHAR) = U.user_username
 												 AND U.user_tipodoc  = 1
 	                          JOIN  NUL.Bono_compra BC ON U.user_id = BC.Bonoc_id_usuario
-	GROUP BY BC.bonoc_id_usuario, M.Bono_Consulta_Numero, BC.bonoc_id, M.Plan_Med_Codigo
-	HAVING Bono_Consulta_Numero != NULL AND bonoc_id != NULL
+	GROUP BY BC.bonoc_id_usuario, M.Bono_Consulta_Numero, M.Plan_Med_Codigo
+	HAVING Bono_Consulta_Numero IS NOT NULL AND bonoc_id IS NOT NULL
 );
 
 INSERT INTO NUL.Tipo_cancelacion(tipo_cancel_detalle) VALUES
@@ -511,9 +511,10 @@ INSERT INTO NUL.Dia(dia_nombre) VALUES
 
 INSERT INTO NUL.Agenda(agenda_prof_id, agenda_prof_esp_id, agenda_disp_desde, agenda_disp_hasta)
 (
-	SELECT DISTINCT U.user_id, M.Especialidad_Codigo, CAST(getdate() as date), '2099-10-19'
+	SELECT DISTINCT U.user_id, M.Especialidad_Codigo, MIN(CAST(M.Turno_Fecha as date)), MAX(CAST(M.Turno_Fecha as date))
 	FROM gd_esquema.Maestra M JOIN NUL.Usuario U ON CAST(M.Medico_Dni AS CHAR) = U.user_username
 												AND U.user_tipodoc  = 1
+	GROUP BY U.user_id, M.Especialidad_Codigo
 );
 
 INSERT INTO NUL.Agenda_dia(dia_id, agenda_id, dia_hora_inicio, dia_hora_fin)
