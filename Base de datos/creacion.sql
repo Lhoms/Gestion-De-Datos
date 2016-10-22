@@ -496,8 +496,8 @@ INSERT INTO NUL.Consulta(cons_bono_usado, cons_turno_id, cons_fecha_hora, cons_s
 (
 	SELECT DISTINCT M.Bono_Consulta_Numero, M.Turno_Numero, M.Turno_Fecha, M.Consulta_Sintomas, M.Consulta_Enfermedades
 	FROM gd_esquema.Maestra M
-	WHERE ISNULL(M.Consulta_Enfermedades, NULL) <> NULL
-	   OR ISNULL(M.Consulta_Sintomas, NULL) <> NULL
+	WHERE M.Consulta_Enfermedades  IS NOT NULL
+	   OR M.Consulta_Sintomas  IS NOT NULL
 );
 
 INSERT INTO NUL.Dia(dia_nombre) VALUES
