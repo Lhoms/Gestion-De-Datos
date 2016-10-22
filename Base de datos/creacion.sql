@@ -401,9 +401,9 @@ INSERT INTO NUL.Estado(estado_descrip) VALUES
 		('Concubinato'),
 		('Divorciado');
 
-INSERT INTO NUL.Plan_medico(plan_id, plan_descrip, plan_precio_bono_cons, plan_precio_bono_farm, plan_precio_bono_farm)
+INSERT INTO NUL.Plan_medico(plan_id, plan_descrip, plan_precio_bono_cons, plan_precio_bono_farm)
 ( 
-  SELECT DISTINCT M.Plan_Med_Codigo, M.Plan_Med_Descripcion, M.Plan_Med_Precio_Bono_Consulta, M.Plan_Med_Precio_Bono_Farmacia, M.Plan_Med_Precio_Bono_Farmacia
+  SELECT DISTINCT M.Plan_Med_Codigo, M.Plan_Med_Descripcion, M.Plan_Med_Precio_Bono_Consulta, M.Plan_Med_Precio_Bono_Farmacia
     FROM gd_esquema.Maestra M
 );
 
