@@ -58,6 +58,7 @@ namespace ClinicaFrba.Login
                     form.Show();
 
                     this.Hide();
+
                     }
 
                     else throw new Exception("No dispone de intentos, contacte un administrador");

@@ -93,6 +93,12 @@
     <Compile Include="Compra Bono\CompraBono.Designer.cs">
       <DependentUpon>CompraBono.cs</DependentUpon>
     </Compile>
+    <Compile Include="Crear Agenda\CrearAgenda.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Crear Agenda\CrearAgenda.Designer.cs">
+      <DependentUpon>CrearAgenda.cs</DependentUpon>
+    </Compile>
     <Compile Include="extras\Config.cs" />
     <Compile Include="extras\DBHelper.cs" />
     <Compile Include="Form1.cs">
@@ -138,6 +144,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Abm Afiliado\BusquedaAfiliado.resx">
       <DependentUpon>BusquedaAfiliado.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Cancelar Atencion\CancelarAtencion.resx">
+      <DependentUpon>CancelarAtencion.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>

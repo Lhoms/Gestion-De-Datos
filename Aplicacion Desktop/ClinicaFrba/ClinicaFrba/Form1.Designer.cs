@@ -50,6 +50,7 @@
             this.buttonAltaRol = new System.Windows.Forms.Button();
             this.comboBoxRol = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
+            this.buttonCrearAgenda = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBoxAtencionMedica.SuspendLayout();
             this.groupBoxTurno.SuspendLayout();
@@ -60,7 +61,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 400);
+            this.label1.Location = new System.Drawing.Point(23, 469);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(49, 13);
             this.label1.TabIndex = 0;
@@ -70,7 +71,7 @@
             // 
             this.ID_Usuario.AutoSize = true;
             this.ID_Usuario.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ID_Usuario.Location = new System.Drawing.Point(67, 400);
+            this.ID_Usuario.Location = new System.Drawing.Point(78, 469);
             this.ID_Usuario.Name = "ID_Usuario";
             this.ID_Usuario.Size = new System.Drawing.Size(70, 13);
             this.ID_Usuario.TabIndex = 1;
@@ -79,7 +80,7 @@
             // buttonCerrarSesion
             // 
             this.buttonCerrarSesion.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.buttonCerrarSesion.Location = new System.Drawing.Point(322, 395);
+            this.buttonCerrarSesion.Location = new System.Drawing.Point(322, 464);
             this.buttonCerrarSesion.Name = "buttonCerrarSesion";
             this.buttonCerrarSesion.Size = new System.Drawing.Size(111, 23);
             this.buttonCerrarSesion.TabIndex = 2;
@@ -89,6 +90,7 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.buttonCrearAgenda);
             this.groupBox1.Controls.Add(this.groupBoxAtencionMedica);
             this.groupBox1.Controls.Add(this.groupBoxTurno);
             this.groupBox1.Controls.Add(this.buttonListadoEstadistico);
@@ -96,7 +98,7 @@
             this.groupBox1.Controls.Add(this.groupBoxRol);
             this.groupBox1.Location = new System.Drawing.Point(15, 51);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(418, 338);
+            this.groupBox1.Size = new System.Drawing.Size(418, 390);
             this.groupBox1.TabIndex = 3;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Funcionalidades";
@@ -173,7 +175,7 @@
             // 
             // buttonListadoEstadistico
             // 
-            this.buttonListadoEstadistico.Location = new System.Drawing.Point(273, 266);
+            this.buttonListadoEstadistico.Location = new System.Drawing.Point(28, 333);
             this.buttonListadoEstadistico.Name = "buttonListadoEstadistico";
             this.buttonListadoEstadistico.Size = new System.Drawing.Size(103, 33);
             this.buttonListadoEstadistico.TabIndex = 7;
@@ -281,12 +283,21 @@
             this.label2.TabIndex = 5;
             this.label2.Text = "Rol seleccionado:";
             // 
+            // buttonCrearAgenda
+            // 
+            this.buttonCrearAgenda.Location = new System.Drawing.Point(148, 333);
+            this.buttonCrearAgenda.Name = "buttonCrearAgenda";
+            this.buttonCrearAgenda.Size = new System.Drawing.Size(103, 33);
+            this.buttonCrearAgenda.TabIndex = 9;
+            this.buttonCrearAgenda.Text = "Crear agenda";
+            this.buttonCrearAgenda.UseVisualStyleBackColor = true;
+            // 
             // Form1
             // 
             this.AllowDrop = true;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(449, 422);
+            this.ClientSize = new System.Drawing.Size(449, 502);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.comboBoxRol);
             this.Controls.Add(this.groupBox1);
@@ -329,6 +340,7 @@
         private System.Windows.Forms.Button buttonBajaAfiliado;
         private System.Windows.Forms.Button buttonAltaAfiliado;
         private System.Windows.Forms.GroupBox groupBoxAtencionMedica;
+        private System.Windows.Forms.Button buttonCrearAgenda;
     }
 }
 
