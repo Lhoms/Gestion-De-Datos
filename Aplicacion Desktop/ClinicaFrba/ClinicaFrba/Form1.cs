@@ -77,14 +77,32 @@ namespace ClinicaFrba
 
         }
 
-        private void buttonModificarAfiliado_Click(object sender, EventArgs e)
-        {
 
+        private void buttonAltaRol_Click(object sender, EventArgs e)
+        {
+            AbmRol.AltaRol form = new AbmRol.AltaRol();
+
+            form.Show();
+
+            this.Hide();
+        }
+
+        private void buttonBajaRol_Click(object sender, EventArgs e)
+        {
+            AbmRol.BusquedaRol form = new AbmRol.BusquedaRol("Baja");
+
+            form.Show();
+
+            this.Hide();
         }
 
         private void buttonModificarRol_Click(object sender, EventArgs e)
         {
+            AbmRol.BusquedaRol form = new AbmRol.BusquedaRol("Modificacion");
 
+            form.Show();
+
+            this.Hide();
         }
 
         private void buttonAltaAfiliado_Click(object sender, EventArgs e)
@@ -95,5 +113,88 @@ namespace ClinicaFrba
 
             this.Hide();
         }
+
+        private void buttonBajaAfiliado_Click(object sender, EventArgs e)
+        {
+            Abm_Afiliado.BusquedaAfiliado form = new Abm_Afiliado.BusquedaAfiliado("Baja");
+
+            form.Show();
+
+            this.Hide();
+        }
+
+        private void buttonModificarAfiliado_Click(object sender, EventArgs e)
+        {
+            Abm_Afiliado.BusquedaAfiliado form = new Abm_Afiliado.BusquedaAfiliado("Modificacion");
+
+            form.Show();
+
+            this.Hide();
+        }
+
+        private void buttonCompraBono_Click(object sender, EventArgs e)
+        {
+            Compra_Bono.CompraBono form = new Compra_Bono.CompraBono();
+
+            form.Show();
+
+            this.Hide();
+        }
+
+        private void buttonPedirTurno_Click(object sender, EventArgs e)
+        {
+            Pedir_Turno.PedirTurno form = new Pedir_Turno.PedirTurno();
+
+            form.Show();
+
+            this.Hide();
+        }
+
+        private void buttonCancelarTurno_Click(object sender, EventArgs e)
+        {
+            Cancelar_Atencion.CancelarAtencion form = new Cancelar_Atencion.CancelarAtencion();
+
+            form.Show();
+
+            this.Hide();
+        }
+
+        private void buttonRegistrarLlegada_Click(object sender, EventArgs e)
+        {
+            Registro_Llegada.RegistrarLlegada form = new Registro_Llegada.RegistrarLlegada();
+
+            form.Show();
+
+            this.Hide();
+        }
+
+        private void buttonRegistrarResultado_Click(object sender, EventArgs e)
+        {
+            Registro_Resultado.RegistrarResultado form = new Registro_Resultado.RegistrarResultado();
+
+            form.Show();
+
+            this.Hide();
+        }
+
+        private void buttonListadoEstadistico_Click(object sender, EventArgs e)
+        {
+            Listados.Listados form = new Listados.Listados();
+
+            form.Show();
+
+            this.Hide();
+        }
+
+        private void buttonCrearAgenda_Click(object sender, EventArgs e)
+        {
+            Crear_Agenda.CrearAgenda form = new Crear_Agenda.CrearAgenda();
+
+            form.Show();
+
+            this.Hide();
+        }
+
+
     }
 }

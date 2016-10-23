@@ -123,6 +123,7 @@
             this.buttonRegistrarLlegada.TabIndex = 5;
             this.buttonRegistrarLlegada.Text = "Registrar llegada";
             this.buttonRegistrarLlegada.UseVisualStyleBackColor = true;
+            this.buttonRegistrarLlegada.Click += new System.EventHandler(this.buttonRegistrarLlegada_Click);
             // 
             // buttonRegistrarResultado
             // 
@@ -132,6 +133,7 @@
             this.buttonRegistrarResultado.TabIndex = 4;
             this.buttonRegistrarResultado.Text = "Registrar resultado";
             this.buttonRegistrarResultado.UseVisualStyleBackColor = true;
+            this.buttonRegistrarResultado.Click += new System.EventHandler(this.buttonRegistrarResultado_Click);
             // 
             // groupBoxTurno
             // 
@@ -154,6 +156,7 @@
             this.buttonCancelarTurno.TabIndex = 8;
             this.buttonCancelarTurno.Text = "Cancelar turno";
             this.buttonCancelarTurno.UseVisualStyleBackColor = true;
+            this.buttonCancelarTurno.Click += new System.EventHandler(this.buttonCancelarTurno_Click);
             // 
             // buttonCompraBono
             // 
@@ -163,6 +166,7 @@
             this.buttonCompraBono.TabIndex = 6;
             this.buttonCompraBono.Text = "Comprar bono";
             this.buttonCompraBono.UseVisualStyleBackColor = true;
+            this.buttonCompraBono.Click += new System.EventHandler(this.buttonCompraBono_Click);
             // 
             // buttonPedirTurno
             // 
@@ -172,6 +176,7 @@
             this.buttonPedirTurno.TabIndex = 3;
             this.buttonPedirTurno.Text = "Pedir turno";
             this.buttonPedirTurno.UseVisualStyleBackColor = true;
+            this.buttonPedirTurno.Click += new System.EventHandler(this.buttonPedirTurno_Click);
             // 
             // buttonListadoEstadistico
             // 
@@ -181,6 +186,7 @@
             this.buttonListadoEstadistico.TabIndex = 7;
             this.buttonListadoEstadistico.Text = "Listado Estadistico";
             this.buttonListadoEstadistico.UseVisualStyleBackColor = true;
+            this.buttonListadoEstadistico.Click += new System.EventHandler(this.buttonListadoEstadistico_Click);
             // 
             // groupBoxAfiliado
             // 
@@ -213,6 +219,7 @@
             this.buttonBajaAfiliado.TabIndex = 1;
             this.buttonBajaAfiliado.Text = "Baja Afiliado";
             this.buttonBajaAfiliado.UseVisualStyleBackColor = true;
+            this.buttonBajaAfiliado.Click += new System.EventHandler(this.buttonBajaAfiliado_Click);
             // 
             // buttonAltaAfiliado
             // 
@@ -255,6 +262,7 @@
             this.buttonBajaRol.TabIndex = 1;
             this.buttonBajaRol.Text = "Baja Rol";
             this.buttonBajaRol.UseVisualStyleBackColor = true;
+            this.buttonBajaRol.Click += new System.EventHandler(this.buttonBajaRol_Click);
             // 
             // buttonAltaRol
             // 
@@ -264,6 +272,7 @@
             this.buttonAltaRol.TabIndex = 0;
             this.buttonAltaRol.Text = "Alta Rol";
             this.buttonAltaRol.UseVisualStyleBackColor = true;
+            this.buttonAltaRol.Click += new System.EventHandler(this.buttonAltaRol_Click);
             // 
             // comboBoxRol
             // 
@@ -291,6 +300,7 @@
             this.buttonCrearAgenda.TabIndex = 9;
             this.buttonCrearAgenda.Text = "Crear agenda";
             this.buttonCrearAgenda.UseVisualStyleBackColor = true;
+            this.buttonCrearAgenda.Click += new System.EventHandler(this.buttonCrearAgenda_Click);
             // 
             // Form1
             // 

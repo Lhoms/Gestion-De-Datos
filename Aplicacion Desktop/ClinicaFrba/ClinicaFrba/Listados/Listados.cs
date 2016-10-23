@@ -8,11 +8,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace ClinicaFrba.Abm_Afiliado
+namespace ClinicaFrba.Listados
 {
-    public partial class BajaAfiliado : Form
+    public partial class Listados : Form
     {
-        public BajaAfiliado()
+        public Listados()
         {
             InitializeComponent();
         }

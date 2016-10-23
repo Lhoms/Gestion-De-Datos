@@ -1,6 +1,6 @@
-﻿namespace ClinicaFrba.Abm_Afiliado
+﻿namespace ClinicaFrba.Listados
 {
-    partial class BajaAfiliado
+    partial class Listados
     {
         /// <summary>
         /// Required designer variable.
@@ -30,7 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Text = "BajaAfiliado";
+            this.Text = "Form1";
         }
 
         #endregion

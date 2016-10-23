@@ -1,6 +1,6 @@
-﻿namespace ClinicaFrba.AbmRol
+﻿namespace ClinicaFrba.Registro_Llegada
 {
-    partial class BajaRol
+    partial class RegistrarLlegada
     {
         /// <summary>
         /// Required designer variable.
@@ -30,7 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Text = "BajaRol";
+            this.Text = "Form1";
         }
 
         #endregion
