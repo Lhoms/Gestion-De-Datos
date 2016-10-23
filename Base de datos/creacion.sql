@@ -356,7 +356,8 @@ INSERT INTO NUL.Funcionalidad (func_descrip) VALUES
 			('Registro de llegada para atención médica '),
 			('Registrar resultado para atención médica'),
 			('Cancelar atención médica'),
-			('Listado estadístico');
+			('Listado estadístico')
+			('Crear agenda');
 
 INSERT INTO NUL.Rol (rol_descrip) VALUES
 			('Administrativo'),
@@ -366,7 +367,7 @@ INSERT INTO NUL.Rol (rol_descrip) VALUES
 
 
 INSERT INTO NUL.Rol_funcionalidad(rol_id, func_id) VALUES
-			(1,1),(1,2),(1,3),(1,4),(1,5),(1,6),(1,7),(1,8),
+			(1,1),(1,2),(1,3),(1,4),(1,5),(1,6),(1,7),(1,8),(1,9),
 			(2,3),(2,4),(2,7),
 			(3,5),(3,6),(3,7);
 
