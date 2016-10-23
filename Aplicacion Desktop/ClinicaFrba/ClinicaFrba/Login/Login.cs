@@ -21,6 +21,11 @@ namespace ClinicaFrba.Login
             comboBoxTipo.ValueMember = "doc_descrip";
             comboBoxTipo.DataSource = getTipoDoc().Tables[0];
 
+            //comboBoxTipo.DataSource = DAL.Classes.DBHelper.ExecuteQuery_DS("SELECT * FROM NUL.Tipo_doc").Tables[0];
+
+            // DAL.Classes.DBHelper.ExecuteQuery_DS("SELECT * FROM NUL.Tipo_doc")["Doc_descrip"].ToString();
+
+
         }
 
         private void textBox1_TextChanged(object sender, EventArgs e)

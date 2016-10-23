@@ -24,25 +24,25 @@ namespace DAL.Classes
             DataSet ds = null;
             //try
             //{
-                 
 
-                ds = new DataSet();
-                SqlConnection cn = getConexion();   
 
-                SqlCommand cmd = new SqlCommand(sqlSpName, cn);
-				cmd.CommandTimeout = 600;
-                
-                cmd.CommandType = CommandType.StoredProcedure;
-                SqlDataAdapter da = new SqlDataAdapter(cmd);
+            ds = new DataSet();
+            SqlConnection cn = getConexion();
 
-                if (dbParams != null)
+            SqlCommand cmd = new SqlCommand(sqlSpName, cn);
+            cmd.CommandTimeout = 600;
+
+            cmd.CommandType = CommandType.StoredProcedure;
+            SqlDataAdapter da = new SqlDataAdapter(cmd);
+
+            if (dbParams != null)
+            {
+                foreach (SqlParameter dbParam in dbParams)
                 {
-                    foreach (SqlParameter dbParam in dbParams)
-                    {
-                        da.SelectCommand.Parameters.Add(dbParam);
-                    }
+                    da.SelectCommand.Parameters.Add(dbParam);
                 }
-                da.Fill(ds);
+            }
+            da.Fill(ds);
             //}
             //catch (Exception)
             //{
@@ -60,7 +60,7 @@ namespace DAL.Classes
 
 
             return _conexion;
-            
+
         }
 
         public static bool ExecuteXml(string sqlSpName, SqlParameter[] dbParams, System.Xml.XmlDocument dXml)
@@ -262,6 +262,43 @@ namespace DAL.Classes
             if (OutParam.Value == null) return 0;
             else return System.Convert.ToInt16(OutParam.Value);
         }
+
+        public static SqlDataReader ExecuteQuery_DR(string sqlQuery)    //Este retorna un data reader y se lee con indice
+        {
+            SqlConnection conexion = getConexion();
+
+            SqlCommand comando = new SqlCommand(sqlQuery, conexion);
+            SqlDataReader registro = comando.ExecuteReader();
+            if (registro.Read())
+            {
+                return registro;
+
+            }
+            else
+                //MessageBox.Show("No existe");
+                conexion.Close();
+            return null;
+        }
+
+        public static DataSet ExecuteQuery_DS(string sqlQuery)      //Este retorna un Data Set y se inserta directo en DataSource
+        {
+            SqlConnection conexion = getConexion();
+
+            SqlCommand comando2 = new SqlCommand(sqlQuery, conexion);
+
+            SqlDataAdapter adapter2 = new SqlDataAdapter(comando2);
+
+            DataSet ds = new DataSet();
+
+            adapter2.Fill(ds);
+
+            return ds;
+
+        }
+
+
+
+
 
         #region Example
         //public static DataSet Get(CGasto gasto)
