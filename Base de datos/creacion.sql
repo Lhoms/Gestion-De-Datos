@@ -1,8 +1,8 @@
 USE GD2C2016
 GO
 
---CREATE SCHEMA [NUL]
---GO
+CREATE SCHEMA [NUL]
+GO
 
 -- Disable constraints for all tables:
 EXEC sp_msforeachtable 'ALTER TABLE ? NOCHECK CONSTRAINT all'
@@ -420,10 +420,12 @@ INSERT INTO NUL.Afiliado(afil_id, afil_estado, afil_plan_med, afil_nro_afiliado,
 
 INSERT INTO NUL.Bono_compra(bonoc_id_usuario, bonoc_fecha, bonoc_cantidad, bonoc_monto_total) 
 (
-	SELECT DISTINCT U.user_id, M.Compra_Bono_Fecha, COUNT(*), (COUNT(*) * M.Plan_Med_Precio_Bono_Consulta) 
+	SELECT U.user_id, M.Compra_Bono_Fecha, COUNT(M.Bono_Consulta_Numero), (COUNT(*) * M.Plan_Med_Precio_Bono_Consulta) 
 	FROM gd_esquema.Maestra M JOIN  NUL.Usuario U ON CAST(M.Paciente_Dni AS CHAR) = U.user_username
 											     AND U.user_tipodoc = 1
+	WHERE M.Bono_Consulta_Numero IS NOT NULL AND M.Turno_Numero IS NULL
 	GROUP BY U.user_id, M.Compra_Bono_Fecha, M.Plan_Med_Precio_Bono_Consulta
+	--HAVING M.Compra_Bono_Fecha IS NOT NULL
 );
 
 INSERT INTO NUL.Historial_plan_med(histo_plan_id, histo_afil_id, histo_fecha_id, histo_descrip)
@@ -440,14 +442,15 @@ INSERT INTO NUL.Bono(bono_id, bono_compra, bono_plan, bono_nro_consulta, bono_us
 	FROM gd_esquema.Maestra M JOIN  NUL.Usuario U ON CAST(M.Paciente_Dni AS CHAR) = U.user_username
 												 AND U.user_tipodoc  = 1
 	                          JOIN  NUL.Bono_compra BC ON U.user_id = BC.Bonoc_id_usuario
-	GROUP BY BC.bonoc_id_usuario, M.Bono_Consulta_Numero, M.Plan_Med_Codigo
-	HAVING Bono_Consulta_Numero IS NOT NULL AND bonoc_id IS NOT NULL
+													  AND BC.bonoc_fecha = M.Compra_Bono_Fecha
+	WHERE M.Bono_Consulta_Numero IS NOT NULL AND M.Turno_Numero IS NULL
+	GROUP BY M.Bono_Consulta_Numero, BC.bonoc_id, M.Plan_Med_Codigo
 );
 
 INSERT INTO NUL.Tipo_cancelacion(tipo_cancel_detalle) VALUES
 ('Cancelada por el afiliado'),
 ('Cancelada por el médico');
-
+SELECT * FROM NUL.Bono
 /* Cancelación queda vacía por ahora */
 
 INSERT INTO NUL.Tipo_esp(tipo_esp_id, tipo_esp_descrip)
@@ -528,9 +531,6 @@ INSERT INTO NUL.Agenda_dia(dia_id, agenda_id, dia_hora_inicio, dia_hora_fin)
 	HAVING DATEPART(dw, M.Turno_Fecha) <> 7
 
 );
-
-
-
 
 COMMIT TRANSACTION
 
