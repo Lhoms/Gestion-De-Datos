@@ -413,11 +413,13 @@ INSERT INTO NUL.Afiliado(afil_id, afil_estado, afil_plan_med, afil_nro_afiliado,
 	SELECT DISTINCT U.user_id, '1', M.Plan_Med_Codigo, (M.Paciente_Dni*100), '0', ISNULL((SELECT COUNT(M2.Bono_Consulta_Numero)
 																							FROM gd_esquema.Maestra M2
 																							WHERE M2.Paciente_Mail = M.Paciente_Mail
-																							  AND ISNULL(M2.Bono_Consulta_Numero,0) <> 0
+																							  AND M2.Bono_Consulta_Numero IS NOT NULL 
+																							  AND M2.Turno_Numero IS NOT NULL
 																							GROUP BY M2.Paciente_Mail),0)
 	FROM gd_esquema.Maestra M JOIN  NUL.Usuario U ON CAST(M.Paciente_Dni AS CHAR) = U.user_username
 												 AND U.user_tipodoc  = 1
 );
+
 
 INSERT INTO NUL.Bono_compra(bonoc_id_usuario, bonoc_fecha, bonoc_cantidad, bonoc_monto_total) 
 (
@@ -431,7 +433,7 @@ INSERT INTO NUL.Bono_compra(bonoc_id_usuario, bonoc_fecha, bonoc_cantidad, bonoc
 
 INSERT INTO NUL.Historial_plan_med(histo_plan_id, histo_afil_id, histo_fecha_id, histo_descrip)
 (
-	SELECT DISTINCT M.Plan_Med_Codigo, U.user_id, MIN(M.Turno_Fecha), ' '
+	SELECT DISTINCT M.Plan_Med_Codigo, U.user_id, MIN(M.Turno_Fecha), 'Sin descripcion'
     FROM gd_esquema.Maestra M JOIN  NUL.Usuario U ON CAST(M.Paciente_Dni AS CHAR) = U.user_username
 												AND U.user_tipodoc  = 1
 	GROUP BY M.Plan_Med_Codigo, U.user_id );
@@ -451,7 +453,7 @@ INSERT INTO NUL.Bono(bono_id, bono_compra, bono_plan, bono_nro_consulta, bono_us
 INSERT INTO NUL.Tipo_cancelacion(tipo_cancel_detalle) VALUES
 ('Cancelada por el afiliado'),
 ('Cancelada por el médico');
-SELECT * FROM NUL.Bono
+
 /* Cancelación queda vacía por ahora */
 
 INSERT INTO NUL.Tipo_esp(tipo_esp_id, tipo_esp_descrip)
