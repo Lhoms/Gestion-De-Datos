@@ -27,8 +27,7 @@ namespace DAL.Classes
                  
 
                 ds = new DataSet();
-
-                SqlConnection cn = new SqlConnection(ConfigurationManager.AppSettings.Get("connectionString"));//getConexion();   
+                SqlConnection cn = getConexion();   
 
                 SqlCommand cmd = new SqlCommand(sqlSpName, cn);
 				cmd.CommandTimeout = 600;
@@ -56,7 +55,7 @@ namespace DAL.Classes
         {
             {
                 _conexion = new SqlConnection(ConfigurationManager.AppSettings.Get("connectionString"));
-                //_conexion.Open();
+                _conexion.Open();
             }
 
 
