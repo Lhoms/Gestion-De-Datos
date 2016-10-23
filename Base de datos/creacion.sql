@@ -1,8 +1,8 @@
 USE GD2C2016
 GO
 
-CREATE SCHEMA [NUL]
-GO
+--CREATE SCHEMA [NUL]
+--GO
 
 -- Disable constraints for all tables:
 EXEC sp_msforeachtable 'ALTER TABLE ? NOCHECK CONSTRAINT all'
@@ -555,7 +555,7 @@ BEGIN
 	SELECT doc_descrip FROM NUL.Tipo_doc
 
 END
-
+GO
 
 
 CREATE PROCEDURE NUL.get_roles_disponibles
