@@ -414,7 +414,7 @@ INSERT INTO NUL.Afiliado(afil_id, afil_estado, afil_plan_med, afil_nro_afiliado,
 																							FROM gd_esquema.Maestra M2
 																							WHERE M2.Paciente_Mail = M.Paciente_Mail
 																							  AND M2.Bono_Consulta_Numero IS NOT NULL 
-																							  AND M2.Turno_Numero IS NOT NULL
+																							  AND M2.Turno_Numero IS NULL
 																							GROUP BY M2.Paciente_Mail),0)
 	FROM gd_esquema.Maestra M JOIN  NUL.Usuario U ON CAST(M.Paciente_Dni AS CHAR) = U.user_username
 												 AND U.user_tipodoc  = 1
