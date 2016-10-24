@@ -35,7 +35,6 @@ namespace ClinicaFrba
             this.tipo_doc_usuario = tipo_doc_usuario;
             this.username = username;
 
-            buttonAltaAfiliado.Enabled = false;
 
             ID_Usuario.Text = tipo_doc_usuario + " - " + username;
 

@@ -42,7 +42,7 @@
             // labelUsuario
             // 
             this.labelUsuario.AutoSize = true;
-            this.labelUsuario.Location = new System.Drawing.Point(6, 83);
+            this.labelUsuario.Location = new System.Drawing.Point(23, 83);
             this.labelUsuario.Name = "labelUsuario";
             this.labelUsuario.Size = new System.Drawing.Size(68, 13);
             this.labelUsuario.TabIndex = 0;
@@ -51,7 +51,7 @@
             // labelContraseña
             // 
             this.labelContraseña.AutoSize = true;
-            this.labelContraseña.Location = new System.Drawing.Point(6, 128);
+            this.labelContraseña.Location = new System.Drawing.Point(23, 128);
             this.labelContraseña.Name = "labelContraseña";
             this.labelContraseña.Size = new System.Drawing.Size(64, 13);
             this.labelContraseña.TabIndex = 1;
@@ -68,7 +68,7 @@
             this.groupBox1.Controls.Add(this.labelContraseña);
             this.groupBox1.Location = new System.Drawing.Point(12, 12);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(217, 211);
+            this.groupBox1.Size = new System.Drawing.Size(254, 211);
             this.groupBox1.TabIndex = 2;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Login";
@@ -76,7 +76,7 @@
             // labelTipo
             // 
             this.labelTipo.AutoSize = true;
-            this.labelTipo.Location = new System.Drawing.Point(18, 38);
+            this.labelTipo.Location = new System.Drawing.Point(35, 38);
             this.labelTipo.Name = "labelTipo";
             this.labelTipo.Size = new System.Drawing.Size(52, 13);
             this.labelTipo.TabIndex = 6;
@@ -85,14 +85,14 @@
             // comboBoxTipo
             // 
             this.comboBoxTipo.FormattingEnabled = true;
-            this.comboBoxTipo.Location = new System.Drawing.Point(76, 35);
+            this.comboBoxTipo.Location = new System.Drawing.Point(93, 35);
             this.comboBoxTipo.Name = "comboBoxTipo";
             this.comboBoxTipo.Size = new System.Drawing.Size(57, 21);
             this.comboBoxTipo.TabIndex = 5;
             // 
             // buttonLogin
             // 
-            this.buttonLogin.Location = new System.Drawing.Point(76, 169);
+            this.buttonLogin.Location = new System.Drawing.Point(93, 169);
             this.buttonLogin.Name = "buttonLogin";
             this.buttonLogin.Size = new System.Drawing.Size(101, 23);
             this.buttonLogin.TabIndex = 4;
@@ -102,17 +102,17 @@
             // 
             // textBoxPass
             // 
-            this.textBoxPass.Location = new System.Drawing.Point(76, 125);
+            this.textBoxPass.Location = new System.Drawing.Point(93, 125);
             this.textBoxPass.Name = "textBoxPass";
             this.textBoxPass.PasswordChar = '*';
-            this.textBoxPass.Size = new System.Drawing.Size(100, 20);
+            this.textBoxPass.Size = new System.Drawing.Size(118, 20);
             this.textBoxPass.TabIndex = 3;
             // 
             // textBoxUser
             // 
-            this.textBoxUser.Location = new System.Drawing.Point(76, 80);
+            this.textBoxUser.Location = new System.Drawing.Point(93, 80);
             this.textBoxUser.Name = "textBoxUser";
-            this.textBoxUser.Size = new System.Drawing.Size(100, 20);
+            this.textBoxUser.Size = new System.Drawing.Size(118, 20);
             this.textBoxUser.TabIndex = 2;
             this.textBoxUser.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
             // 
@@ -120,9 +120,11 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(241, 235);
+            this.ClientSize = new System.Drawing.Size(278, 235);
             this.Controls.Add(this.groupBox1);
+            this.MaximizeBox = false;
             this.Name = "Login";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Clinica Frba - Login";
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();

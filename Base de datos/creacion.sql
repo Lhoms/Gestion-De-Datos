@@ -575,3 +575,16 @@ BEGIN
 END
 GO
 
+
+CREATE PROCEDURE NUL.get_usuario (@username varchar(255), @tipo_doc varchar(255))
+AS
+BEGIN	
+	
+	SELECT * 
+	FROM NUL.Usuario U JOIN NUL.Tipo_doc D ON U.user_tipodoc = D.doc_id
+	WHERE D.doc_descrip = @tipo_doc AND
+		  U.user_username = @username
+
+END
+
+

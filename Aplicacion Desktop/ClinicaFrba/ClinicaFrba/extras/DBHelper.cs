@@ -275,9 +275,11 @@ namespace DAL.Classes
 
             }
             else
+            {   
                 //MessageBox.Show("No existe");
                 conexion.Close();
-            return null;
+                return null;
+            }
         }
 
         public static DataSet ExecuteQuery_DS(string sqlQuery)      //Este retorna un Data Set y se inserta directo en DataSource

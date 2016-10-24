@@ -32,6 +32,7 @@
             this.ID_Usuario = new System.Windows.Forms.Label();
             this.buttonCerrarSesion = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.buttonCrearAgenda = new System.Windows.Forms.Button();
             this.groupBoxAtencionMedica = new System.Windows.Forms.GroupBox();
             this.buttonRegistrarLlegada = new System.Windows.Forms.Button();
             this.buttonRegistrarResultado = new System.Windows.Forms.Button();
@@ -50,7 +51,6 @@
             this.buttonAltaRol = new System.Windows.Forms.Button();
             this.comboBoxRol = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
-            this.buttonCrearAgenda = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBoxAtencionMedica.SuspendLayout();
             this.groupBoxTurno.SuspendLayout();
@@ -79,10 +79,10 @@
             // 
             // buttonCerrarSesion
             // 
-            this.buttonCerrarSesion.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.buttonCerrarSesion.Location = new System.Drawing.Point(322, 464);
+            this.buttonCerrarSesion.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonCerrarSesion.Location = new System.Drawing.Point(322, 462);
             this.buttonCerrarSesion.Name = "buttonCerrarSesion";
-            this.buttonCerrarSesion.Size = new System.Drawing.Size(111, 23);
+            this.buttonCerrarSesion.Size = new System.Drawing.Size(111, 26);
             this.buttonCerrarSesion.TabIndex = 2;
             this.buttonCerrarSesion.Text = "Cerrar Sesion";
             this.buttonCerrarSesion.UseVisualStyleBackColor = true;
@@ -103,6 +103,16 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Funcionalidades";
             this.groupBox1.Enter += new System.EventHandler(this.groupBox1_Enter);
+            // 
+            // buttonCrearAgenda
+            // 
+            this.buttonCrearAgenda.Location = new System.Drawing.Point(148, 333);
+            this.buttonCrearAgenda.Name = "buttonCrearAgenda";
+            this.buttonCrearAgenda.Size = new System.Drawing.Size(103, 33);
+            this.buttonCrearAgenda.TabIndex = 9;
+            this.buttonCrearAgenda.Text = "Crear agenda";
+            this.buttonCrearAgenda.UseVisualStyleBackColor = true;
+            this.buttonCrearAgenda.Click += new System.EventHandler(this.buttonCrearAgenda_Click);
             // 
             // groupBoxAtencionMedica
             // 
@@ -127,7 +137,7 @@
             // 
             // buttonRegistrarResultado
             // 
-            this.buttonRegistrarResultado.Location = new System.Drawing.Point(137, 19);
+            this.buttonRegistrarResultado.Location = new System.Drawing.Point(137, 20);
             this.buttonRegistrarResultado.Name = "buttonRegistrarResultado";
             this.buttonRegistrarResultado.Size = new System.Drawing.Size(103, 33);
             this.buttonRegistrarResultado.TabIndex = 4;
@@ -292,16 +302,6 @@
             this.label2.TabIndex = 5;
             this.label2.Text = "Rol seleccionado:";
             // 
-            // buttonCrearAgenda
-            // 
-            this.buttonCrearAgenda.Location = new System.Drawing.Point(148, 333);
-            this.buttonCrearAgenda.Name = "buttonCrearAgenda";
-            this.buttonCrearAgenda.Size = new System.Drawing.Size(103, 33);
-            this.buttonCrearAgenda.TabIndex = 9;
-            this.buttonCrearAgenda.Text = "Crear agenda";
-            this.buttonCrearAgenda.UseVisualStyleBackColor = true;
-            this.buttonCrearAgenda.Click += new System.EventHandler(this.buttonCrearAgenda_Click);
-            // 
             // Form1
             // 
             this.AllowDrop = true;
@@ -314,7 +314,9 @@
             this.Controls.Add(this.buttonCerrarSesion);
             this.Controls.Add(this.ID_Usuario);
             this.Controls.Add(this.label1);
+            this.MaximizeBox = false;
             this.Name = "Form1";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Clinica Frba - Home";
             this.groupBox1.ResumeLayout(false);
             this.groupBoxAtencionMedica.ResumeLayout(false);

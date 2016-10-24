@@ -99,6 +99,7 @@
     <Compile Include="Crear Agenda\CrearAgenda.Designer.cs">
       <DependentUpon>CrearAgenda.cs</DependentUpon>
     </Compile>
+    <Compile Include="extras\Afiliado.cs" />
     <Compile Include="extras\Config.cs" />
     <Compile Include="extras\DBHelper.cs" />
     <Compile Include="Form1.cs">

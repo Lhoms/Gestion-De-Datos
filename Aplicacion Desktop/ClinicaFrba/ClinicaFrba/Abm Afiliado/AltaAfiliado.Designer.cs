@@ -30,7 +30,7 @@
         {
             this.groupBoxAltaAfiliado = new System.Windows.Forms.GroupBox();
             this.numericUpDownCantHijos = new System.Windows.Forms.NumericUpDown();
-            this.labelCantHijos = new System.Windows.Forms.Label();
+            this.labelCantFamiliares = new System.Windows.Forms.Label();
             this.labelTelefono = new System.Windows.Forms.Label();
             this.textBoxTelefono = new System.Windows.Forms.TextBox();
             this.comboBoxPlanMedico = new System.Windows.Forms.ComboBox();
@@ -65,7 +65,7 @@
             // groupBoxAltaAfiliado
             // 
             this.groupBoxAltaAfiliado.Controls.Add(this.numericUpDownCantHijos);
-            this.groupBoxAltaAfiliado.Controls.Add(this.labelCantHijos);
+            this.groupBoxAltaAfiliado.Controls.Add(this.labelCantFamiliares);
             this.groupBoxAltaAfiliado.Controls.Add(this.labelTelefono);
             this.groupBoxAltaAfiliado.Controls.Add(this.textBoxTelefono);
             this.groupBoxAltaAfiliado.Controls.Add(this.comboBoxPlanMedico);
@@ -97,19 +97,19 @@
             // 
             // numericUpDownCantHijos
             // 
-            this.numericUpDownCantHijos.Location = new System.Drawing.Point(408, 178);
+            this.numericUpDownCantHijos.Location = new System.Drawing.Point(435, 178);
             this.numericUpDownCantHijos.Name = "numericUpDownCantHijos";
             this.numericUpDownCantHijos.Size = new System.Drawing.Size(120, 20);
             this.numericUpDownCantHijos.TabIndex = 30;
             // 
-            // labelCantHijos
+            // labelCantFamiliares
             // 
-            this.labelCantHijos.AutoSize = true;
-            this.labelCantHijos.Location = new System.Drawing.Point(337, 180);
-            this.labelCantHijos.Name = "labelCantHijos";
-            this.labelCantHijos.Size = new System.Drawing.Size(56, 13);
-            this.labelCantHijos.TabIndex = 28;
-            this.labelCantHijos.Text = "Cant hijos:";
+            this.labelCantFamiliares.AutoSize = true;
+            this.labelCantFamiliares.Location = new System.Drawing.Point(337, 180);
+            this.labelCantFamiliares.Name = "labelCantFamiliares";
+            this.labelCantFamiliares.Size = new System.Drawing.Size(78, 13);
+            this.labelCantFamiliares.TabIndex = 28;
+            this.labelCantFamiliares.Text = "Cant familiares:";
             // 
             // labelTelefono
             // 
@@ -322,6 +322,7 @@
             this.buttonAgregarConyuge.TabIndex = 32;
             this.buttonAgregarConyuge.Text = "Agregar Conyuge";
             this.buttonAgregarConyuge.UseVisualStyleBackColor = true;
+            this.buttonAgregarConyuge.Click += new System.EventHandler(this.buttonAgregarConyuge_Click);
             // 
             // buttonAgregarHijo
             // 
@@ -354,7 +355,9 @@
             this.Controls.Add(this.buttonCancelar);
             this.Controls.Add(this.buttonAceptar);
             this.Margin = new System.Windows.Forms.Padding(2);
+            this.MaximizeBox = false;
             this.Name = "AltaAfiliado";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Alta Afiliado";
             this.groupBoxAltaAfiliado.ResumeLayout(false);
             this.groupBoxAltaAfiliado.PerformLayout();
@@ -388,7 +391,7 @@
         private System.Windows.Forms.ComboBox comboBoxPlanMedico;
         private System.Windows.Forms.Label labelTelefono;
         private System.Windows.Forms.TextBox textBoxTelefono;
-        private System.Windows.Forms.Label labelCantHijos;
+        private System.Windows.Forms.Label labelCantFamiliares;
         private System.Windows.Forms.Button buttonAceptar;
         private System.Windows.Forms.Button buttonCancelar;
         private System.Windows.Forms.Button buttonAgregarConyuge;
