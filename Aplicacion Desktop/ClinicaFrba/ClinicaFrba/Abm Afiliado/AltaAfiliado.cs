@@ -19,6 +19,7 @@ namespace ClinicaFrba.Abm_Afiliado
     {
 
         Afiliado afiliado;
+        Afiliado[] afiliados;
         string adm_tipo_doc;
         string adm_username;
 
@@ -30,14 +31,28 @@ namespace ClinicaFrba.Abm_Afiliado
         }
 
         public AltaAfiliado(String tipo_doc_usuario, String usuario)
-        {
+        {        
             InitializeComponent();
-
+           
             this.afiliado = new Afiliado();
 
             this.adm_tipo_doc = tipo_doc_usuario;
             this.adm_username = usuario;
 
+            afiliados = new Afiliado[0];
+
+            buttonAgregarConyuge.Enabled = false;
+            buttonAgregarHijo.Enabled = false;
+
+            
+        }
+
+        public AltaAfiliado(string documento, string tipo_doc, string tipo_alta)
+        {
+
+            if(tipo_alta == "conyuge" || tipo_alta == "hijo")
+
+            InitializeComponent();
 
 
         }
@@ -107,6 +122,15 @@ namespace ClinicaFrba.Abm_Afiliado
 
                 else
                 {
+                    //for each -> por familiares
+
+                    foreach (Afiliado element in afiliados)
+                    {
+                        nuevo_afiliado(element);
+                    }
+
+                    
+
                     Form1 form = new Form1(this.adm_tipo_doc, this.adm_username);
 
                     form.Show();
@@ -122,6 +146,11 @@ namespace ClinicaFrba.Abm_Afiliado
                 MessageBox.Show(exc.Message);
             }
 
+        }
+
+        private void nuevo_afiliado(Afiliado afiliado)
+        {
+            //llamar store para crear nuevo usuario+persona+afiliado
         }
 
         private DataSet get_usuario(string username, string tipo_doc)
@@ -177,11 +206,132 @@ namespace ClinicaFrba.Abm_Afiliado
 
         private void buttonAgregarConyuge_Click(object sender, EventArgs e)
         {
+            try
+            {
+                if (string.IsNullOrEmpty(textBoxDocumento.Text) || string.IsNullOrEmpty(comboBoxTipoDoc.Text))
+                {
+                    throw new Exception("El campo documento y tipo no pueden estar vacios");
+                }
+
+                else
+                {
+                    Abm_Afiliado.AltaAfiliado form = new Abm_Afiliado.AltaAfiliado(textBoxDocumento.Text, comboBoxTipoDoc.Text, "conyuge");
+                }
+            }
+
+            catch (Exception exc)
+            {
+                MessageBox.Show(exc.Message, "Aviso", MessageBoxButtons.OK);
+            }
 
         }
 
+        private void buttonAgregarHijo_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(textBoxDocumento.Text) || string.IsNullOrEmpty(comboBoxTipoDoc.Text))
+                {
+                    throw new Exception("El campo documento y tipo no pueden estar vacios");
+                }
+
+                else
+                {
+                    Abm_Afiliado.AltaAfiliado form = new Abm_Afiliado.AltaAfiliado(textBoxDocumento.Text, comboBoxTipoDoc.Text, "hijo");
+                }
+            }
+
+            catch (Exception exc)
+            {
+                MessageBox.Show(exc.Message, "Aviso", MessageBoxButtons.OK);
+            }
+        }
+
+        private void numericUpDownCantHijos_KeyDown(object sender, KeyEventArgs e)
+        {
+            //
+        }
+
+        private void numericUpDownCantHijos_KeyUp(object sender, KeyEventArgs e)
+        {
+            //
+        }
+
+        private void comboBoxEstadoCivil_TextChanged(object sender, EventArgs e)
+        {
+            cambioCantidadDeFamiliares();
+        }
+
+        private void numericUpDownCantHijos_ValueChanged(object sender, EventArgs e)
+        {
+            cambioCantidadDeFamiliares();
+        }
+
+        private void cambioCantidadDeFamiliares()
+        {
+            switch (comboBoxEstadoCivil.Text)
+            {
+                case "Casado":
+                    if (numericUpDownCantHijos.Value == 0)
+                    {
+                        buttonAgregarConyuge.Enabled = false;
+                        buttonAgregarHijo.Enabled = false;
+                    }
+
+                    else
+                    if (numericUpDownCantHijos.Value == 1)
+                    {
+                        buttonAgregarConyuge.Enabled = true;
+                        buttonAgregarHijo.Enabled = false;
+                    }
+
+                    else
+                    {
+                        buttonAgregarConyuge.Enabled = true;
+                        buttonAgregarHijo.Enabled = true;
+                    }
+                    break;
+
+                case "Concubinato":
+                    if (numericUpDownCantHijos.Value == 0)
+                    {
+                        buttonAgregarConyuge.Enabled = false;
+                        buttonAgregarHijo.Enabled = false;
+                    }
+
+                    else
+                        if (numericUpDownCantHijos.Value == 1)
+                        {
+                            buttonAgregarConyuge.Enabled = true;
+                            buttonAgregarHijo.Enabled = false;
+                        }
+
+                        else
+                        {
+                            buttonAgregarConyuge.Enabled = true;
+                            buttonAgregarHijo.Enabled = true;
+                        }
+                    break;
+
+                default:
+                    if (numericUpDownCantHijos.Value == 0)
+                    {
+                        buttonAgregarConyuge.Enabled = false;
+                        buttonAgregarHijo.Enabled = false;
+                    }
+
+                    else
+                    {
+                        buttonAgregarConyuge.Enabled = false;
+                        buttonAgregarHijo.Enabled = true;
+                    }
+
+                    break;
 
 
+            }
+        }
+        
 
     }
 }

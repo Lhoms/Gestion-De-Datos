@@ -101,6 +101,9 @@
             this.numericUpDownCantHijos.Name = "numericUpDownCantHijos";
             this.numericUpDownCantHijos.Size = new System.Drawing.Size(120, 20);
             this.numericUpDownCantHijos.TabIndex = 30;
+            this.numericUpDownCantHijos.ValueChanged += new System.EventHandler(this.numericUpDownCantHijos_ValueChanged);
+            this.numericUpDownCantHijos.KeyDown += new System.Windows.Forms.KeyEventHandler(this.numericUpDownCantHijos_KeyDown);
+            this.numericUpDownCantHijos.KeyUp += new System.Windows.Forms.KeyEventHandler(this.numericUpDownCantHijos_KeyUp);
             // 
             // labelCantFamiliares
             // 
@@ -142,6 +145,7 @@
             this.comboBoxEstadoCivil.Name = "comboBoxEstadoCivil";
             this.comboBoxEstadoCivil.Size = new System.Drawing.Size(147, 21);
             this.comboBoxEstadoCivil.TabIndex = 24;
+            this.comboBoxEstadoCivil.TextChanged += new System.EventHandler(this.comboBoxEstadoCivil_TextChanged);
             // 
             // dateTimePickerNacimiento
             // 
@@ -332,6 +336,7 @@
             this.buttonAgregarHijo.TabIndex = 33;
             this.buttonAgregarHijo.Text = "Agregar Hijo";
             this.buttonAgregarHijo.UseVisualStyleBackColor = true;
+            this.buttonAgregarHijo.Click += new System.EventHandler(this.buttonAgregarHijo_Click);
             // 
             // buttonLimpiar
             // 
@@ -357,7 +362,7 @@
             this.Margin = new System.Windows.Forms.Padding(2);
             this.MaximizeBox = false;
             this.Name = "AltaAfiliado";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Alta Afiliado";
             this.groupBoxAltaAfiliado.ResumeLayout(false);
             this.groupBoxAltaAfiliado.PerformLayout();
