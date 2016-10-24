@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ClinicaFrba.extras;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -9,6 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Security.Cryptography;
 
 namespace ClinicaFrba.Login
 {
@@ -18,19 +20,21 @@ namespace ClinicaFrba.Login
         {
             InitializeComponent();
 
-            comboBoxTipo.ValueMember = "doc_descrip";
-            comboBoxTipo.DataSource = getTipoDoc().Tables[0];
+            this.comboBoxTipo.ValueMember = "doc_descrip";
+            this.comboBoxTipo.DataSource = getTipoDoc().Tables[0];
+
+            this.textBoxUser.Text = "admin";
+            this.textBoxPass.Text = "w23e";
 
             //comboBoxTipo.DataSource = DAL.Classes.DBHelper.ExecuteQuery_DS("SELECT * FROM NUL.Tipo_doc").Tables[0];
 
             // DAL.Classes.DBHelper.ExecuteQuery_DS("SELECT * FROM NUL.Tipo_doc")["Doc_descrip"].ToString();
 
-
         }
 
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
-
+            //
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -64,9 +68,7 @@ namespace ClinicaFrba.Login
                     else throw new Exception("No dispone de intentos, contacte un administrador");
                 }
 
-                else throw new Exception("Login fallido, intente nuevamente\nQuedan "
-                                     + intentosDisponibles(textBoxUser.Text, comboBoxTipo.Text, textBoxPass.Text).ToString()
-                                     + " intentos");
+                else throw new Exception("Login fallido, intente nuevamente");
             }
 
             catch (Exception exc)

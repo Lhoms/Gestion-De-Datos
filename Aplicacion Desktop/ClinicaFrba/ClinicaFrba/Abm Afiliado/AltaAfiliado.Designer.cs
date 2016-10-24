@@ -180,6 +180,7 @@
             this.comboBoxTipoDoc.Size = new System.Drawing.Size(90, 21);
             this.comboBoxTipoDoc.TabIndex = 20;
             this.comboBoxTipoDoc.SelectedIndexChanged += new System.EventHandler(this.comboBoxTipoDoc_SelectedIndexChanged);
+            this.comboBoxTipoDoc.TextChanged += new System.EventHandler(this.comboBoxTipoDoc_TextChanged);
             // 
             // labelTipoDoc
             // 
@@ -283,6 +284,7 @@
             this.textBoxDocumento.Name = "textBoxDocumento";
             this.textBoxDocumento.Size = new System.Drawing.Size(147, 20);
             this.textBoxDocumento.TabIndex = 2;
+            this.textBoxDocumento.TextChanged += new System.EventHandler(this.textBoxDocumento_TextChanged);
             // 
             // textBoxApellido
             // 
