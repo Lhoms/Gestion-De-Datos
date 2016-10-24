@@ -51,6 +51,12 @@
     <Compile Include="Abm Afiliado\AltaAfiliado.Designer.cs">
       <DependentUpon>AltaAfiliado.cs</DependentUpon>
     </Compile>
+    <Compile Include="Abm Afiliado\AltaFamiliar.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Abm Afiliado\AltaFamiliar.Designer.cs">
+      <DependentUpon>AltaFamiliar.cs</DependentUpon>
+    </Compile>
     <Compile Include="Abm Afiliado\ModificarAfiliado.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -145,6 +151,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Abm Afiliado\BusquedaAfiliado.resx">
       <DependentUpon>BusquedaAfiliado.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Abm Afiliado\AltaFamiliar.resx">
+      <DependentUpon>AltaFamiliar.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Cancelar Atencion\CancelarAtencion.resx">
       <DependentUpon>CancelarAtencion.cs</DependentUpon>

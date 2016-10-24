@@ -16,39 +16,38 @@ namespace ClinicaFrba.Abm_Afiliado
 {
 
 
-    public partial class AltaAfiliado : Form
+    public partial class AltaFamiliar : Form
     {
 
         Afiliado afiliado;
-        ArrayList familiares;
-        string adm_tipo_doc;
-        string adm_username;
+        ArrayList afiliados;
 
-        public AltaAfiliado()
+        public AltaFamiliar()
         {
             InitializeComponent();
         }
 
-        public AltaAfiliado(String tipo_doc_usuario, String usuario)
-        {        
-            InitializeComponent();
+
            
-            this.afiliado = new Afiliado();
 
-            this.adm_tipo_doc = tipo_doc_usuario;
-            this.adm_username = usuario;
-            this.familiares = new ArrayList();
 
-            llenarComboBoxes();
 
-            buttonAgregarConyuge.Enabled = false;
-            buttonAgregarHijo.Enabled = false;
 
-            
-        }
 
-        private void llenarComboBoxes()
+        public AltaFamiliar(int documento, string plan, string tipo_alta, ArrayList afiliados)
         {
+
+            InitializeComponent();
+
+            this.afiliado = new Afiliado();
+            this.afiliados = afiliados;
+
+            this.buttonAgregarConyuge.Enabled = false;
+            this.buttonAgregarHijo.Enabled = false;
+            this.comboBoxPlanMedico.Enabled = false;
+            this.numericUpDownCantHijos.Enabled = false;
+
+
             this.comboBoxTipoDoc.ValueMember = "doc_descrip";
             this.comboBoxTipoDoc.DataSource = getTipoDoc().Tables[0];
 
@@ -57,44 +56,40 @@ namespace ClinicaFrba.Abm_Afiliado
 
             this.comboBoxPlanMedico.ValueMember = "plan_descrip";
             this.comboBoxPlanMedico.DataSource = getPlanes().Tables[0];
-        }
 
+            this.afiliado.planMedico = plan;
+
+            if (tipo_alta == "conyuge")
+            {
+                afiliado.numeroAfiliado = documento * 100 + 1;
+            }
+            else if (tipo_alta == "hijo")
+            {
+                afiliado.numeroAfiliado = (documento * 100 + 2 + afiliados.Count);
+            }
+
+
+        }
 
         private void buttonAceptar_Click(object sender, EventArgs e)
         {
             try
             {
-                obtenerUsuario();
+                obtenerFamiliar();
 
                 DataSet ds = get_usuario(afiliado.username, afiliado.tipo_doc); //busca al usuario por si existe
 
                 if (ds.Tables[0].Rows.Count > 0)
                 {
+
                     throw new Exception("El usuario ya existe");
                 }
                
                 else
                 {
-                    nuevo_afiliado(this.afiliado);
+                    afiliados.Add(this.afiliado);
 
-                    MessageBox.Show("Se agrego al afiliado: " + this.afiliado.nombre + this.afiliado.nombre + 
-                                    "Numero de afiliado: " + this.afiliado.numeroAfiliado +
-                                     "\n\n" + 
-                                     "Usuario:    " + this.afiliado.documento +
-                                     "Contraseña: " + "w23e" );
-
-                    foreach (Afiliado element in familiares)
-                    {
-                        nuevo_afiliado(element);
-                    }
-
-                    
-
-                    Form1 form = new Form1(this.adm_tipo_doc, this.adm_username);
-
-                    form.Show();
-
-                    this.Hide();
+                    this.Close();
                 }
                 
 
@@ -107,7 +102,7 @@ namespace ClinicaFrba.Abm_Afiliado
 
         }
 
-        private void obtenerUsuario()
+        private void obtenerFamiliar()
         {
             if (string.IsNullOrEmpty(textBoxNombre.Text))
                 throw new Exception("El campo nombre no puede estar vacio");
@@ -123,7 +118,6 @@ namespace ClinicaFrba.Abm_Afiliado
             {
                 this.afiliado.documento = int.Parse(textBoxDocumento.Text);
                 this.afiliado.username = textBoxDocumento.Text;
-                this.afiliado.numeroAfiliado = int.Parse(textBoxDocumento.Text) * 100;
             }
 
             if (string.IsNullOrEmpty(comboBoxTipoDoc.Text))
@@ -150,19 +144,13 @@ namespace ClinicaFrba.Abm_Afiliado
                 throw new Exception("El campo estado civil no puede estar vacio");
             else this.afiliado.estadoCivil = comboBoxEstadoCivil.Text;
 
-            if (string.IsNullOrEmpty(numericUpDownCantHijos.Text))
-                throw new Exception("El campo cantidad de hijos no puede estar vacio");
-            else this.afiliado.cantFamiliares = int.Parse(numericUpDownCantHijos.Text);
-
-            if (string.IsNullOrEmpty(comboBoxPlanMedico.Text))
-                throw new Exception("El campo plan medico no puede estar vacio");
-            else this.afiliado.planMedico = comboBoxPlanMedico.Text;
-
             if (this.dateTimePickerNacimiento.Value > Convert.ToDateTime(ConfigurationManager.AppSettings.Get("FechaSistema")))
                 throw new Exception("La fecha de nacimiento no puede ser mayor a hoy");
             else this.afiliado.nacimiento = this.dateTimePickerNacimiento.Value;
 
             this.afiliado.nroConsulta = 0;
+            this.afiliado.cantFamiliares = 0;
+            
         }
 
         private void nuevo_afiliado(Afiliado afiliado)
@@ -184,23 +172,18 @@ namespace ClinicaFrba.Abm_Afiliado
 
         private void comboBoxTipoDoc_SelectedIndexChanged(object sender, EventArgs e)
         {
-
+            //
         }
 
 
         private void labelTipoDoc_Click(object sender, EventArgs e)
         {
-
+            //
         }
 
 
         private void buttonCancelar_Click(object sender, EventArgs e)
         {
-
-            Form1 form = new Form1(this.adm_tipo_doc, this.adm_username);
-
-            form.Show();
-
             this.Hide();
 
         }
@@ -226,56 +209,6 @@ namespace ClinicaFrba.Abm_Afiliado
         }
 
 
-        private void buttonAgregarConyuge_Click(object sender, EventArgs e)
-        {
-
-            try
-            {
-                agregarFamiliar("conyuge");
-            }
-
-            catch (Exception exc)
-            {
-                MessageBox.Show(exc.Message, "Aviso", MessageBoxButtons.OK);
-            }
-
-        }
-
-
-        private void buttonAgregarHijo_Click(object sender, EventArgs e)
-        {
-
-            try
-            {
-                agregarFamiliar("hijo");
-            }
-
-            catch (Exception exc)
-            {
-                MessageBox.Show(exc.Message, "Aviso", MessageBoxButtons.OK);
-            }
-        }
-
-        private void agregarFamiliar(string tipo_alta)
-        {
-            if (string.IsNullOrEmpty(textBoxDocumento.Text) || string.IsNullOrEmpty(comboBoxPlanMedico.Text))
-            {
-                throw new Exception("El campo documento y plan no pueden estar vacios");
-            }
-
-            else
-            {
-                Abm_Afiliado.AltaFamiliar form;
-
-                form = new Abm_Afiliado.AltaFamiliar(int.Parse(textBoxDocumento.Text), comboBoxPlanMedico.Text, tipo_alta, familiares);
-
-                form.Show();
-                
-
-            }
-        }
-
-
         private void numericUpDownCantHijos_KeyDown(object sender, KeyEventArgs e)
         {
             //
@@ -290,80 +223,16 @@ namespace ClinicaFrba.Abm_Afiliado
 
         private void comboBoxEstadoCivil_TextChanged(object sender, EventArgs e)
         {
-            cambioCantidadDeFamiliares();
+            //
         }
 
 
         private void numericUpDownCantHijos_ValueChanged(object sender, EventArgs e)
         {
-            cambioCantidadDeFamiliares();
+            //
         }
 
 
-        private void cambioCantidadDeFamiliares()
-        {
-            switch (comboBoxEstadoCivil.Text)
-            {
-                case "Casado":
-                    if ((numericUpDownCantHijos.Value - familiares.Count) == 0)
-                    {
-                        buttonAgregarConyuge.Enabled = false;
-                        buttonAgregarHijo.Enabled = false;
-                    }
-
-                    else
-                    if ((numericUpDownCantHijos.Value - familiares.Count) == 1)
-                    {
-                        buttonAgregarConyuge.Enabled = true;
-                        buttonAgregarHijo.Enabled = false;
-                    }
-
-                    else
-                    {
-                        buttonAgregarConyuge.Enabled = true;
-                        buttonAgregarHijo.Enabled = true;
-                    }
-                    break;
-
-                case "Concubinato":
-                    if ((numericUpDownCantHijos.Value - familiares.Count) == 0)
-                    {
-                        buttonAgregarConyuge.Enabled = false;
-                        buttonAgregarHijo.Enabled = false;
-                    }
-
-                    else
-                        if ((numericUpDownCantHijos.Value - familiares.Count) == 1)
-                        {
-                            buttonAgregarConyuge.Enabled = true;
-                            buttonAgregarHijo.Enabled = false;
-                        }
-
-                        else
-                        {
-                            buttonAgregarConyuge.Enabled = true;
-                            buttonAgregarHijo.Enabled = true;
-                        }
-                    break;
-
-                default:
-                    if ((numericUpDownCantHijos.Value - familiares.Count) == 0)
-                    {
-                        buttonAgregarConyuge.Enabled = false;
-                        buttonAgregarHijo.Enabled = false;
-                    }
-
-                    else
-                    {
-                        buttonAgregarConyuge.Enabled = false;
-                        buttonAgregarHijo.Enabled = true;
-                    }
-
-                    break;
-
-
-            }
-        }
 
         private void textBoxDocumento_TextChanged(object sender, EventArgs e)
         {

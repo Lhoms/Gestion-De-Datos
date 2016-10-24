@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.Drawing;
@@ -34,6 +35,8 @@ namespace ClinicaFrba
 
             this.tipo_doc_usuario = tipo_doc_usuario;
             this.username = username;
+
+            this.labelFechaActual.Text = ConfigurationManager.AppSettings.Get("FechaSistema");
 
 
             ID_Usuario.Text = tipo_doc_usuario + " - " + username;
