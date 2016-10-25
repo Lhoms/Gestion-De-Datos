@@ -658,6 +658,7 @@ BEGIN
 	                     JOIN NUL.Rol R ON R.rol_id = UR.rol_id
 	  WHERE U.user_tipodoc = @tipo_doc  
 		AND U.user_username = @username
+		AND R.rol_habilitado = 1
 END
 
 COMMIT TRANSACTION
