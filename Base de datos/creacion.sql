@@ -650,4 +650,14 @@ BEGIN
 END
 GO
 
+CREATE PROCEDURE sp_roles_disponibles(@username varchar(255), @tipo_doc numeric(18,0))
+AS
+BEGIN
+	SELECT R.rol_descrip
+	  FROM NUL.Usuario U JOIN NUL.User_rol UR ON UR.user_id = U.user_id
+	                     JOIN NUL.Rol R ON R.rol_id = UR.rol_id
+	  WHERE U.user_tipodoc = @tipo_doc  
+		AND U.user_username = @username
+END
+
 COMMIT TRANSACTION
