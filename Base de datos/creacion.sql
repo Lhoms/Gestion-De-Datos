@@ -586,6 +586,7 @@ BEGIN
 		  U.user_username = @username
 
 END
+GO
 
 CREATE PROCEDURE NUL.get_estados_civiles
 AS
@@ -594,6 +595,8 @@ BEGIN
 	SELECT estado_descrip FROM NUL.Estado
 
 END
+GO
+
 
 CREATE PROCEDURE NUL.get_planes
 AS
@@ -602,5 +605,49 @@ BEGIN
 	SELECT plan_descrip FROM NUL.Plan_medico
 
 END
+GO
 
+--JMZ - SP.
 
+CREATE PROCEDURE sp_login(@username varchar(255), @tipo_doc numeric(18,0), @pass varchar(255), @result int output, @error varchar(255) output)
+AS
+BEGIN
+	declare @user_id numeric(18,0)
+	declare @user_pass varchar(255)
+	declare @user_log_fallidos tinyint
+	declare @user_habilitado bit
+	
+	declare curs CURSOR for
+	SELECT user_id, user_pass, user_log_fallidos, user_habilitado FROM NUL.Usuario
+	WHERE user_username = @username
+	for update
+
+	open curs
+	fetch first from curs into @user_id, @user_pass, @user_log_fallidos, @user_habilitado
+
+	set @result = 1
+
+	if @@FETCH_STATUS != 0
+		set @error = 'Usuario inexistente'
+	else
+		if @user_habilitado != 1
+			set @error = 'Usuario inhabilitado'
+		else
+				if @user_log_fallidos >= 3
+					set @error = 'Usuario bloqueado'
+				else
+					if HASHBYTES('SHA2_256',@pass) != @user_pass
+						begin
+							update NUL.Usuario set user_log_fallidos = @user_log_fallidos + 1 where current of curs
+							set @error = 'Password incorrecto. Quedan ' + ( 3 -  ( @user_log_fallidos + 1))
+						end
+					else
+						begin
+							update NUL.Usuario set user_log_fallidos = 0 where current of curs
+							set @result = 0
+						end
+
+END
+GO
+
+COMMIT TRANSACTION
