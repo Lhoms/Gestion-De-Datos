@@ -654,4 +654,12 @@ BEGIN
 END
 GO
 
+CREATE PROCEDURE NUL.sp_get_funciones_por_rol(@id numeric(18,0))
+AS 
+BEGIN
+	SELECT F.func_id, F.func_descrip
+		FROM NUL.Rol_funcionalidad RF JOIN Funcionalidad F ON F.func_id = RF.func_id
+		WHERE RF.rol_id = @id
+END
+GO
 COMMIT TRANSACTION
