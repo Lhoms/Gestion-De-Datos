@@ -609,7 +609,7 @@ GO
 
 --JMZ - SP.
 
-CREATE PROCEDURE sp_login(@username varchar(255), @tipo_doc numeric(18,0), @pass varchar(255), @result int output, @error varchar(255) output)
+CREATE PROCEDURE sp_login(@username varchar(255), @tipo_doc numeric(18,0), @pass varchar(255), @result int output, @error varchar(255) output, @id numeric(18,0))
 AS
 BEGIN
 	declare @user_id numeric(18,0)
@@ -645,6 +645,7 @@ BEGIN
 						begin
 							update NUL.Usuario set user_log_fallidos = 0 where current of curs
 							set @result = 0
+							set @id = @user_id
 						end
 
 END
@@ -660,5 +661,12 @@ BEGIN
 		AND U.user_username = @username
 		AND R.rol_habilitado = 1
 END
+GO
 
+CREATE PROCEDURE sp_baja_usuario(@username varchar(255), @tipo_doc numeric(18,0))
+AS 
+BEGIN
+	
+END
+GO
 COMMIT TRANSACTION
