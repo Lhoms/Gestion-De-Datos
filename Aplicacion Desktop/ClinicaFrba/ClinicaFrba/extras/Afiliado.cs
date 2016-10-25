@@ -18,13 +18,13 @@ namespace ClinicaFrba.extras
         public string apellido;
         public string direccion;
         public string mail;
-        public int documento;
-        public int telefono;
+        public long documento;
+        public long telefono;
         public string sexo;
         public DateTime nacimiento;
 
         //Atributos como afiliado
-        public int numeroAfiliado;
+        public long numeroAfiliado;
         public string estadoCivil;
         public string planMedico;
         public int cantFamiliares;

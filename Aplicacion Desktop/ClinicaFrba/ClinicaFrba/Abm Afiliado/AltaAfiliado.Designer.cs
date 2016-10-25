@@ -132,6 +132,7 @@
             // 
             // comboBoxPlanMedico
             // 
+            this.comboBoxPlanMedico.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxPlanMedico.FormattingEnabled = true;
             this.comboBoxPlanMedico.Location = new System.Drawing.Point(124, 204);
             this.comboBoxPlanMedico.Name = "comboBoxPlanMedico";
@@ -140,6 +141,7 @@
             // 
             // comboBoxEstadoCivil
             // 
+            this.comboBoxEstadoCivil.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxEstadoCivil.FormattingEnabled = true;
             this.comboBoxEstadoCivil.Location = new System.Drawing.Point(124, 177);
             this.comboBoxEstadoCivil.Name = "comboBoxEstadoCivil";
@@ -157,7 +159,11 @@
             // 
             // comboBoxSexo
             // 
+            this.comboBoxSexo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxSexo.FormattingEnabled = true;
+            this.comboBoxSexo.Items.AddRange(new object[] {
+            "M",
+            "F"});
             this.comboBoxSexo.Location = new System.Drawing.Point(124, 98);
             this.comboBoxSexo.Name = "comboBoxSexo";
             this.comboBoxSexo.Size = new System.Drawing.Size(90, 21);
@@ -174,6 +180,7 @@
             // 
             // comboBoxTipoDoc
             // 
+            this.comboBoxTipoDoc.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxTipoDoc.FormattingEnabled = true;
             this.comboBoxTipoDoc.Location = new System.Drawing.Point(408, 38);
             this.comboBoxTipoDoc.Name = "comboBoxTipoDoc";
@@ -181,6 +188,7 @@
             this.comboBoxTipoDoc.TabIndex = 20;
             this.comboBoxTipoDoc.SelectedIndexChanged += new System.EventHandler(this.comboBoxTipoDoc_SelectedIndexChanged);
             this.comboBoxTipoDoc.TextChanged += new System.EventHandler(this.comboBoxTipoDoc_TextChanged);
+            this.comboBoxTipoDoc.Validating += new System.ComponentModel.CancelEventHandler(this.comboBoxTipoDoc_Validating);
             // 
             // labelTipoDoc
             // 

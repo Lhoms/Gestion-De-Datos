@@ -9,6 +9,7 @@ using System.Data.SqlClient;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -28,13 +29,8 @@ namespace ClinicaFrba.Abm_Afiliado
         }
 
 
-           
 
-
-
-
-
-        public AltaFamiliar(int documento, string plan, string tipo_alta, ArrayList afiliados)
+        public AltaFamiliar(long documento, string plan, string tipo_alta, ArrayList afiliados)
         {
 
             InitializeComponent();
@@ -61,11 +57,11 @@ namespace ClinicaFrba.Abm_Afiliado
 
             if (tipo_alta == "conyuge")
             {
-                afiliado.numeroAfiliado = documento * 100 + 1;
+                afiliado.numeroAfiliado = documento * 100 + 2;
             }
             else if (tipo_alta == "hijo")
             {
-                afiliado.numeroAfiliado = (documento * 100 + 2 + afiliados.Count);
+                afiliado.numeroAfiliado = (documento * 100 + 3 + afiliados.Count);
             }
 
 
@@ -116,7 +112,7 @@ namespace ClinicaFrba.Abm_Afiliado
                 throw new Exception("El campo documento no puede estar vacio");
             else
             {
-                this.afiliado.documento = int.Parse(textBoxDocumento.Text);
+                this.afiliado.documento = long.Parse(textBoxDocumento.Text);
                 this.afiliado.username = textBoxDocumento.Text;
             }
 
@@ -134,11 +130,23 @@ namespace ClinicaFrba.Abm_Afiliado
 
             if (string.IsNullOrEmpty(textBoxTelefono.Text))
                 throw new Exception("El campo telefono no puede estar vacio");
-            else this.afiliado.telefono = int.Parse(textBoxTelefono.Text);
+            else this.afiliado.telefono = long.Parse(textBoxTelefono.Text);
 
             if (string.IsNullOrEmpty(textBoxMail.Text))
+            {
                 throw new Exception("El campo mail no puede estar vacio");
-            else this.afiliado.mail = textBoxMail.Text;
+            }
+            else if (Regex.IsMatch(textBoxMail.Text,
+                @"^(?("")("".+?(?<!\\)""@)|(([0-9a-z]((\.(?!\.))|[-!#\$%&'\*\+/=\?\^`\{\}\|~\w])*)(?<=[0-9a-z])@))" +
+                @"(?(\[)(\[(\d{1,3}\.){3}\d{1,3}\])|(([0-9a-z][-\w]*[0-9a-z]*\.)+[a-z0-9][\-a-z0-9]{0,22}[a-z0-9]))$",
+                RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(250)))
+            {
+                this.afiliado.mail = textBoxMail.Text;
+            }
+            else
+            {
+                throw new Exception("El formato del mail no es valido");
+            }
 
             if (string.IsNullOrEmpty(comboBoxEstadoCivil.Text))
                 throw new Exception("El campo estado civil no puede estar vacio");

@@ -9,6 +9,7 @@ using System.Data.SqlClient;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -77,15 +78,12 @@ namespace ClinicaFrba.Abm_Afiliado
                 {
                     nuevo_afiliado(this.afiliado);
 
-                    MessageBox.Show("Se agrego al afiliado: " + this.afiliado.nombre + this.afiliado.nombre + 
-                                    "Numero de afiliado: " + this.afiliado.numeroAfiliado +
-                                     "\n\n" + 
-                                     "Usuario:    " + this.afiliado.documento +
-                                     "Contraseña: " + "w23e" );
+                    notificarUsuarioNuevo(this.afiliado);
 
                     foreach (Afiliado element in familiares)
                     {
                         nuevo_afiliado(element);
+                        notificarUsuarioNuevo(element);
                     }
 
                     
@@ -107,6 +105,15 @@ namespace ClinicaFrba.Abm_Afiliado
 
         }
 
+        private void notificarUsuarioNuevo(Afiliado usuario)
+        {
+            MessageBox.Show("Se agrego al afiliado:      " + usuario.nombre + "  " + usuario.apellido +
+                          "\nNumero de afiliado:            " + usuario.numeroAfiliado +
+                             "\n\n" +
+                             "Usuario:                    " + usuario.documento +
+                           "\nContraseña:                 " + "w23e");
+        }
+
         private void obtenerUsuario()
         {
             if (string.IsNullOrEmpty(textBoxNombre.Text))
@@ -121,9 +128,9 @@ namespace ClinicaFrba.Abm_Afiliado
                 throw new Exception("El campo documento no puede estar vacio");
             else
             {
-                this.afiliado.documento = int.Parse(textBoxDocumento.Text);
+                this.afiliado.documento = long.Parse(textBoxDocumento.Text);
                 this.afiliado.username = textBoxDocumento.Text;
-                this.afiliado.numeroAfiliado = int.Parse(textBoxDocumento.Text) * 100;
+                this.afiliado.numeroAfiliado = (long.Parse(textBoxDocumento.Text)) * 100 + 1;
             }
 
             if (string.IsNullOrEmpty(comboBoxTipoDoc.Text))
@@ -140,11 +147,23 @@ namespace ClinicaFrba.Abm_Afiliado
 
             if (string.IsNullOrEmpty(textBoxTelefono.Text))
                 throw new Exception("El campo telefono no puede estar vacio");
-            else this.afiliado.telefono = int.Parse(textBoxTelefono.Text);
+            else this.afiliado.telefono = long.Parse(textBoxTelefono.Text);
 
             if (string.IsNullOrEmpty(textBoxMail.Text))
+            {
                 throw new Exception("El campo mail no puede estar vacio");
-            else this.afiliado.mail = textBoxMail.Text;
+            }
+            else if (Regex.IsMatch(textBoxMail.Text,
+                @"^(?("")("".+?(?<!\\)""@)|(([0-9a-z]((\.(?!\.))|[-!#\$%&'\*\+/=\?\^`\{\}\|~\w])*)(?<=[0-9a-z])@))" +
+                @"(?(\[)(\[(\d{1,3}\.){3}\d{1,3}\])|(([0-9a-z][-\w]*[0-9a-z]*\.)+[a-z0-9][\-a-z0-9]{0,22}[a-z0-9]))$",
+                RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(250)))
+            {
+                this.afiliado.mail = textBoxMail.Text;
+            }
+            else
+            {
+                throw new Exception("El formato del mail no es valido");
+            }
 
             if (string.IsNullOrEmpty(comboBoxEstadoCivil.Text))
                 throw new Exception("El campo estado civil no puede estar vacio");
@@ -208,8 +227,6 @@ namespace ClinicaFrba.Abm_Afiliado
 
         private void buttonLimpiar_Click(object sender, EventArgs e)
         {
-           
-
             textBoxNombre.Text = "";
             textBoxApellido.Text = "";
             textBoxDocumento.Text = "";
@@ -223,6 +240,7 @@ namespace ClinicaFrba.Abm_Afiliado
             numericUpDownCantHijos.Text = "";
             comboBoxPlanMedico.Text = "";
 
+            familiares.Clear();
         }
 
 
@@ -267,7 +285,7 @@ namespace ClinicaFrba.Abm_Afiliado
             {
                 Abm_Afiliado.AltaFamiliar form;
 
-                form = new Abm_Afiliado.AltaFamiliar(int.Parse(textBoxDocumento.Text), comboBoxPlanMedico.Text, tipo_alta, familiares);
+                form = new Abm_Afiliado.AltaFamiliar(long.Parse(textBoxDocumento.Text), comboBoxPlanMedico.Text, tipo_alta, familiares);
 
                 form.Show();
                 
@@ -409,6 +427,11 @@ namespace ClinicaFrba.Abm_Afiliado
 
             return DAL.Classes.DBHelper.ExecuteDataSet("NUL.get_planes", dbParams);
 
+        }
+
+        private void comboBoxTipoDoc_Validating(object sender, CancelEventArgs e)
+        {
+            //  
         }
 
     }
