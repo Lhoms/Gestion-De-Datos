@@ -646,5 +646,12 @@ BEGIN
 END
 GO
 
+CREATE PROCEDURE NUL.sp_baja_usuario(@id numeric(18,0))
+AS 
+BEGIN
+	DELETE FROM NUL.Usuario 
+	WHERE user_id = @id
+END
+GO
 
 COMMIT TRANSACTION
