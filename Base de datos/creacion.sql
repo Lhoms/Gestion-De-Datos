@@ -546,7 +546,7 @@ GO
 
 --stored procedures
 
-CREATE PROCEDURE NUL.get_tipo_doc
+CREATE PROCEDURE NUL.sp_get_tipo_doc
 
 AS
 BEGIN
@@ -555,61 +555,45 @@ BEGIN
 	SET NOCOUNT ON;
 
     -- Insert statements for procedure here
-	SELECT doc_descrip FROM NUL.Tipo_doc
+	SELECT doc_id, doc_descrip FROM NUL.Tipo_doc
 
 END
 GO
 
 
-CREATE PROCEDURE NUL.get_roles_disponibles
-
-AS
-BEGIN
-	-- SET NOCOUNT ON added to prevent extra result sets from
-	-- interfering with SELECT statements.
-	SET NOCOUNT ON;
-
-    -- Insert statements for procedure here
-	SELECT rol_descrip FROM NUL.Rol
-
-END
-GO
-
-
-CREATE PROCEDURE NUL.get_usuario (@username varchar(255), @tipo_doc varchar(255))
+CREATE PROCEDURE NUL.sp_get_usuario (@id numeric(18,0))
 AS
 BEGIN	
 	
 	SELECT * 
-	FROM NUL.Usuario U JOIN NUL.Tipo_doc D ON U.user_tipodoc = D.doc_id
-	WHERE D.doc_descrip = @tipo_doc AND
-		  U.user_username = @username
+	FROM NUL.Usuario U
+	WHERE U.user_id = @id
 
 END
 GO
 
-CREATE PROCEDURE NUL.get_estados_civiles
+CREATE PROCEDURE NUL.sp_get_estados_civiles
 AS
 BEGIN	
 	
-	SELECT estado_descrip FROM NUL.Estado
+	SELECT estado_id, estado_descrip FROM NUL.Estado
 
 END
 GO
 
 
-CREATE PROCEDURE NUL.get_planes
+CREATE PROCEDURE NUL.sp_get_planes
 AS
 BEGIN	
 	
-	SELECT plan_descrip FROM NUL.Plan_medico
+	SELECT plan_id, plan_descrip FROM NUL.Plan_medico
 
 END
 GO
 
 --JMZ - SP.
 
-CREATE PROCEDURE sp_login(@username varchar(255), @tipo_doc numeric(18,0), @pass varchar(255), @result int output, @error varchar(255) output, @id numeric(18,0))
+CREATE PROCEDURE NUL.sp_login(@username varchar(255), @tipo_doc numeric(18,0), @pass varchar(255), @result int output, @error varchar(255) output, @id numeric(18,0))
 AS
 BEGIN
 	declare @user_id numeric(18,0)
@@ -651,22 +635,16 @@ BEGIN
 END
 GO
 
-CREATE PROCEDURE sp_roles_disponibles(@username varchar(255), @tipo_doc numeric(18,0))
+CREATE PROCEDURE NUL.sp_get_roles_disponibles_por_usuario(@id numeric(18,0))
 AS
 BEGIN
-	SELECT R.rol_descrip
+	SELECT R.rol_id, .rol_descrip
 	  FROM NUL.Usuario U JOIN NUL.User_rol UR ON UR.user_id = U.user_id
 	                     JOIN NUL.Rol R ON R.rol_id = UR.rol_id
-	  WHERE U.user_tipodoc = @tipo_doc  
-		AND U.user_username = @username
+	  WHERE U.user_id = @id
 		AND R.rol_habilitado = 1
 END
 GO
 
-CREATE PROCEDURE sp_baja_usuario(@username varchar(255), @tipo_doc numeric(18,0))
-AS 
-BEGIN
-	
-END
-GO
+
 COMMIT TRANSACTION
