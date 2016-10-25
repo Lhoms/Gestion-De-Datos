@@ -587,4 +587,20 @@ BEGIN
 
 END
 
+CREATE PROCEDURE NUL.get_estados_civiles
+AS
+BEGIN	
+	
+	SELECT estado_descrip FROM NUL.Estado
+
+END
+
+CREATE PROCEDURE NUL.get_planes
+AS
+BEGIN	
+	
+	SELECT plan_descrip FROM NUL.Plan_medico
+
+END
+
 
