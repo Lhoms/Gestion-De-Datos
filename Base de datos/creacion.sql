@@ -349,7 +349,7 @@ INSERT INTO NUL.Persona (pers_id ,pers_nombre, pers_apellido, pers_doc, pers_dir
 
 
 INSERT INTO NUL.Funcionalidad (func_descrip) VALUES
-			('ABM Rol')						--1
+			('ABM Rol'),					--1
 			('Abm Afiliado'),				--2
 			('Compra de bonos'),			--3
 			('Pedir turno'),				--4
@@ -546,15 +546,83 @@ GO
 
 --stored procedures
 
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID('NUL.sp_get_tipo_doc'))
+BEGIN
+    DROP PROCEDURE NUL.sp_get_tipo_doc
+END
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID('NUL.sp_get_usuario'))
+BEGIN
+    DROP PROCEDURE NUL.sp_get_usuario
+END
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID('NUL.sp_get_estados_civiles'))
+BEGIN
+    DROP PROCEDURE NUL.sp_get_estados_civiles
+END
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID('NUL.sp_get_planes'))
+BEGIN
+    DROP PROCEDURE NUL.sp_get_planes
+END
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID('NUL.sp_login'))
+BEGIN
+    DROP PROCEDURE NUL.sp_login
+END
+
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID('NUL.sp_get_roles_disponibles_por_usuario'))
+BEGIN
+    DROP PROCEDURE NUL.sp_get_roles_disponibles_por_usuario
+END
+
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID('NUL.sp_del_usuario'))
+BEGIN
+    DROP PROCEDURE NUL.sp_del_usuario
+END
+
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID('NUL.sp_get_funciones_por_rol'))
+BEGIN
+    DROP PROCEDURE NUL.sp_get_funciones_por_rol
+END
+
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID('NUL.sp_del_rol'))
+BEGIN
+    DROP PROCEDURE NUL.sp_del_rol
+END
+
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID('NUL.sp_upd_rol'))
+BEGIN
+    DROP PROCEDURE NUL.sp_upd_rol
+END
+
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID('NUL.sp_set_funcion_rol'))
+BEGIN
+    DROP PROCEDURE NUL.sp_set_funcion_rol
+END
+
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID('NUL.sp_new_rol'))
+BEGIN
+    DROP PROCEDURE NUL.sp_new_rol
+END
+
+
+GO
+
+
 CREATE PROCEDURE NUL.sp_get_tipo_doc
 
 AS
 BEGIN
-	-- SET NOCOUNT ON added to prevent extra result sets from
-	-- interfering with SELECT statements.
-	SET NOCOUNT ON;
 
-    -- Insert statements for procedure here
 	SELECT doc_id, doc_descrip FROM NUL.Tipo_doc
 
 END
