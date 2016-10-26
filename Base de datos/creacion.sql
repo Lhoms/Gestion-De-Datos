@@ -676,13 +676,14 @@ BEGIN
 END
 GO
 
-CREATE PROCEDURE NUL.sp_upd_rol(@id numeric(18,0), @descrip varchar(255), @habilitado bit)
+CREATE PROCEDURE NUL.sp_upd_rol(@id numeric(18,0), @descrip varchar(255), @habilitado bit, @result int output)
 AS 
 BEGIN
 	UPDATE NUL.Rol SET rol_descrip = @descrip,
 					   rol_habilitado = @habilitado
 				 WHERE rol_id = @id
-
+	
+	set @result = @@ERROR
 END
 GO
 
