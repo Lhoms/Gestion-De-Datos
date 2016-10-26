@@ -662,4 +662,18 @@ BEGIN
 		WHERE RF.rol_id = @id
 END
 GO
+
+CREATE PROCEDURE NUL.sp_del_rol(@id numeric(18,0))
+AS 
+BEGIN
+	DELETE FROM NUL.Rol_funcionalidad
+	WHERE rol_id = @id
+	
+
+	DELETE FROM NUL.Rol
+	WHERE rol_id = @id
+
+END
+GO
+
 COMMIT TRANSACTION
