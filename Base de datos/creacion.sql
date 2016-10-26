@@ -638,7 +638,7 @@ GO
 CREATE PROCEDURE NUL.sp_get_roles_disponibles_por_usuario(@id numeric(18,0))
 AS
 BEGIN
-	SELECT R.rol_id, .rol_descrip
+	SELECT R.rol_id, R.rol_descrip
 	  FROM NUL.Usuario U JOIN NUL.User_rol UR ON UR.user_id = U.user_id
 	                     JOIN NUL.Rol R ON R.rol_id = UR.rol_id
 	  WHERE U.user_id = @id
@@ -649,7 +649,7 @@ GO
 CREATE PROCEDURE NUL.sp_del_usuario(@id numeric(18,0), @result int output)
 AS 
 BEGIN
-	DELETE FROM NUL.Usuario 
+	UPDATE NUL.Usuario SET user_habilitado = 0
 	WHERE user_id = @id
 
 	set @result = @@ERROR
@@ -670,11 +670,11 @@ AS
 BEGIN
 	set @result = 0
 
-	SELECT COUNT(*) FROM NUL.Rol_funcionalidad
+	SELECT COUNT(*) FROM NUL.User_rol
 	WHERE rol_id = @id
 	IF @@ERROR = 0
 		begin
-			DELETE FROM NUL.Rol_funcionalidad
+			DELETE FROM NUL.User_rol
 			WHERE rol_id = @id
 
 			set @result = @@ERROR
@@ -682,7 +682,7 @@ BEGIN
     
 	if @result = 0
 		begin
-			DELETE FROM NUL.Rol
+			UPDATE NUL.Rol SET rol_habilitado = 0
 			WHERE rol_id = @id
 
 			set @result = @@ERROR
