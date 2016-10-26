@@ -646,7 +646,7 @@ BEGIN
 END
 GO
 
-CREATE PROCEDURE NUL.sp_baja_usuario(@id numeric(18,0))
+CREATE PROCEDURE NUL.sp_del_usuario(@id numeric(18,0))
 AS 
 BEGIN
 	DELETE FROM NUL.Usuario 
@@ -691,6 +691,17 @@ AS
 BEGIN
 	INSERT INTO NUL.Rol_funcionalidad(rol_id, func_id) 
 	VALUES (@id,@id_func)
+
+END
+GO
+
+CREATE PROCEDURE NUL.sp_new_rol(@descrip varchar(255), @id_new numeric(38,0) output)
+AS 
+BEGIN
+	INSERT INTO NUL.Rol(rol_descrip)
+	VALUES (@descrip)
+	if @@ERROR != 0
+		set @id_new = @@IDENTITY
 
 END
 GO
