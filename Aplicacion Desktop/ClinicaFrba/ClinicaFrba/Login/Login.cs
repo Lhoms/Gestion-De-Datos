@@ -52,25 +52,12 @@ namespace ClinicaFrba.Login
             try
             {
 
-                if (string.IsNullOrEmpty(textBoxUser.Text))
-                    throw new Exception("El campo usuario no puede estar vacio");
-                else this.username = textBoxUser.Text;
-
-                if (string.IsNullOrEmpty(textBoxPass.Text))
-                    throw new Exception("El campo contraseña no puede estar vacio");
-                else this.password = textBoxPass.Text;
-
-                if (string.IsNullOrEmpty(comboBoxTipo.Text))
-                    throw new Exception("El campo tipo de documento no puede estar vacio");
-                else
-                {
-                    this.tipo_doc_id = get_tipo_doc_id(comboBoxTipo.Text);
-                }
+                obtenerDatos();
 
                 if (validarUsuario(textBoxUser.Text, this.tipo_doc_id, textBoxPass.Text))
                 {
 
-                    Form1 form = new Form1(comboBoxTipo.Text, textBoxUser.Text);
+                    Form1 form = new Form1(this.comboBoxTipo.Text, this.textBoxUser.Text, this.user_id);
 
                     form.Show();
 
@@ -80,7 +67,6 @@ namespace ClinicaFrba.Login
                 else
                 {
                     throw new Exception("Login fallido, intente nuevamente");
-
                 }
 
             }
@@ -90,6 +76,24 @@ namespace ClinicaFrba.Login
                 MessageBox.Show(exc.Message, "Aviso", MessageBoxButtons.OK);
             }
 
+        }
+
+        private void obtenerDatos()
+        {
+            if (string.IsNullOrEmpty(textBoxUser.Text))
+                throw new Exception("El campo usuario no puede estar vacio");
+            else this.username = textBoxUser.Text;
+
+            if (string.IsNullOrEmpty(textBoxPass.Text))
+                throw new Exception("El campo contraseña no puede estar vacio");
+            else this.password = textBoxPass.Text;
+
+            if (string.IsNullOrEmpty(comboBoxTipo.Text))
+                throw new Exception("El campo tipo de documento no puede estar vacio");
+            else
+            {
+                this.tipo_doc_id = get_tipo_doc_id(comboBoxTipo.Text);
+            }
         }
 
         private int get_tipo_doc_id(string tipo_doc)

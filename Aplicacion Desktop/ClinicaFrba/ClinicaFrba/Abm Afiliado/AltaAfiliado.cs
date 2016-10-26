@@ -24,13 +24,14 @@ namespace ClinicaFrba.Abm_Afiliado
         ArrayList familiares;
         string adm_tipo_doc;
         string adm_username;
+        int adm_user_id;
 
         public AltaAfiliado()
         {
             InitializeComponent();
         }
 
-        public AltaAfiliado(String tipo_doc_usuario, String usuario)
+        public AltaAfiliado(String tipo_doc_usuario, String usuario, int adm_user_id)
         {        
             InitializeComponent();
            
@@ -38,8 +39,9 @@ namespace ClinicaFrba.Abm_Afiliado
 
             this.adm_tipo_doc = tipo_doc_usuario;
             this.adm_username = usuario;
+            this.adm_user_id = adm_user_id;
             this.familiares = new ArrayList();
-
+            
             llenarComboBoxes();
 
             buttonAgregarConyuge.Enabled = false;
@@ -88,7 +90,7 @@ namespace ClinicaFrba.Abm_Afiliado
 
                     
 
-                    Form1 form = new Form1(this.adm_tipo_doc, this.adm_username);
+                    Form1 form = new Form1(this.adm_tipo_doc, this.adm_username, this.adm_user_id);
 
                     form.Show();
 
@@ -216,7 +218,7 @@ namespace ClinicaFrba.Abm_Afiliado
         private void buttonCancelar_Click(object sender, EventArgs e)
         {
 
-            Form1 form = new Form1(this.adm_tipo_doc, this.adm_username);
+            Form1 form = new Form1(this.adm_tipo_doc, this.adm_username, this.adm_user_id);
 
             form.Show();
 

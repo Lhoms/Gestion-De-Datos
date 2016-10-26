@@ -16,6 +16,8 @@ namespace ClinicaFrba
     {
         string username;
         string tipo_doc_usuario;
+        int user_id;
+        DataSet dsRoles;
 
 
         public Form1()
@@ -25,33 +27,58 @@ namespace ClinicaFrba
 
         }
 
-        public Form1(String tipo_doc_usuario, String username)
+        public Form1(String tipo_doc_usuario, String username, int user_id)
         {
 
             InitializeComponent();
 
-            comboBoxRol.ValueMember = "rol_descrip";
-            comboBoxRol.DataSource = rolesDelUsuario(username, tipo_doc_usuario).Tables[0];
-
             this.tipo_doc_usuario = tipo_doc_usuario;
             this.username = username;
+            this.user_id = user_id;
+
+            comboBoxRol.ValueMember = "rol_descrip";
+            this.dsRoles = rolesDelUsuario();
+            comboBoxRol.DataSource = this.dsRoles.Tables[0];
+
+            this.comboBoxRol.Enabled = false;
 
             this.labelFechaActual.Text = ConfigurationManager.AppSettings.Get("FechaSistema");
-
-
             ID_Usuario.Text = tipo_doc_usuario + " - " + username;
 
-
-
+            ObtenerFuncionalidades();
         }
 
-        private DataSet rolesDelUsuario(string username, string tipo_doc_usuario)
+        private void ObtenerFuncionalidades()
+        {
+            
+
+            SqlParameter[] dbParams = new SqlParameter[]
+                    {
+                         DAL.Classes.DBHelper.MakeParam("@id", SqlDbType.Int, 0, get_rol_id(this.comboBoxRol.Text)),
+                    };
+
+            DAL.Classes.DBHelper.ExecuteDataSet("NUL.sp_get_roles_disponibles_por_usuario", dbParams);
+        }
+
+        private int get_rol_id(string rol)
+        {
+            string expresion = "rol_descrip = '" + rol + "'";
+            int rol_id = 1;
+
+            rol_id = int.Parse(this.dsRoles.Tables[0].Rows[0][0].ToString());
+
+            return rol_id;
+        }
+
+
+        private DataSet rolesDelUsuario()
         {
             SqlParameter[] dbParams = new SqlParameter[]
                     {
+                         DAL.Classes.DBHelper.MakeParam("@id", SqlDbType.Int, 0, this.user_id),
                     };
 
-            return DAL.Classes.DBHelper.ExecuteDataSet("NUL.get_roles_disponibles", dbParams);
+            return DAL.Classes.DBHelper.ExecuteDataSet("NUL.sp_get_roles_disponibles_por_usuario", dbParams);
         }
 
         private void groupBox1_Enter(object sender, EventArgs e)
@@ -109,7 +136,7 @@ namespace ClinicaFrba
 
         private void buttonAltaAfiliado_Click(object sender, EventArgs e)
         {
-            Abm_Afiliado.AltaAfiliado form = new Abm_Afiliado.AltaAfiliado(tipo_doc_usuario, username);
+            Abm_Afiliado.AltaAfiliado form = new Abm_Afiliado.AltaAfiliado(this.tipo_doc_usuario, this.username, this.user_id);
 
             form.Show();
 

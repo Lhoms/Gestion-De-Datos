@@ -288,6 +288,7 @@
             // 
             // comboBoxRol
             // 
+            this.comboBoxRol.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxRol.FormattingEnabled = true;
             this.comboBoxRol.Location = new System.Drawing.Point(110, 11);
             this.comboBoxRol.Name = "comboBoxRol";
