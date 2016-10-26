@@ -686,4 +686,13 @@ BEGIN
 END
 GO
 
+CREATE PROCEDURE NUL.sp_set_funcion_rol(@id numeric(18,0), @id_func varchar(255))
+AS 
+BEGIN
+	INSERT INTO NUL.Rol_funcionalidad(rol_id, func_id) 
+	VALUES (@id,@id_func)
+
+END
+GO
+
 COMMIT TRANSACTION
