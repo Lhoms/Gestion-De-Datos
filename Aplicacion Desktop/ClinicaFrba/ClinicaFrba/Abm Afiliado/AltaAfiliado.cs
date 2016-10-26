@@ -199,7 +199,7 @@ namespace ClinicaFrba.Abm_Afiliado
                      DAL.Classes.DBHelper.MakeParam("@tipo_doc", SqlDbType.VarChar, 0, afiliado.tipo_doc)
                     };
 
-            return DAL.Classes.DBHelper.ExecuteDataSet("NUL.get_usuario", dbParams);
+            return DAL.Classes.DBHelper.ExecuteDataSet("NUL.sp_get_usuario", dbParams);
         }
 
 

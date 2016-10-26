@@ -614,8 +614,9 @@ BEGIN
     DROP PROCEDURE NUL.sp_new_rol
 END
 
-
 GO
+
+
 
 
 CREATE PROCEDURE NUL.sp_get_tipo_doc
