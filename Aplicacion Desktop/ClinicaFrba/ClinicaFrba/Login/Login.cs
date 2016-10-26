@@ -19,6 +19,7 @@ namespace ClinicaFrba.Login
         string username;
         string password;
         int    tipo_doc_id;
+        int user_id;
 
         DataSet ds;
 
@@ -66,7 +67,7 @@ namespace ClinicaFrba.Login
                     this.tipo_doc_id = get_tipo_doc_id(comboBoxTipo.Text);
                 }
 
-                if (validarUsuario(textBoxUser.Text, comboBoxTipo.Text, textBoxPass.Text))
+                if (validarUsuario(textBoxUser.Text, this.tipo_doc_id, textBoxPass.Text))
                 {
 
                     Form1 form = new Form1(comboBoxTipo.Text, textBoxUser.Text);
@@ -98,18 +99,40 @@ namespace ClinicaFrba.Login
 
             tipo = int.Parse(ds.Tables[0].Rows[0][0].ToString());
 
-            this.buttonLogin.Text = tipo.ToString();
-
             return tipo;
         }
 
         
-        private bool validarUsuario (string user, string tipoDoc, string password)
+        private bool validarUsuario (string user, int tipoDoc, string password)
         {
 
-            //llamar a store y pedir esos datos y preguntar has rows
+                SqlParameter result_p  = DAL.Classes.DBHelper.MakeParamOutput("@result"  , SqlDbType.Int    , 100);
+                SqlParameter error_p   = DAL.Classes.DBHelper.MakeParamOutput("@error"   , SqlDbType.VarChar, 100);
+                SqlParameter user_id_p = DAL.Classes.DBHelper.MakeParamOutput("@id"      , SqlDbType.Int    , 100);
 
-            return true;
+            SqlParameter[] dbParams = new SqlParameter[]
+            {
+                DAL.Classes.DBHelper.MakeParam("@username", SqlDbType.VarChar, 0, user),
+                DAL.Classes.DBHelper.MakeParam("@tipo_doc", SqlDbType.Int    , 0, tipoDoc), 
+                DAL.Classes.DBHelper.MakeParam("@pass"    , SqlDbType.VarChar, 0, password),
+                result_p, error_p, user_id_p,
+
+            };
+
+
+            DAL.Classes.DBHelper.ExecuteDataSet("NUL.sp_login", dbParams);
+
+            if ((int)result_p.Value == 0)
+            {
+                this.user_id = (int)user_id_p.Value;
+                return true;
+            }
+
+            else
+            {
+                throw new Exception(error_p.Value.ToString());
+            }
+
         }
 
         public static DataSet getTipoDoc()

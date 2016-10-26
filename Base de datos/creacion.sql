@@ -607,7 +607,7 @@ BEGIN
 	for update
 
 	open curs
-	fetch first from curs into @user_id, @user_pass, @user_log_fallidos, @user_habilitado
+	fetch next from curs into @user_id, @user_pass, @user_log_fallidos, @user_habilitado
 
 	set @result = 1
 
@@ -623,7 +623,7 @@ BEGIN
 					if HASHBYTES('SHA2_256',@pass) != @user_pass
 						begin
 							update NUL.Usuario set user_log_fallidos = @user_log_fallidos + 1 where current of curs
-							set @error = 'Password incorrecto. Quedan ' + ( 3 -  ( @user_log_fallidos + 1))
+							set @error = 'Password incorrecto. Quedan ' + CONVERT(varchar(5), ( 3 -  ( @user_log_fallidos + 1)))
 						end
 					else
 						begin
