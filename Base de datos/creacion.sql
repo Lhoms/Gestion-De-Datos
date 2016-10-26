@@ -349,15 +349,15 @@ INSERT INTO NUL.Persona (pers_id ,pers_nombre, pers_apellido, pers_doc, pers_dir
 
 
 INSERT INTO NUL.Funcionalidad (func_descrip) VALUES
-			('ABM Rol'),
-			('Abm Afiliado'),
-			('Compra de bonos'),
-			('Pedir turno'),
-			('Registro de llegada para atención médica '),
-			('Registrar resultado para atención médica'),
-			('Cancelar atención médica'),
-			('Listado estadístico'),
-			('Crear agenda');
+			('ABM Rol')						--1
+			('Abm Afiliado'),				--2
+			('Compra de bonos'),			--3
+			('Pedir turno'),				--4
+			('Registro de llegada para atención médica '), --5
+			('Registrar resultado para atención médica'),  --6
+			('Cancelar atención médica'),	--7
+			('Listado estadístico'),		--8
+			('Crear agenda');				--9
 
 INSERT INTO NUL.Rol (rol_descrip) VALUES
 			('Administrativo'),

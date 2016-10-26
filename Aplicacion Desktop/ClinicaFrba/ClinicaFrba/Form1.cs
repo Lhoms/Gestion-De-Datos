@@ -40,24 +40,100 @@ namespace ClinicaFrba
             this.dsRoles = rolesDelUsuario();
             comboBoxRol.DataSource = this.dsRoles.Tables[0];
 
-            this.comboBoxRol.Enabled = false;
-
             this.labelFechaActual.Text = ConfigurationManager.AppSettings.Get("FechaSistema");
             ID_Usuario.Text = tipo_doc_usuario + " - " + username;
 
-            ObtenerFuncionalidades();
+            ObtenerFuncionalidadesPorRolPorUsuario();
         }
 
-        private void ObtenerFuncionalidades()
+        private void ObtenerFuncionalidadesPorRolPorUsuario()
         {
-            
+            DataSet ds;
+            DataRow[] dr;
+            string expresion;
 
             SqlParameter[] dbParams = new SqlParameter[]
                     {
                          DAL.Classes.DBHelper.MakeParam("@id", SqlDbType.Int, 0, get_rol_id(this.comboBoxRol.Text)),
                     };
 
-            DAL.Classes.DBHelper.ExecuteDataSet("NUL.sp_get_roles_disponibles_por_usuario", dbParams);
+            ds = DAL.Classes.DBHelper.ExecuteDataSet("NUL.sp_get_funciones_por_rol", dbParams);
+
+            //ABM Rol
+            //
+            expresion = "func_descrip = 'ABM Rol'";
+            dr = ds.Tables[0].Select(expresion);
+
+            this.buttonAltaRol.Enabled = dr.Count() > 0;
+            this.buttonBajaRol.Enabled = dr.Count() > 0;
+            this.buttonModificarRol.Enabled = dr.Count() > 0;
+
+            //ABM Afiliado
+            //
+            expresion = "func_descrip = 'Abm Afiliado'";
+            dr = ds.Tables[0].Select(expresion);
+
+            this.buttonAltaAfiliado.Enabled = dr.Count() > 0;
+            this.buttonBajaAfiliado.Enabled = dr.Count() > 0;
+            this.buttonModificarAfiliado.Enabled = dr.Count() > 0;
+
+
+            //Compra de Bonos
+            //
+            expresion = "func_descrip = 'Compra de bonos'";
+            dr = ds.Tables[0].Select(expresion);
+
+            this.buttonCompraBono.Enabled = dr.Count() > 0;
+
+
+            //Pedir Turno
+            //
+            expresion = "func_descrip = 'Pedir turno'";
+            dr = ds.Tables[0].Select(expresion);
+
+            this.buttonPedirTurno.Enabled = dr.Count() > 0;
+
+
+            //Registrar llegada atencion medica
+            //
+            expresion = "func_descrip = 'Registro de llegada para atención médica'";
+            dr = ds.Tables[0].Select(expresion);
+
+            this.buttonRegistrarLlegada.Enabled = dr.Count() > 0;
+
+
+            //Registrar resultado atencion medica
+            //
+            expresion = "func_descrip = 'Registrar resultado para atención médica'";
+            dr = ds.Tables[0].Select(expresion);
+
+            this.buttonRegistrarResultado.Enabled = dr.Count() > 0;
+
+
+            //Cancelar atencion medica
+            //
+            expresion = "func_descrip = 'Cancelar atención médica'";
+            dr = ds.Tables[0].Select(expresion);
+
+            this.buttonCancelarTurno.Enabled = dr.Count() > 0;
+
+
+            //Listado estadistico
+            //
+            expresion = "func_descrip = 'Listado estadístico'";
+            dr = ds.Tables[0].Select(expresion);
+
+            this.buttonListadoEstadistico.Enabled = dr.Count() > 0;
+
+
+            //Listado estadistico
+            //
+            expresion = "func_descrip = 'Crear agenda'";
+            dr = ds.Tables[0].Select(expresion);
+
+            this.buttonCrearAgenda.Enabled = dr.Count() > 0;
+
+
         }
 
         private int get_rol_id(string rol)
@@ -98,12 +174,7 @@ namespace ClinicaFrba
 
         private void comboBoxRol_SelectedIndexChanged(object sender, EventArgs e)
         {
-            //aca calcularia que puede hacer en cada rol
-            
-            //buttonAltaAfiliado.Visible = "Aca va a validar el boton en funcion del rol";
-
-
-
+            ObtenerFuncionalidadesPorRolPorUsuario();
         }
 
 
