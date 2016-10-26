@@ -20,13 +20,6 @@ namespace ClinicaFrba
         DataSet dsRoles;
 
 
-        public Form1()
-        {
-
-            InitializeComponent();
-
-        }
-
         public Form1(String tipo_doc_usuario, String username, int user_id)
         {
 
@@ -167,7 +160,7 @@ namespace ClinicaFrba
             Login.Login login = new Login.Login();
             login.Show();
 
-            this.Hide();
+            this.Close();
 
 
         }

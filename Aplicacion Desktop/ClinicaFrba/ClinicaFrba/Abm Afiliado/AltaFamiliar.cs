@@ -23,6 +23,8 @@ namespace ClinicaFrba.Abm_Afiliado
         Afiliado afiliado;
         ArrayList afiliados;
 
+        DataSet dsDoc, dsEstado;
+
         public AltaFamiliar()
         {
             InitializeComponent();
@@ -38,20 +40,14 @@ namespace ClinicaFrba.Abm_Afiliado
             this.afiliado = new Afiliado();
             this.afiliados = afiliados;
 
-            this.buttonAgregarConyuge.Enabled = false;
-            this.buttonAgregarHijo.Enabled = false;
-            this.comboBoxPlanMedico.Enabled = false;
-            this.numericUpDownCantHijos.Enabled = false;
-
-
             this.comboBoxTipoDoc.ValueMember = "doc_descrip";
-            this.comboBoxTipoDoc.DataSource = getTipoDoc().Tables[0];
+            this.dsDoc = getTipoDoc();
+            this.comboBoxTipoDoc.DataSource = this.dsDoc.Tables[0];
 
             this.comboBoxEstadoCivil.ValueMember = "estado_descrip";
-            this.comboBoxEstadoCivil.DataSource = getEstado().Tables[0];
+            this.dsEstado = getEstado();
+            this.comboBoxEstadoCivil.DataSource = this.dsEstado.Tables[0];
 
-            this.comboBoxPlanMedico.ValueMember = "plan_descrip";
-            this.comboBoxPlanMedico.DataSource = getPlanes().Tables[0];
 
             this.afiliado.planMedico = plan;
 
@@ -73,9 +69,8 @@ namespace ClinicaFrba.Abm_Afiliado
             {
                 obtenerFamiliar();
 
-                DataSet ds = get_usuario(afiliado.username, afiliado.tipo_doc); //busca al usuario por si existe
 
-                if (ds.Tables[0].Rows.Count > 0)
+                if (get_usuario(afiliado.username, afiliado.tipo_doc).Tables[0].Rows.Count > 0)
                 {
 
                     throw new Exception("El usuario ya existe");
@@ -168,13 +163,11 @@ namespace ClinicaFrba.Abm_Afiliado
 
         private DataSet get_usuario(string username, string tipo_doc)
         {
-            SqlParameter[] dbParams = new SqlParameter[]
-                    {
-                     DAL.Classes.DBHelper.MakeParam("@username", SqlDbType.VarChar, 0, afiliado.username),
-                     DAL.Classes.DBHelper.MakeParam("@tipo_doc", SqlDbType.VarChar, 0, afiliado.tipo_doc)
-                    };
+            string expresion = "SELECT * FROM NUL.Usuario U WHERE U.user_username = '" + username +"' AND U.user_tipodoc = " + get_tipo_doc_id(tipo_doc).ToString();
 
-            return DAL.Classes.DBHelper.ExecuteDataSet("NUL.get_usuario", dbParams);
+            MessageBox.Show(expresion);
+
+            return DAL.Classes.DBHelper.ExecuteQuery_DS(expresion);      
         }
 
 
@@ -211,8 +204,6 @@ namespace ClinicaFrba.Abm_Afiliado
             textBoxTelefono.Text = "";
             textBoxMail.Text = "";
             comboBoxEstadoCivil.Text = "";
-            numericUpDownCantHijos.Text = "";
-            comboBoxPlanMedico.Text = "";
 
         }
 
@@ -260,8 +251,18 @@ namespace ClinicaFrba.Abm_Afiliado
                     };
 
 
-            return DAL.Classes.DBHelper.ExecuteDataSet("NUL.get_tipo_doc", dbParams);
+            return DAL.Classes.DBHelper.ExecuteDataSet("NUL.sp_get_tipo_doc", dbParams);
 
+        }
+
+        private int get_tipo_doc_id(string tipo_doc)
+        {
+            string expresion = "doc_descrip = '" + tipo_doc + "'";
+            int tipo = 1;
+
+            tipo = int.Parse(this.dsDoc.Tables[0].Rows[0][0].ToString());
+
+            return tipo;
         }
 
         public DataSet getEstado()
@@ -272,20 +273,18 @@ namespace ClinicaFrba.Abm_Afiliado
                     };
 
 
-            return DAL.Classes.DBHelper.ExecuteDataSet("NUL.get_estados_civiles", dbParams);
+            return DAL.Classes.DBHelper.ExecuteDataSet("NUL.sp_get_estados_civiles", dbParams);
 
         }
 
-        public DataSet getPlanes()
+        private int get_estado_id(string estado)
         {
-            SqlParameter[] dbParams = new SqlParameter[]
-                    {
-                       
-                    };
+            string expresion = "estado_descrip = '" + estado + "'";
+            int tipo = 1;
 
+            tipo = int.Parse(this.dsEstado.Tables[0].Rows[0][0].ToString());
 
-            return DAL.Classes.DBHelper.ExecuteDataSet("NUL.get_planes", dbParams);
-
+            return tipo;
         }
 
     }

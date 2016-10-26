@@ -22,9 +22,12 @@ namespace ClinicaFrba.Abm_Afiliado
 
         Afiliado afiliado;
         ArrayList familiares;
+        
         string adm_tipo_doc;
         string adm_username;
         int adm_user_id;
+
+        DataSet dsDoc, dsEstado, dsPlanes;
 
         public AltaAfiliado()
         {
@@ -53,13 +56,16 @@ namespace ClinicaFrba.Abm_Afiliado
         private void llenarComboBoxes()
         {
             this.comboBoxTipoDoc.ValueMember = "doc_descrip";
-            this.comboBoxTipoDoc.DataSource = getTipoDoc().Tables[0];
+            this.dsDoc = getTipoDoc();
+            this.comboBoxTipoDoc.DataSource = this.dsDoc.Tables[0];
 
             this.comboBoxEstadoCivil.ValueMember = "estado_descrip";
-            this.comboBoxEstadoCivil.DataSource = getEstado().Tables[0];
+            this.dsEstado = getEstado();
+            this.comboBoxEstadoCivil.DataSource = this.dsEstado.Tables[0];
 
             this.comboBoxPlanMedico.ValueMember = "plan_descrip";
-            this.comboBoxPlanMedico.DataSource = getPlanes().Tables[0];
+            this.dsPlanes = getPlanes();
+            this.comboBoxPlanMedico.DataSource = this.dsPlanes.Tables[0];
         }
 
 
@@ -193,13 +199,11 @@ namespace ClinicaFrba.Abm_Afiliado
 
         private DataSet get_usuario(string username, string tipo_doc)
         {
-            SqlParameter[] dbParams = new SqlParameter[]
-                    {
-                     DAL.Classes.DBHelper.MakeParam("@username", SqlDbType.VarChar, 0, afiliado.username),
-                     DAL.Classes.DBHelper.MakeParam("@tipo_doc", SqlDbType.VarChar, 0, afiliado.tipo_doc)
-                    };
+            string expresion = "SELECT * FROM NUL.Usuario U WHERE U.user_username = '" + username + "' AND U.user_tipodoc = " + get_tipo_doc_id(tipo_doc).ToString();
 
-            return DAL.Classes.DBHelper.ExecuteDataSet("NUL.sp_get_usuario", dbParams);
+            MessageBox.Show(expresion);
+
+            return DAL.Classes.DBHelper.ExecuteQuery_DS(expresion);
         }
 
 
@@ -403,8 +407,18 @@ namespace ClinicaFrba.Abm_Afiliado
                     };
 
 
-            return DAL.Classes.DBHelper.ExecuteDataSet("NUL.get_tipo_doc", dbParams);
+            return DAL.Classes.DBHelper.ExecuteDataSet("NUL.sp_get_tipo_doc", dbParams);
 
+        }
+
+        private int get_tipo_doc_id(string tipo_doc)
+        {
+            string expresion = "doc_descrip = '" + tipo_doc + "'";
+            int tipo = 1;
+
+            tipo = int.Parse(this.dsDoc.Tables[0].Rows[0][0].ToString());
+
+            return tipo;
         }
 
         public DataSet getEstado()
@@ -415,8 +429,18 @@ namespace ClinicaFrba.Abm_Afiliado
                     };
 
 
-            return DAL.Classes.DBHelper.ExecuteDataSet("NUL.get_estados_civiles", dbParams);
+            return DAL.Classes.DBHelper.ExecuteDataSet("NUL.sp_get_estados_civiles", dbParams);
 
+        }
+
+        private int get_estado_id(string estado)
+        {
+            string expresion = "estado_descrip = '" + estado + "'";
+            int tipo = 1;
+
+            tipo = int.Parse(this.dsEstado.Tables[0].Rows[0][0].ToString());
+
+            return tipo;
         }
 
         public DataSet getPlanes()
@@ -427,8 +451,18 @@ namespace ClinicaFrba.Abm_Afiliado
                     };
 
 
-            return DAL.Classes.DBHelper.ExecuteDataSet("NUL.get_planes", dbParams);
+            return DAL.Classes.DBHelper.ExecuteDataSet("NUL.sp_get_planes", dbParams);
 
+        }
+
+        private int get_plan_id(string plan)
+        {
+            string expresion = "plan_descrip = '" + plan + "'";
+            int tipo = 1;
+
+            tipo = int.Parse(this.dsPlanes.Tables[0].Rows[0][0].ToString());
+
+            return tipo;
         }
 
         private void comboBoxTipoDoc_Validating(object sender, CancelEventArgs e)

@@ -29,18 +29,14 @@
         private void InitializeComponent()
         {
             this.groupBoxAltaAfiliado = new System.Windows.Forms.GroupBox();
-            this.numericUpDownCantHijos = new System.Windows.Forms.NumericUpDown();
-            this.labelCantFamiliares = new System.Windows.Forms.Label();
             this.labelTelefono = new System.Windows.Forms.Label();
             this.textBoxTelefono = new System.Windows.Forms.TextBox();
-            this.comboBoxPlanMedico = new System.Windows.Forms.ComboBox();
             this.comboBoxEstadoCivil = new System.Windows.Forms.ComboBox();
             this.dateTimePickerNacimiento = new System.Windows.Forms.DateTimePicker();
             this.comboBoxSexo = new System.Windows.Forms.ComboBox();
             this.labelSexo = new System.Windows.Forms.Label();
             this.comboBoxTipoDoc = new System.Windows.Forms.ComboBox();
             this.labelTipoDoc = new System.Windows.Forms.Label();
-            this.labelPlanMedico = new System.Windows.Forms.Label();
             this.labelEstadoCivil = new System.Windows.Forms.Label();
             this.labelMail = new System.Windows.Forms.Label();
             this.labelDireccion = new System.Windows.Forms.Label();
@@ -55,27 +51,20 @@
             this.textBoxNombre = new System.Windows.Forms.TextBox();
             this.buttonAceptar = new System.Windows.Forms.Button();
             this.buttonCancelar = new System.Windows.Forms.Button();
-            this.buttonAgregarConyuge = new System.Windows.Forms.Button();
-            this.buttonAgregarHijo = new System.Windows.Forms.Button();
             this.buttonLimpiar = new System.Windows.Forms.Button();
             this.groupBoxAltaAfiliado.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownCantHijos)).BeginInit();
             this.SuspendLayout();
             // 
             // groupBoxAltaAfiliado
             // 
-            this.groupBoxAltaAfiliado.Controls.Add(this.numericUpDownCantHijos);
-            this.groupBoxAltaAfiliado.Controls.Add(this.labelCantFamiliares);
             this.groupBoxAltaAfiliado.Controls.Add(this.labelTelefono);
             this.groupBoxAltaAfiliado.Controls.Add(this.textBoxTelefono);
-            this.groupBoxAltaAfiliado.Controls.Add(this.comboBoxPlanMedico);
             this.groupBoxAltaAfiliado.Controls.Add(this.comboBoxEstadoCivil);
             this.groupBoxAltaAfiliado.Controls.Add(this.dateTimePickerNacimiento);
             this.groupBoxAltaAfiliado.Controls.Add(this.comboBoxSexo);
             this.groupBoxAltaAfiliado.Controls.Add(this.labelSexo);
             this.groupBoxAltaAfiliado.Controls.Add(this.comboBoxTipoDoc);
             this.groupBoxAltaAfiliado.Controls.Add(this.labelTipoDoc);
-            this.groupBoxAltaAfiliado.Controls.Add(this.labelPlanMedico);
             this.groupBoxAltaAfiliado.Controls.Add(this.labelEstadoCivil);
             this.groupBoxAltaAfiliado.Controls.Add(this.labelMail);
             this.groupBoxAltaAfiliado.Controls.Add(this.labelDireccion);
@@ -93,26 +82,7 @@
             this.groupBoxAltaAfiliado.Size = new System.Drawing.Size(580, 247);
             this.groupBoxAltaAfiliado.TabIndex = 0;
             this.groupBoxAltaAfiliado.TabStop = false;
-            this.groupBoxAltaAfiliado.Text = "Alta Afiliado";
-            // 
-            // numericUpDownCantHijos
-            // 
-            this.numericUpDownCantHijos.Location = new System.Drawing.Point(435, 178);
-            this.numericUpDownCantHijos.Name = "numericUpDownCantHijos";
-            this.numericUpDownCantHijos.Size = new System.Drawing.Size(120, 20);
-            this.numericUpDownCantHijos.TabIndex = 30;
-            this.numericUpDownCantHijos.ValueChanged += new System.EventHandler(this.numericUpDownCantHijos_ValueChanged);
-            this.numericUpDownCantHijos.KeyDown += new System.Windows.Forms.KeyEventHandler(this.numericUpDownCantHijos_KeyDown);
-            this.numericUpDownCantHijos.KeyUp += new System.Windows.Forms.KeyEventHandler(this.numericUpDownCantHijos_KeyUp);
-            // 
-            // labelCantFamiliares
-            // 
-            this.labelCantFamiliares.AutoSize = true;
-            this.labelCantFamiliares.Location = new System.Drawing.Point(337, 180);
-            this.labelCantFamiliares.Name = "labelCantFamiliares";
-            this.labelCantFamiliares.Size = new System.Drawing.Size(78, 13);
-            this.labelCantFamiliares.TabIndex = 28;
-            this.labelCantFamiliares.Text = "Cant familiares:";
+            this.groupBoxAltaAfiliado.Text = "Alta Familiar";
             // 
             // labelTelefono
             // 
@@ -129,15 +99,6 @@
             this.textBoxTelefono.Name = "textBoxTelefono";
             this.textBoxTelefono.Size = new System.Drawing.Size(147, 20);
             this.textBoxTelefono.TabIndex = 26;
-            // 
-            // comboBoxPlanMedico
-            // 
-            this.comboBoxPlanMedico.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBoxPlanMedico.FormattingEnabled = true;
-            this.comboBoxPlanMedico.Location = new System.Drawing.Point(124, 204);
-            this.comboBoxPlanMedico.Name = "comboBoxPlanMedico";
-            this.comboBoxPlanMedico.Size = new System.Drawing.Size(147, 21);
-            this.comboBoxPlanMedico.TabIndex = 25;
             // 
             // comboBoxEstadoCivil
             // 
@@ -161,6 +122,9 @@
             // 
             this.comboBoxSexo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxSexo.FormattingEnabled = true;
+            this.comboBoxSexo.Items.AddRange(new object[] {
+            "M",
+            "F"});
             this.comboBoxSexo.Location = new System.Drawing.Point(124, 98);
             this.comboBoxSexo.Name = "comboBoxSexo";
             this.comboBoxSexo.Size = new System.Drawing.Size(90, 21);
@@ -195,15 +159,6 @@
             this.labelTipoDoc.TabIndex = 19;
             this.labelTipoDoc.Text = "Tipo:";
             this.labelTipoDoc.Click += new System.EventHandler(this.labelTipoDoc_Click);
-            // 
-            // labelPlanMedico
-            // 
-            this.labelPlanMedico.AutoSize = true;
-            this.labelPlanMedico.Location = new System.Drawing.Point(8, 206);
-            this.labelPlanMedico.Name = "labelPlanMedico";
-            this.labelPlanMedico.Size = new System.Drawing.Size(68, 13);
-            this.labelPlanMedico.TabIndex = 16;
-            this.labelPlanMedico.Text = "Plan medico:";
             // 
             // labelEstadoCivil
             // 
@@ -306,7 +261,7 @@
             // 
             // buttonAceptar
             // 
-            this.buttonAceptar.Location = new System.Drawing.Point(431, 329);
+            this.buttonAceptar.Location = new System.Drawing.Point(431, 266);
             this.buttonAceptar.Name = "buttonAceptar";
             this.buttonAceptar.Size = new System.Drawing.Size(75, 23);
             this.buttonAceptar.TabIndex = 30;
@@ -316,7 +271,7 @@
             // 
             // buttonCancelar
             // 
-            this.buttonCancelar.Location = new System.Drawing.Point(522, 329);
+            this.buttonCancelar.Location = new System.Drawing.Point(522, 266);
             this.buttonCancelar.Name = "buttonCancelar";
             this.buttonCancelar.Size = new System.Drawing.Size(75, 23);
             this.buttonCancelar.TabIndex = 31;
@@ -324,29 +279,9 @@
             this.buttonCancelar.UseVisualStyleBackColor = true;
             this.buttonCancelar.Click += new System.EventHandler(this.buttonCancelar_Click);
             // 
-            // buttonAgregarConyuge
-            // 
-            this.buttonAgregarConyuge.Location = new System.Drawing.Point(22, 284);
-            this.buttonAgregarConyuge.Name = "buttonAgregarConyuge";
-            this.buttonAgregarConyuge.Size = new System.Drawing.Size(108, 23);
-            this.buttonAgregarConyuge.TabIndex = 32;
-            this.buttonAgregarConyuge.Text = "Agregar Conyuge";
-            this.buttonAgregarConyuge.UseVisualStyleBackColor = true;
-            this.buttonAgregarConyuge.Click += new System.EventHandler(this.buttonAgregarConyuge_Click);
-            // 
-            // buttonAgregarHijo
-            // 
-            this.buttonAgregarHijo.Location = new System.Drawing.Point(22, 313);
-            this.buttonAgregarHijo.Name = "buttonAgregarHijo";
-            this.buttonAgregarHijo.Size = new System.Drawing.Size(108, 23);
-            this.buttonAgregarHijo.TabIndex = 33;
-            this.buttonAgregarHijo.Text = "Agregar Hijo";
-            this.buttonAgregarHijo.UseVisualStyleBackColor = true;
-            this.buttonAgregarHijo.Click += new System.EventHandler(this.buttonAgregarHijo_Click);
-            // 
             // buttonLimpiar
             // 
-            this.buttonLimpiar.Location = new System.Drawing.Point(318, 329);
+            this.buttonLimpiar.Location = new System.Drawing.Point(318, 266);
             this.buttonLimpiar.Name = "buttonLimpiar";
             this.buttonLimpiar.Size = new System.Drawing.Size(75, 23);
             this.buttonLimpiar.TabIndex = 34;
@@ -358,10 +293,8 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(609, 364);
+            this.ClientSize = new System.Drawing.Size(609, 299);
             this.Controls.Add(this.buttonLimpiar);
-            this.Controls.Add(this.buttonAgregarHijo);
-            this.Controls.Add(this.buttonAgregarConyuge);
             this.Controls.Add(this.groupBoxAltaAfiliado);
             this.Controls.Add(this.buttonCancelar);
             this.Controls.Add(this.buttonAceptar);
@@ -369,10 +302,9 @@
             this.MaximizeBox = false;
             this.Name = "AltaFamiliar";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Alta Afiliado";
+            this.Text = "Alta Familiar";
             this.groupBoxAltaAfiliado.ResumeLayout(false);
             this.groupBoxAltaAfiliado.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownCantHijos)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -392,7 +324,6 @@
         private System.Windows.Forms.GroupBox groupBoxAltaAfiliado;
         private System.Windows.Forms.ComboBox comboBoxTipoDoc;
         private System.Windows.Forms.Label labelTipoDoc;
-        private System.Windows.Forms.Label labelPlanMedico;
         private System.Windows.Forms.Label labelEstadoCivil;
         private System.Windows.Forms.Label labelMail;
         private System.Windows.Forms.Label labelDireccion;
@@ -409,15 +340,10 @@
         private System.Windows.Forms.Label labelSexo;
         private System.Windows.Forms.DateTimePicker dateTimePickerNacimiento;
         private System.Windows.Forms.ComboBox comboBoxEstadoCivil;
-        private System.Windows.Forms.ComboBox comboBoxPlanMedico;
         private System.Windows.Forms.Label labelTelefono;
         private System.Windows.Forms.TextBox textBoxTelefono;
-        private System.Windows.Forms.Label labelCantFamiliares;
         private System.Windows.Forms.Button buttonAceptar;
         private System.Windows.Forms.Button buttonCancelar;
-        private System.Windows.Forms.Button buttonAgregarConyuge;
-        private System.Windows.Forms.Button buttonAgregarHijo;
         private System.Windows.Forms.Button buttonLimpiar;
-        private System.Windows.Forms.NumericUpDown numericUpDownCantHijos;
     }
 }

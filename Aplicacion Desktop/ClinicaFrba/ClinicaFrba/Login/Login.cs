@@ -27,17 +27,15 @@ namespace ClinicaFrba.Login
         {
             InitializeComponent();
 
-            this.comboBoxTipo.ValueMember = "doc_descrip";
-
             ds = getTipoDoc();
+            this.comboBoxTipo.ValueMember = "doc_descrip";
             this.comboBoxTipo.DataSource = ds.Tables[0];
 
             this.textBoxUser.Text = "admin";
             this.textBoxPass.Text = "w23e";
 
-            //comboBoxTipo.DataSource = DAL.Classes.DBHelper.ExecuteQuery_DS("SELECT * FROM NUL.Tipo_doc").Tables[0];
-
-            // DAL.Classes.DBHelper.ExecuteQuery_DS("SELECT * FROM NUL.Tipo_doc")["Doc_descrip"].ToString();
+            ////comboBoxTipo.DataSource = DAL.Classes.DBHelper.ExecuteQuery_DS("SELECT * FROM NUL.Tipo_doc").Tables[0];
+            //// DAL.Classes.DBHelper.ExecuteQuery_DS("SELECT * FROM NUL.Tipo_doc")["Doc_descrip"].ToString();
 
         }
 
