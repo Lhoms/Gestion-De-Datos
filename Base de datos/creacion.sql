@@ -663,16 +663,28 @@ BEGIN
 END
 GO
 
-CREATE PROCEDURE NUL.sp_del_rol(@id numeric(18,0))
+CREATE PROCEDURE NUL.sp_del_rol(@id numeric(18,0), @result int output)
 AS 
 BEGIN
-	DELETE FROM NUL.Rol_funcionalidad
-	WHERE rol_id = @id
-	
+	set @result = 0
 
-	DELETE FROM NUL.Rol
+	SELECT COUNT(*) FROM NUL.Rol_funcionalidad
 	WHERE rol_id = @id
+	IF @@ERROR = 0
+		begin
+			DELETE FROM NUL.Rol_funcionalidad
+			WHERE rol_id = @id
 
+			set @result = @@ERROR
+		end
+    
+	if @result = 0
+		begin
+			DELETE FROM NUL.Rol
+			WHERE rol_id = @id
+
+			set @result = @@ERROR
+		end
 END
 GO
 
