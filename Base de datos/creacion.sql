@@ -646,11 +646,13 @@ BEGIN
 END
 GO
 
-CREATE PROCEDURE NUL.sp_del_usuario(@id numeric(18,0))
+CREATE PROCEDURE NUL.sp_del_usuario(@id numeric(18,0), @result int output)
 AS 
 BEGIN
 	DELETE FROM NUL.Usuario 
 	WHERE user_id = @id
+
+	set @result = @@ERROR
 END
 GO
 
