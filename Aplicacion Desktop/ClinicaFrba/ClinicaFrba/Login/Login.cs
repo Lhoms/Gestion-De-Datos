@@ -16,12 +16,20 @@ namespace ClinicaFrba.Login
 {
     public partial class Login : Form
     {
+        string username;
+        string password;
+        int    tipo_doc_id;
+
+        DataSet ds;
+
         public Login()
         {
             InitializeComponent();
 
             this.comboBoxTipo.ValueMember = "doc_descrip";
-            this.comboBoxTipo.DataSource = getTipoDoc().Tables[0];
+
+            ds = getTipoDoc();
+            this.comboBoxTipo.DataSource = ds.Tables[0];
 
             this.textBoxUser.Text = "admin";
             this.textBoxPass.Text = "w23e";
@@ -45,30 +53,35 @@ namespace ClinicaFrba.Login
 
                 if (string.IsNullOrEmpty(textBoxUser.Text))
                     throw new Exception("El campo usuario no puede estar vacio");
-                
+                else this.username = textBoxUser.Text;
+
                 if (string.IsNullOrEmpty(textBoxPass.Text))
                     throw new Exception("El campo contraseña no puede estar vacio");
+                else this.password = textBoxPass.Text;
 
-                if (string.IsNullOrEmpty(comboBoxTipo.Text ))
+                if (string.IsNullOrEmpty(comboBoxTipo.Text))
                     throw new Exception("El campo tipo de documento no puede estar vacio");
+                else
+                {
+                    this.tipo_doc_id = get_tipo_doc_id(comboBoxTipo.Text);
+                }
 
                 if (validarUsuario(textBoxUser.Text, comboBoxTipo.Text, textBoxPass.Text))
                 {
-                    if (intentosDisponibles(textBoxUser.Text, comboBoxTipo.Text, textBoxPass.Text) > 0)
-                    {
 
                     Form1 form = new Form1(comboBoxTipo.Text, textBoxUser.Text);
 
                     form.Show();
 
                     this.Hide();
-
-                    }
-
-                    else throw new Exception("No dispone de intentos, contacte un administrador");
                 }
 
-                else throw new Exception("Login fallido, intente nuevamente");
+                else
+                {
+                    throw new Exception("Login fallido, intente nuevamente");
+
+                }
+
             }
 
             catch (Exception exc)
@@ -78,14 +91,19 @@ namespace ClinicaFrba.Login
 
         }
 
-        private int intentosDisponibles(string user, string tipoDoc, string password)
+        private int get_tipo_doc_id(string tipo_doc)
         {
+            string expresion = "doc_descrip = '" + tipo_doc + "'";
+            int tipo = 1;
 
-            //llamar a sp y preguntarle
+            tipo = int.Parse(ds.Tables[0].Rows[0][0].ToString());
 
-            return 3;
+            this.buttonLogin.Text = tipo.ToString();
+
+            return tipo;
         }
 
+        
         private bool validarUsuario (string user, string tipoDoc, string password)
         {
 
@@ -102,7 +120,7 @@ namespace ClinicaFrba.Login
                     };
 
 
-            return DAL.Classes.DBHelper.ExecuteDataSet("NUL.get_tipo_doc", dbParams);
+            return DAL.Classes.DBHelper.ExecuteDataSet("NUL.sp_get_tipo_doc", dbParams);
 
         }
 

@@ -593,7 +593,7 @@ GO
 
 --JMZ - SP.
 
-CREATE PROCEDURE NUL.sp_login(@username varchar(255), @tipo_doc numeric(18,0), @pass varchar(255), @result int output, @error varchar(255) output, @id numeric(18,0))
+CREATE PROCEDURE NUL.sp_login(@username varchar(255), @tipo_doc numeric(18,0), @pass varchar(255), @result int output, @error varchar(255) output, @id numeric(18,0) output)
 AS
 BEGIN
 	declare @user_id numeric(18,0)
@@ -722,5 +722,3 @@ BEGIN
 
 END
 GO
-
-COMMIT TRANSACTION
