@@ -543,9 +543,84 @@ EXEC sp_msforeachtable 'ALTER TABLE ? WITH CHECK CHECK CONSTRAINT all'
 
 GO
 
+--view
+
+IF OBJECT_ID ('NUL.v_esp_canceladas', 'V') IS NOT NULL  
+	DROP VIEW NUL.v_esp_canceladas ; 
+GO
+CREATE VIEW NUL.v_esp_canceladas(esp_id, esp_descrip, tipo_esp_id, tipo_esp_descrip, cant)
+AS
+	SELECT E.esp_id, E.esp_descrip, TE.tipo_esp_id, TE.tipo_esp_descrip, COUNT(C.cancel_turno_id) AS cant 
+	  FROM NUL.Especialidad E JOIN NUL.Tipo_esp TE ON TE.tipo_esp_id = E.esp_tipo
+							  JOIN NUL.Turno	T  ON T.turno_especialidad = E.esp_id
+							  JOIN NUL.Cancelacion C ON C.cancel_turno_id = T.turno_id
+	GROUP BY E.esp_id, E.esp_descrip, TE.tipo_esp_id, TE.tipo_esp_descrip
+GO
+--------------------------------------
+IF OBJECT_ID ('NUL.v_prof_consultados', 'V') IS NOT NULL  
+	DROP VIEW NUL.v_prof_consultados ; 
+GO
+CREATE VIEW NUL.v_prof_consultados(prof_id, pers_nombre, pers_apellido, pers_tipo_doc, pers_doc, esp_id, esp_descrip, tipo_esp_id, tipo_esp_descrip, plan_id, plan_descrip, cant)
+AS
+	SELECT P.prof_id, PER.pers_nombre, PER.pers_apellido, PER.pers_tipo_doc, PER.pers_doc, E.esp_id, E.esp_descrip, TE.tipo_esp_id, TE.tipo_esp_descrip, PM.plan_id, PM.plan_descrip, COUNT(C.cons_turno_id) AS cant 
+	  FROM NUL.Profesional P JOIN NUL.Profesional_especialidad PE ON PE.prof_id = P.prof_id
+							 JOIN NUL.Persona PER ON PER.pers_id = P.prof_id
+							 JOIN NUL.Especialidad E ON E.esp_id = PE.esp_id
+							 JOIN NUL.Tipo_esp    TE ON TE.tipo_esp_id = E.esp_tipo
+							 JOIN NUL.Turno	T  ON T.turno_profesional = P.prof_id
+							                  AND T.turno_especialidad = PE.esp_id
+							 JOIN NUL.Consulta C ON C.cons_turno_id = T.turno_id
+							 JOIN NUL.Bono     B ON B.bono_id = C.cons_bono_usado
+							 JOIN NUL.Plan_medico PM ON PM.plan_id = B.bono_plan
+	GROUP BY P.prof_id, PER.pers_nombre, PER.pers_apellido, PER.pers_tipo_doc, PER.pers_doc, E.esp_id, E.esp_descrip, TE.tipo_esp_id, TE.tipo_esp_descrip, PM.plan_id, PM.plan_descrip
+GO
+----------------------------------
+IF OBJECT_ID ('NUL.v_prof_horas', 'V') IS NOT NULL  
+	DROP VIEW NUL.v_prof_horas ; 
+GO
+CREATE VIEW NUL.v_prof_horas(prof_id, pers_nombre, pers_apellido, pers_tipo_doc, pers_doc, esp_id, esp_descrip, tipo_esp_id, tipo_esp_descrip, plan_id, plan_descrip, cant)
+AS
+	SELECT P.prof_id, PER.pers_nombre, PER.pers_apellido, PER.pers_tipo_doc, PER.pers_doc, E.esp_id, E.esp_descrip, TE.tipo_esp_id, TE.tipo_esp_descrip, PM.plan_id, PM.plan_descrip, COUNT(T.turno_id)*0.5 AS cant 
+	  FROM NUL.Profesional P JOIN NUL.Profesional_especialidad PE ON PE.prof_id = P.prof_id
+							 JOIN NUL.Persona PER ON PER.pers_id = P.prof_id
+							 JOIN NUL.Especialidad E ON E.esp_id = PE.esp_id
+							 JOIN NUL.Tipo_esp    TE ON TE.tipo_esp_id = E.esp_tipo
+							 JOIN NUL.Turno	T  ON T.turno_profesional = P.prof_id
+							                  AND T.turno_especialidad = PE.esp_id
+							 JOIN NUL.Consulta C ON C.cons_turno_id = T.turno_id
+							 JOIN NUL.Bono     B ON B.bono_id = C.cons_bono_usado
+							 JOIN NUL.Plan_medico PM ON PM.plan_id = B.bono_plan
+	GROUP BY P.prof_id, PER.pers_nombre, PER.pers_apellido, PER.pers_tipo_doc, PER.pers_doc, E.esp_id, E.esp_descrip, TE.tipo_esp_id, TE.tipo_esp_descrip, PM.plan_id, PM.plan_descrip
+GO
+------------------------------------------------
+IF OBJECT_ID ('NUL.v_afil_bonos', 'V') IS NOT NULL  
+	DROP VIEW NUL.v_afil_bonos ; 
+GO
+CREATE VIEW NUL.v_afil_bonos(afil_id, pers_nombre, pers_apellido, pers_tipo_doc, pers_doc, cant, grupo)
+AS 
+	SELECT A.afil_id, P.pers_nombre, P.pers_apellido, P.pers_tipo_doc, P.pers_doc, SUM(BC.bonoc_cantidad) AS cant, (CASE WHEN A.afil_familiares > 1 THEN 'SI' ELSE 'NO' END) AS grupo
+	  FROM NUL.Afiliado A JOIN NUL.Persona P ON P.pers_id = A.afil_id
+						  JOIN NUL.Bono_compra BC ON BC.bonoc_id_usuario = P.pers_id
+	  GROUP BY A.afil_id, P.pers_nombre, P.pers_apellido, P.pers_tipo_doc, P.pers_doc, (CASE WHEN A.afil_familiares > 1 THEN 'SI' ELSE 'NO' END)
+GO
+------------------------------------------------
+IF OBJECT_ID ('NUL.v_esp_bonos', 'V') IS NOT NULL  
+	DROP VIEW NUL.v_esp_bonos ; 
+GO
+CREATE VIEW NUL.v_esp_bonos(esp_id, esp_descrip, tipo_esp_id, tipo_esp_descrip, cant)
+AS 
+	SELECT E.esp_id, E.esp_descrip, TE.tipo_esp_id, TE.tipo_esp_descrip, COUNT(DISTINCT C.cons_id) AS cant
+	  FROM NUL.Especialidad E JOIN NUL.Tipo_esp TE ON TE.tipo_esp_id = E.esp_tipo
+							  JOIN NUL.Turno	T  ON T.turno_especialidad = E.esp_id
+							  JOIN NUL.Consulta C  ON C.cons_turno_id = T.turno_id
+	GROUP BY E.esp_id, E.esp_descrip, TE.tipo_esp_id, TE.tipo_esp_descrip
+GO
 
 --stored procedures
-
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID('NUL.sp_get_top5_esp_cancel'))
+BEGIN
+    DROP PROCEDURE NUL.sp_get_top5_esp_cancel
+END
 
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID('NUL.sp_get_tipo_doc'))
 BEGIN
@@ -616,8 +691,58 @@ END
 
 GO
 
+CREATE PROCEDURE NUL.sp_get_top5_esp_cancel
+AS
+BEGIN
 
+	SELECT TOP 5 * FROM NUL.v_esp_canceladas
+	ORDER BY cant DESC
 
+END
+GO
+
+CREATE PROCEDURE NUL.sp_get_top5_prof_consultados(@plan_id numeric(18,0))
+AS
+BEGIN
+		
+	SELECT TOP 5 * FROM NUL.v_prof_consultados V
+	WHERE V.plan_id = @plan_id
+	ORDER BY cant DESC
+
+END
+GO
+
+CREATE PROCEDURE NUL.sp_get_top5_prof_horas(@plan_id numeric(18,0), @esp_id numeric(18,0))
+AS
+BEGIN
+		
+	SELECT TOP 5 * FROM NUL.v_prof_horas V
+	WHERE V.plan_id = @plan_id
+	  AND V.esp_id = @esp_id
+	ORDER BY cant ASC
+
+END
+GO
+
+CREATE PROCEDURE NUL.sp_get_top5_afil_bonos
+AS
+BEGIN
+		
+	SELECT TOP 5 * FROM NUL.v_afil_bonos V
+	ORDER BY cant DESC
+
+END
+GO
+
+CREATE PROCEDURE NUL.sp_get_top5_esp_bonos
+AS
+BEGIN
+		
+	SELECT TOP 5 * FROM NUL.v_esp_bonos V
+	ORDER BY cant DESC
+
+END
+GO
 
 CREATE PROCEDURE NUL.sp_get_tipo_doc
 
