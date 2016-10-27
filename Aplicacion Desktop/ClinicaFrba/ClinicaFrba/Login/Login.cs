@@ -78,15 +78,15 @@ namespace ClinicaFrba.Login
 
         private void obtenerDatos()
         {
-            if (string.IsNullOrEmpty(textBoxUser.Text))
+            if (string.IsNullOrWhiteSpace(textBoxUser.Text))
                 throw new Exception("El campo usuario no puede estar vacio");
             else this.username = textBoxUser.Text;
 
-            if (string.IsNullOrEmpty(textBoxPass.Text))
+            if (string.IsNullOrWhiteSpace(textBoxPass.Text))
                 throw new Exception("El campo contraseña no puede estar vacio");
             else this.password = textBoxPass.Text;
 
-            if (string.IsNullOrEmpty(comboBoxTipo.Text))
+            if (string.IsNullOrWhiteSpace(comboBoxTipo.Text))
                 throw new Exception("El campo tipo de documento no puede estar vacio");
             else
             {

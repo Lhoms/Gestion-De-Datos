@@ -95,15 +95,15 @@ namespace ClinicaFrba.Abm_Afiliado
 
         private void obtenerFamiliar()
         {
-            if (string.IsNullOrEmpty(textBoxNombre.Text))
+            if (string.IsNullOrWhiteSpace(textBoxNombre.Text))
                 throw new Exception("El campo nombre no puede estar vacio");
             else this.afiliado.nombre = textBoxNombre.Text;
 
-            if (string.IsNullOrEmpty(textBoxApellido.Text))
+            if (string.IsNullOrWhiteSpace(textBoxApellido.Text))
                 throw new Exception("El campo apellido no puede estar vacio");
             else this.afiliado.apellido = textBoxApellido.Text;
 
-            if (string.IsNullOrEmpty(textBoxDocumento.Text))
+            if (string.IsNullOrWhiteSpace(textBoxDocumento.Text))
                 throw new Exception("El campo documento no puede estar vacio");
             else
             {
@@ -111,23 +111,23 @@ namespace ClinicaFrba.Abm_Afiliado
                 this.afiliado.username = textBoxDocumento.Text;
             }
 
-            if (string.IsNullOrEmpty(comboBoxTipoDoc.Text))
+            if (string.IsNullOrWhiteSpace(comboBoxTipoDoc.Text))
                 throw new Exception("El campo tipo de documento no puede estar vacio");
             else this.afiliado.tipo_doc = comboBoxTipoDoc.Text;
 
-            if (string.IsNullOrEmpty(comboBoxSexo.Text))
+            if (string.IsNullOrWhiteSpace(comboBoxSexo.Text))
                 throw new Exception("El campo sexo no puede estar vacio");
             else this.afiliado.sexo = comboBoxSexo.Text;
 
-            if (string.IsNullOrEmpty(textBoxDireccion.Text))
+            if (string.IsNullOrWhiteSpace(textBoxDireccion.Text))
                 throw new Exception("El campo direccion no puede estar vacio");
             else this.afiliado.direccion = textBoxDireccion.Text;
 
-            if (string.IsNullOrEmpty(textBoxTelefono.Text))
+            if (string.IsNullOrWhiteSpace(textBoxTelefono.Text))
                 throw new Exception("El campo telefono no puede estar vacio");
             else this.afiliado.telefono = long.Parse(textBoxTelefono.Text);
 
-            if (string.IsNullOrEmpty(textBoxMail.Text))
+            if (string.IsNullOrWhiteSpace(textBoxMail.Text))
             {
                 throw new Exception("El campo mail no puede estar vacio");
             }
@@ -143,7 +143,7 @@ namespace ClinicaFrba.Abm_Afiliado
                 throw new Exception("El formato del mail no es valido");
             }
 
-            if (string.IsNullOrEmpty(comboBoxEstadoCivil.Text))
+            if (string.IsNullOrWhiteSpace(comboBoxEstadoCivil.Text))
                 throw new Exception("El campo estado civil no puede estar vacio");
             else this.afiliado.estadoCivil = comboBoxEstadoCivil.Text;
 

@@ -155,6 +155,9 @@
     <EmbeddedResource Include="Abm Afiliado\AltaFamiliar.resx">
       <DependentUpon>AltaFamiliar.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="AbmRol\AltaRol.resx">
+      <DependentUpon>AltaRol.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Cancelar Atencion\CancelarAtencion.resx">
       <DependentUpon>CancelarAtencion.cs</DependentUpon>
     </EmbeddedResource>

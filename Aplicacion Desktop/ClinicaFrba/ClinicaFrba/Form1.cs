@@ -139,7 +139,6 @@ namespace ClinicaFrba
             return rol_id;
         }
 
-
         private DataSet rolesDelUsuario()
         {
             SqlParameter[] dbParams = new SqlParameter[]
@@ -173,7 +172,7 @@ namespace ClinicaFrba
 
         private void buttonAltaRol_Click(object sender, EventArgs e)
         {
-            AbmRol.AltaRol form = new AbmRol.AltaRol();
+            AbmRol.AltaRol form = new AbmRol.AltaRol(this.tipo_doc_usuario, this.username, this.user_id);
 
             form.Show();
 
