@@ -866,7 +866,7 @@ BEGIN
 
 	SELECT COUNT(*) FROM NUL.User_rol
 	WHERE rol_id = @id
-	IF @@ERROR = 0
+	IF @@ERROR <> 0
 		begin
 			DELETE FROM NUL.User_rol
 			WHERE rol_id = @id
@@ -911,7 +911,7 @@ AS
 BEGIN
 	INSERT INTO NUL.Rol(rol_descrip)
 	VALUES (@descrip)
-	if @@ERROR != 0
+	if @@ERROR = 0
 		set @id_new = @@IDENTITY
 
 END
