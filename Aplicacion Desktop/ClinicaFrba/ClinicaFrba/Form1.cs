@@ -181,7 +181,7 @@ namespace ClinicaFrba
 
         private void buttonBajaRol_Click(object sender, EventArgs e)
         {
-            AbmRol.BusquedaRol form = new AbmRol.BusquedaRol("Baja");
+            AbmRol.BusquedaRol form = new AbmRol.BusquedaRol(this.tipo_doc_usuario, this.username, this.user_id);
 
             form.Show();
 
@@ -190,7 +190,7 @@ namespace ClinicaFrba
 
         private void buttonModificarRol_Click(object sender, EventArgs e)
         {
-            AbmRol.BusquedaRol form = new AbmRol.BusquedaRol("Modificacion");
+            AbmRol.BusquedaRol form = new AbmRol.BusquedaRol(this.tipo_doc_usuario, this.username, this.user_id);
 
             form.Show();
 

@@ -200,9 +200,6 @@ namespace ClinicaFrba.Abm_Afiliado
         private DataSet get_usuario(string username, string tipo_doc)
         {
             string expresion = "SELECT * FROM NUL.Usuario U WHERE U.user_username = '" + username + "' AND U.user_tipodoc = " + get_tipo_doc_id(tipo_doc).ToString();
-
-            MessageBox.Show(expresion);
-
             return DAL.Classes.DBHelper.ExecuteQuery_DS(expresion);
         }
 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Data.SqlClient;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -16,9 +17,9 @@ namespace ClinicaFrba.AbmRol
         private string username;
         private int user_id;
 
-        Dictionary<string, bool> funcionalidadesElegidas;
-
-        DataSet func;
+        List<string> func_descrip;
+        Dictionary<string, int> funcionalidades;
+        List<int> funcionalidadesElegidas;
 
 
         public AltaRol(string tipo_doc_usuario, string username, int user_id)
@@ -29,31 +30,127 @@ namespace ClinicaFrba.AbmRol
             this.username = username;
             this.user_id = user_id;
 
+            func_descrip = new List<string>();
+            funcionalidadesElegidas = new List<int>();
+            funcionalidades = new Dictionary<string, int>();
+
             get_funcionalidades();
 
 
-            this.dataGridViewFuncionalidades.DataSource = func.Tables[0];
-
-            this.dataGridViewFuncionalidades.Columns["func_id"].Visible = false;
-            this.dataGridViewFuncionalidades.Columns["func_descrip"].HeaderText = "Funcionalidades";
-            this.dataGridViewFuncionalidades.Columns["func_descrip"].ReadOnly = true;
-
-
-            dataGridViewFuncionalidades.AutoResizeColumns();
-            dataGridViewFuncionalidades.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
-           
-
-
-
-            funcionalidadesElegidas = new Dictionary<string, bool>();
+            this.checkListFuncionalidades.DataSource = func_descrip;
 
         }
 
-        private DataSet get_funcionalidades()
+        private void get_funcionalidades()
         {
-            string expresion = "SELECT * FROM NUL.Funcionalidad WHERE func_id IS NOT NULL";
+            string expresion = "SELECT func_id, func_descrip FROM NUL.Funcionalidad WHERE func_id IS NOT NULL";
 
-            return (func = DAL.Classes.DBHelper.ExecuteQuery_DS(expresion));
+            SqlDataReader lector = DAL.Classes.DBHelper.ExecuteQuery_DR(expresion);
+
+            if (lector.HasRows)
+            {
+                funcionalidades.Add((string)lector["func_descrip"].ToString(), int.Parse(lector["func_id"].ToString()));
+                func_descrip.Add((string)lector["func_descrip"].ToString());
+
+                while (lector.Read())
+                {
+                    funcionalidades.Add((string)lector["func_descrip"].ToString(), int.Parse(lector["func_id"].ToString()));
+                    func_descrip.Add((string)lector["func_descrip"].ToString());
+                }
+            }
+
+        }
+
+        private void buttonAceptar_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                 if (string.IsNullOrWhiteSpace(this.textBoxNombre.Text))
+                    throw new Exception("El campo nombre no puede estar vacio");
+
+                int id_nuevoRol = crearNuevoRol(this.textBoxNombre.Text);
+            
+
+                getCheckedList();
+
+
+                foreach (int numero in this.funcionalidadesElegidas)
+                {
+                    AgregarFuncionalidadARol(id_nuevoRol, numero);   
+                }
+
+
+                Form1 form = new Form1(this.tipo_doc_usuario, this.username, this.user_id);
+
+                form.Show();
+
+                this.Close();
+                               
+            }
+
+            catch (Exception exc)
+            {
+                MessageBox.Show(exc.Message);
+            }
+
+        }
+
+        private int crearNuevoRol(string nuevoRol)
+        {
+            int nuevoId = 1;
+
+            SqlParameter result_id = DAL.Classes.DBHelper.MakeParamOutput("@id_new", SqlDbType.Decimal, 0);
+
+            SqlParameter[] dbParams = new SqlParameter[]
+            {
+                DAL.Classes.DBHelper.MakeParam("@descrip", SqlDbType.VarChar, 0, nuevoRol),
+                result_id,
+            };
+
+
+            DAL.Classes.DBHelper.ExecuteDataSet("NUL.sp_new_rol", dbParams);
+
+
+            if (((decimal)result_id.Value) > 0)
+            {
+                nuevoId = (int)(decimal)result_id.Value;
+
+                MessageBox.Show("Se creo el nuevo rol: " + nuevoRol);
+
+                return nuevoId;
+            }
+
+            else
+            {
+                throw new Exception("Error");
+            }
+        }
+
+
+        private void AgregarFuncionalidadARol(int rol_id, int func_id)
+        {
+            SqlParameter result = DAL.Classes.DBHelper.MakeParamOutput("@result", SqlDbType.Int, 0);
+
+            SqlParameter[] dbParams = new SqlParameter[]
+            {
+                DAL.Classes.DBHelper.MakeParam("@id", SqlDbType.VarChar, 0, rol_id),
+                DAL.Classes.DBHelper.MakeParam("@id_func", SqlDbType.VarChar, 0, func_id),
+                result,
+            };
+
+            DAL.Classes.DBHelper.ExecuteDataSet("NUL.sp_set_funcion_rol", dbParams);
+
+            if (((int)result.Value) != 0)
+                throw new Exception("Error agregando funcionalidades.\nIntente nuevamente desde modificar rol");
+        }
+
+
+        private void getCheckedList()
+        {
+            foreach (string unaFunc in checkListFuncionalidades.CheckedItems)
+            {
+                this.funcionalidadesElegidas.Add(this.funcionalidades[unaFunc]);
+            }
         }
 
         private void buttonLimpiar_Click(object sender, EventArgs e)
@@ -63,91 +160,28 @@ namespace ClinicaFrba.AbmRol
 
         private void limpiar()
         {
-            this.textBoxNombre.Text = "";
-            DataGridViewRowCollection rc = this.dataGridViewFuncionalidades.Rows;
 
-            foreach (DataGridViewRow row in rc)
-            {
-                row.Cells["CheckColumn"].Value = false;
-            }
+            for (int i = 0; i < this.checkListFuncionalidades.Items.Count; i++)
+                checkListFuncionalidades.SetItemCheckState(i, CheckState.Unchecked);
 
             this.funcionalidadesElegidas.Clear();
         }
 
-
-
-        private void buttonAceptar_Click(object sender, EventArgs e)
-        {
-            //try
-            //{
-                if(string.IsNullOrWhiteSpace(this.textBoxNombre.Text))
-                    throw new Exception("El campo nombre no puede estar vacio");
-
-                getChecks();
-
-                if (this.funcionalidadesElegidas.ContainsKey("ABM Rol"))
-                    if (this.funcionalidadesElegidas["ABM Rol"])
-                        MessageBox.Show("ABM Rol");
-
-                if (this.funcionalidadesElegidas.ContainsKey("Abm Afiliado"))
-                    if (this.funcionalidadesElegidas["Abm Afiliado"])
-                        MessageBox.Show("ABM Afiliado");
-
-                if (this.funcionalidadesElegidas.ContainsKey("Compra de bonos"))
-                    if (this.funcionalidadesElegidas["Compra de bonos"])
-                        MessageBox.Show("Compra de bonos");
-
-                if (this.funcionalidadesElegidas.ContainsKey("Pedir turno"))
-                    if (this.funcionalidadesElegidas["Pedir turno"])
-                        MessageBox.Show("Pedir turno");
-
-                if (this.funcionalidadesElegidas.ContainsKey("Registro de llegada para atención médica"))
-                    if (this.funcionalidadesElegidas["Registro de llegada para atención médica"])
-                        MessageBox.Show("Registro de llegada para atención médica");
-
-                if (this.funcionalidadesElegidas.ContainsKey("Registrar resultado para atención médica"))
-                    if (this.funcionalidadesElegidas["Registrar resultado para atención médica"])
-                        MessageBox.Show("Registrar resultado para atención médica");
-
-                if (this.funcionalidadesElegidas.ContainsKey("Cancelar atención médica"))
-                    if (this.funcionalidadesElegidas["Cancelar atención médica"])
-                        MessageBox.Show("Cancelar atención médica");
-
-                if (this.funcionalidadesElegidas.ContainsKey("Listado estadístico"))
-                    if (this.funcionalidadesElegidas["Listado estadístico"])
-                        MessageBox.Show("Listado estadístico");
-
-                if (this.funcionalidadesElegidas.ContainsKey("Crear agenda"))
-                    if (this.funcionalidadesElegidas["Crear agenda"])
-                        MessageBox.Show("Crear agenda");
-
-
-
-           // }
-
-            //catch(Exception exc)
-            //{
-            //    MessageBox.Show(exc.Message);
-            //}
-
-        }
-
-        private void getChecks()
-        {
-            DataGridViewRowCollection rc = this.dataGridViewFuncionalidades.Rows;
-
-            foreach (DataGridViewRow row in rc)
-            {
-                
-                if ((bool)row.Cells["CheckColumn"].Value)
-                    funcionalidadesElegidas.Add((string)row.Cells["func_descrip"].Value, true);
-
-            }
-        }
-
         private void buttonCancelar_Click(object sender, EventArgs e)
         {
+            Form1 form = new Form1(this.tipo_doc_usuario, this.username, this.user_id);
 
+            form.Show();
+
+            this.Close();
+        }
+
+        private void buttonTodo_Click(object sender, EventArgs e)
+        {
+            for (int i = 0; i < this.checkListFuncionalidades.Items.Count; i++)
+                checkListFuncionalidades.SetItemCheckState(i, CheckState.Checked);
+
+            this.funcionalidadesElegidas.Clear();
         }
 
     
