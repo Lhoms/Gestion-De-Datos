@@ -99,6 +99,9 @@ namespace ClinicaFrba.AbmRol
         {
             int nuevoId = 1;
 
+            if (yaExisteElNombre(nuevoRol))
+                throw new Exception("Ese nombre de rol ya existe");
+
             SqlParameter result_id = DAL.Classes.DBHelper.MakeParamOutput("@id_new", SqlDbType.Decimal, 0);
 
             SqlParameter[] dbParams = new SqlParameter[]
@@ -133,8 +136,8 @@ namespace ClinicaFrba.AbmRol
 
             SqlParameter[] dbParams = new SqlParameter[]
             {
-                DAL.Classes.DBHelper.MakeParam("@id", SqlDbType.VarChar, 0, rol_id),
-                DAL.Classes.DBHelper.MakeParam("@id_func", SqlDbType.VarChar, 0, func_id),
+                DAL.Classes.DBHelper.MakeParam("@id", SqlDbType.Decimal, 0, rol_id),
+                DAL.Classes.DBHelper.MakeParam("@id_func", SqlDbType.Decimal, 0, func_id),
                 result,
             };
 
@@ -184,6 +187,15 @@ namespace ClinicaFrba.AbmRol
             this.funcionalidadesElegidas.Clear();
         }
 
+        private Boolean yaExisteElNombre(string rol)
+        {
+
+            string expresion = "SELECT * FROM NUL.Rol WHERE rol_descrip = '" + rol + "'";
+
+            DataSet ds = DAL.Classes.DBHelper.ExecuteQuery_DS(expresion);
+
+            return (ds.Tables[0].Rows.Count > 0);
+        }
     
     
     }

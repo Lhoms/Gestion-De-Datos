@@ -876,15 +876,11 @@ AS
 BEGIN
 	set @result = 0
 
-	SELECT COUNT(*) FROM NUL.User_rol
-	WHERE rol_id = @id
-	IF @@ERROR <> 0
-		begin
-			DELETE FROM NUL.User_rol
-			WHERE rol_id = @id
 
-			set @result = @@ERROR
-		end
+	DELETE FROM NUL.User_rol
+	WHERE rol_id = @id
+	set @result = @@ERROR
+
     
 	if @result = 0
 		begin

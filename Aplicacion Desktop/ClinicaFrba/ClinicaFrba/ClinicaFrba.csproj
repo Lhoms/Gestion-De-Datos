@@ -75,12 +75,6 @@
     <Compile Include="AbmRol\AltaRol.Designer.cs">
       <DependentUpon>AltaRol.cs</DependentUpon>
     </Compile>
-    <Compile Include="AbmRol\BusquedaRol.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="AbmRol\BusquedaRol.Designer.cs">
-      <DependentUpon>BusquedaRol.cs</DependentUpon>
-    </Compile>
     <Compile Include="AbmRol\ModificarRol.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -159,8 +153,8 @@
     <EmbeddedResource Include="AbmRol\AltaRol.resx">
       <DependentUpon>AltaRol.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="AbmRol\BusquedaRol.resx">
-      <DependentUpon>BusquedaRol.cs</DependentUpon>
+    <EmbeddedResource Include="AbmRol\ModificarRol.resx">
+      <DependentUpon>ModificarRol.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Cancelar Atencion\CancelarAtencion.resx">
       <DependentUpon>CancelarAtencion.cs</DependentUpon>
