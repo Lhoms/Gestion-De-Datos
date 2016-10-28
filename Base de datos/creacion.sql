@@ -621,38 +621,55 @@ IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID('NUL.sp_get_top5_es
 BEGIN
     DROP PROCEDURE NUL.sp_get_top5_esp_cancel
 END
+
+
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID('NUL.sp_get_top5_prof_consultados'))
 BEGIN
     DROP PROCEDURE NUL.sp_get_top5_prof_consultados
 END
+
+
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID('NUL.sp_get_top5_prof_horas'))
 BEGIN
-    DROP PROCEDURE NUL.sp_get_top5_prof_consultados
+    DROP PROCEDURE NUL.sp_get_top5_prof_horas
 END
+
+
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID('NUL.sp_get_top5_afil_bonos'))
 BEGIN
-    DROP PROCEDURE NUL.sp_get_top5_prof_consultados
+    DROP PROCEDURE NUL.sp_get_top5_afil_bonos
 END
+
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID('NUL.sp_get_top5_esp_bonos'))
+BEGIN
+    DROP PROCEDURE NUL.sp_get_top5_esp_bonos
+END
+
 
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID('NUL.sp_get_tipo_doc'))
 BEGIN
     DROP PROCEDURE NUL.sp_get_tipo_doc
 END
 
+
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID('NUL.sp_get_usuario'))
 BEGIN
     DROP PROCEDURE NUL.sp_get_usuario
 END
+
 
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID('NUL.sp_get_estados_civiles'))
 BEGIN
     DROP PROCEDURE NUL.sp_get_estados_civiles
 END
 
+
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID('NUL.sp_get_planes'))
 BEGIN
     DROP PROCEDURE NUL.sp_get_planes
 END
+
 
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID('NUL.sp_login'))
 BEGIN
@@ -699,6 +716,12 @@ END
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID('NUL.sp_new_rol'))
 BEGIN
     DROP PROCEDURE NUL.sp_new_rol
+END
+
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID('NUL.sp_buscar_usuarios'))
+BEGIN
+    DROP PROCEDURE NUL.sp_buscar_usuarios
 END
 
 GO

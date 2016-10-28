@@ -389,7 +389,19 @@ namespace ClinicaFrba.AbmRol
 
         private void eliminarFuncionalidadesDelRol(int rol_actual)
         {
-            //falta este stored
+            SqlParameter result = DAL.Classes.DBHelper.MakeParamOutput("@result", SqlDbType.Int, 100);
+
+            SqlParameter[] dbParams = new SqlParameter[]
+            {
+                DAL.Classes.DBHelper.MakeParam("@id", SqlDbType.Decimal, 0, rol_actual),
+                result,
+            };
+
+            DAL.Classes.DBHelper.ExecuteDataSet("NUL.sp_del_funciones_rol", dbParams);
+
+            if ((int)result.Value != 0)
+                throw new Exception("Error modificando el rol");
+
         }
 
         private void AgregarFuncionalidadARol(int rol_id, int func_id)

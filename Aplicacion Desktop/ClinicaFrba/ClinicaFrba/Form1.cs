@@ -17,7 +17,8 @@ namespace ClinicaFrba
         string username;
         string tipo_doc_usuario;
         int user_id;
-        DataSet dsRoles;
+        DataTable dtRoles;
+        Dictionary<string, int> rolesId;
 
 
         public Form1(String tipo_doc_usuario, String username, int user_id)
@@ -25,13 +26,15 @@ namespace ClinicaFrba
 
             InitializeComponent();
 
-            this.tipo_doc_usuario = tipo_doc_usuario;
+            this.tipo_doc_usuario = tipo_doc_usuario;   //Me guardo el usuario actual del sistema
             this.username = username;
             this.user_id = user_id;
 
             comboBoxRol.ValueMember = "rol_descrip";
-            this.dsRoles = rolesDelUsuario();
-            comboBoxRol.DataSource = this.dsRoles.Tables[0];
+            this.dtRoles = rolesDelUsuario();
+            comboBoxRol.DataSource = this.dtRoles;
+
+            rolesId = new Dictionary<string,int>();
 
             this.labelFechaActual.Text = ConfigurationManager.AppSettings.Get("FechaSistema");
             ID_Usuario.Text = tipo_doc_usuario + " - " + username;
@@ -132,21 +135,30 @@ namespace ClinicaFrba
         private int get_rol_id(string rol)
         {
             string expresion = "rol_descrip = '" + rol + "'";
-            int rol_id = 1;
+            int rol_id = 0;
 
-            rol_id = int.Parse(this.dsRoles.Tables[0].Rows[0][0].ToString());
+            if (this.dtRoles.Rows.Count == 0)
+            {
+                MessageBox.Show("No posee roles disponibles\nContacte un administrador para asignarle uno.", "aviso", MessageBoxButtons.OK);
+            }
+            else
+            {
+                rol_id = int.Parse(this.dtRoles.Rows[0][0].ToString());
+            }
 
             return rol_id;
         }
 
-        private DataSet rolesDelUsuario()
+        private DataTable rolesDelUsuario()
         {
             SqlParameter[] dbParams = new SqlParameter[]
                     {
                          DAL.Classes.DBHelper.MakeParam("@id", SqlDbType.Int, 0, this.user_id),
                     };
 
-            return DAL.Classes.DBHelper.ExecuteDataSet("NUL.sp_get_roles_disponibles_por_usuario", dbParams);
+            DataTable d = DAL.Classes.DBHelper.ExecuteDataSet("NUL.sp_get_roles_disponibles_por_usuario", dbParams).Tables[0];
+
+            return d;
         }
 
         private void groupBox1_Enter(object sender, EventArgs e)
