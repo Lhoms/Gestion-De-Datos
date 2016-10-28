@@ -243,14 +243,14 @@ namespace ClinicaFrba.AbmRol
             {
                 if (this.buttonBaja.Text == "Dar de alta")
                 {
-                    habilitarRol(rol_actual, true);
+                    habilitarRol(rol_actual);
 
                     this.buttonBaja.Text = "Dar de baja";
                 }
 
                 else
                 {
-                    habilitarRol(rol_actual, false);
+                    bajaRol(rol_actual);
 
                     this.buttonBaja.Text = "Dar de alta";
                 }
@@ -261,6 +261,7 @@ namespace ClinicaFrba.AbmRol
                 MessageBox.Show(exc.Message);
             }
         }
+
 
         private void modificacionHabilitada()
         {
@@ -299,9 +300,9 @@ namespace ClinicaFrba.AbmRol
             modificarRolActual(rol_id, nuevo_nombre, true);
         }
 
-        private void habilitarRol(int rol_id, Boolean habilitado)
+        private void habilitarRol(int rol_id)
         {
-            modificarRolActual(rol_id, this.comboBoxRoles.Text, habilitado);
+            modificarRolActual(rol_id, this.comboBoxRoles.Text, true);
         }
 
 
@@ -333,6 +334,29 @@ namespace ClinicaFrba.AbmRol
 
         }
 
+        private void bajaRol(int rol_actual)
+        {
+            SqlParameter result = DAL.Classes.DBHelper.MakeParamOutput("@result", SqlDbType.Int, 100);
+
+            SqlParameter[] dbParams = new SqlParameter[]
+            {
+                DAL.Classes.DBHelper.MakeParam("@id", SqlDbType.Decimal, 0, rol_actual),
+                result,
+            };
+
+            DAL.Classes.DBHelper.ExecuteDataSet("NUL.sp_del_rol", dbParams);
+
+            if ((int)result.Value != 0)
+                throw new Exception("Error modificando el rol");
+            else
+            {
+                MessageBox.Show("Se deshabilito el rol corretamente");
+                ModificarRol form = new ModificarRol(this.tipo_doc_usuario, this.username, this.user_id);
+                form.Show();
+                this.Close();
+            }
+        }
+
         private Boolean yaExisteElNombre(string rol)
         {
 
@@ -349,12 +373,40 @@ namespace ClinicaFrba.AbmRol
             Form1 form = new Form1(this.tipo_doc_usuario, this.username, this.user_id);
             form.Show();
             this.Close();
-
         }
 
         private void buttonAceptar_Click(object sender, EventArgs e)
         {
-            //cosas de agregar func
+
+            eliminarFuncionalidadesDelRol(rol_actual);
+
+            foreach(string s in this.checkedListFunciones.CheckedItems)
+            {
+                AgregarFuncionalidadARol(rol_actual, funcionalidades[s]);
+            }
+
+        }
+
+        private void eliminarFuncionalidadesDelRol(int rol_actual)
+        {
+            //falta este stored
+        }
+
+        private void AgregarFuncionalidadARol(int rol_id, int func_id)
+        {
+            SqlParameter result = DAL.Classes.DBHelper.MakeParamOutput("@result", SqlDbType.Int, 0);
+
+            SqlParameter[] dbParams = new SqlParameter[]
+            {
+                DAL.Classes.DBHelper.MakeParam("@id", SqlDbType.Decimal, 0, rol_id),
+                DAL.Classes.DBHelper.MakeParam("@id_func", SqlDbType.Decimal, 0, func_id),
+                result,
+            };
+
+            DAL.Classes.DBHelper.ExecuteDataSet("NUL.sp_set_funcion_rol", dbParams);
+
+            if (((int)result.Value) != 0)
+                throw new Exception("Error agregando funcionalidades.\nIntente nuevamente desde modificar rol");
         }
 
     }
