@@ -621,6 +621,18 @@ IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID('NUL.sp_get_top5_es
 BEGIN
     DROP PROCEDURE NUL.sp_get_top5_esp_cancel
 END
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID('NUL.sp_get_top5_prof_consultados'))
+BEGIN
+    DROP PROCEDURE NUL.sp_get_top5_prof_consultados
+END
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID('NUL.sp_get_top5_prof_horas'))
+BEGIN
+    DROP PROCEDURE NUL.sp_get_top5_prof_consultados
+END
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID('NUL.sp_get_top5_afil_bonos'))
+BEGIN
+    DROP PROCEDURE NUL.sp_get_top5_prof_consultados
+END
 
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID('NUL.sp_get_tipo_doc'))
 BEGIN
@@ -914,5 +926,26 @@ BEGIN
 	if @@ERROR = 0
 		set @id_new = @@IDENTITY
 
+END
+GO
+
+CREATE PROCEDURE NUL.sp_buscar_usuarios(@username varchar(255), @tipo_doc varchar(255), @nombre varchar(255), @apellido varchar(255), @documento varchar(255), @direccion varchar(255), @telefono varchar(255), @mail varchar(255), @sexo varchar(255), @fechaNac varchar(255), @plan varchar(255), @nroAfiliado varchar(255))
+AS
+BEGIN
+	SELECT U.user_id, U.user_username, U.user_tipodoc, P.pers_nombre, P.pers_apellido, P.pers_doc, P.pers_dire, P.pers_tel, P.pers_mail, P.pers_sexo, P.pers_fecha_nac, A.afil_plan_med, A.afil_nro_afiliado
+	  FROM NUL.Usuario U JOIN NUL.Persona P ON P.pers_id = U.user_id
+	                     JOIN NUL.Afiliado A ON A.afil_id = P.pers_id
+	 WHERE U.user_username LIKE @username
+	   AND U.user_tipodoc  LIKE @tipo_doc
+	   AND P.pers_nombre   LIKE @nombre
+	   AND P.pers_apellido LIKE @apellido
+	   AND P.pers_doc	   LIKE @documento
+	   AND P.pers_dire     LIKE @direccion
+	   AND P.pers_tel      LIKE @telefono
+	   AND P.pers_mail     LIKE @mail
+	   AND P.pers_sexo     LIKE @sexo
+	   AND P.pers_fecha_nac LIKE @fechaNac
+	   AND A.afil_plan_med LIKE @plan
+	   AND A.afil_nro_afiliado LIKE @nroAfiliado
 END
 GO
