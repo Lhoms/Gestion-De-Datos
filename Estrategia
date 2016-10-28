@@ -14,5 +14,10 @@ Estrategia
 -La baja y la modificacion estan en una misma vista.
 -No se puede modificar un rol que esta dado de baja.
 -El documento y tipo de documento se consideran como correctos al ingresarse, no podran modificarse ya que integran el username.
+-En la busqueda de afiliados, al contrario que en el alta, no se validan los datos (por ejemplo si el mail esta escrito completamente), habilitando asi que si recuerda una parte del mail se pueda buscar asi.
+-
+-
+-
+-
 -
 -

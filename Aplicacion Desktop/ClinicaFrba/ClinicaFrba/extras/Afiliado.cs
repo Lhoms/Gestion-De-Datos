@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ClinicaFrba.extras
 {
-    class Afiliado
+    public class Afiliado
     {
 
         //Atributos como usuario
@@ -19,12 +19,15 @@ namespace ClinicaFrba.extras
         public string direccion;
         public string mail;
         public long documento;
+        public string documento_s;
         public long telefono;
+        public string telefono_s;
         public string sexo;
         public DateTime nacimiento;
 
         //Atributos como afiliado
         public long numeroAfiliado;
+        public string numeroAfiliado_s;
         public string estadoCivil;
         public string planMedico;
         public int cantFamiliares;

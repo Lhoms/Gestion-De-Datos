@@ -220,7 +220,7 @@ namespace ClinicaFrba
 
         private void buttonBajaAfiliado_Click(object sender, EventArgs e)
         {
-            Abm_Afiliado.BusquedaAfiliado form = new Abm_Afiliado.BusquedaAfiliado("Baja");
+            Abm_Afiliado.BusquedaAfiliado form = new Abm_Afiliado.BusquedaAfiliado(this.tipo_doc_usuario, this.username, this.user_id);
 
             form.Show();
 
@@ -229,7 +229,7 @@ namespace ClinicaFrba
 
         private void buttonModificarAfiliado_Click(object sender, EventArgs e)
         {
-            Abm_Afiliado.BusquedaAfiliado form = new Abm_Afiliado.BusquedaAfiliado("Modificacion");
+            Abm_Afiliado.BusquedaAfiliado form = new Abm_Afiliado.BusquedaAfiliado(this.tipo_doc_usuario, this.username, this.user_id);
 
             form.Show();
 
@@ -283,7 +283,7 @@ namespace ClinicaFrba
 
         private void buttonListadoEstadistico_Click(object sender, EventArgs e)
         {
-            Listados.Listados form = new Listados.Listados();
+            Listados.Listados form = new Listados.Listados(this.tipo_doc_usuario, this.username, this.user_id);
 
             form.Show();
 
