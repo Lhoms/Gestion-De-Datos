@@ -15,7 +15,7 @@ Estrategia
 -No se puede modificar un rol que esta dado de baja.
 -El documento y tipo de documento se consideran como correctos al ingresarse, no podran modificarse ya que integran el username.
 -En la busqueda de afiliados, al contrario que en el alta, no se validan los datos (por ejemplo si el mail esta escrito completamente), habilitando asi que si recuerda una parte del mail se pueda buscar asi.
--
+-El campo familiares afil_familiares de afiliado se refiere al numero de personas que se encuentran en su grupo familiar y no a su numero de familiares real.
 -
 -
 -
