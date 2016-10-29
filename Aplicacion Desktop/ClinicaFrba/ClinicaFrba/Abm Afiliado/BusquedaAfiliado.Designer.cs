@@ -356,6 +356,7 @@
             this.Controls.Add(this.dataGridViewAfiliados);
             this.Controls.Add(this.groupBox1);
             this.Name = "BusquedaAfiliado";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "ModificarAfiliado";
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();

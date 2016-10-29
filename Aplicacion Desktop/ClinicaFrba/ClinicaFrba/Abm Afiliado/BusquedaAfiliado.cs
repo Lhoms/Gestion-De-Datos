@@ -77,24 +77,24 @@ namespace ClinicaFrba.Abm_Afiliado
 
         public DataTable getAfiliadosSegunDatos(extras.Afiliado afiliado)
         {
-            string izq = "'%";
-            string der = "%'";;
+            string izq = "%";
+            string der = "%";
 
             
             SqlParameter[] dbParams = new SqlParameter[]
                     {
-                        DAL.Classes.DBHelper.MakeParam("@username", SqlDbType.VarChar, 0, izq+ afiliado.username +der),
-                        DAL.Classes.DBHelper.MakeParam("@tipo_doc", SqlDbType.VarChar, 0, izq+ tipo_doc[afiliado.tipo_doc].ToString() +der),
-                        DAL.Classes.DBHelper.MakeParam("@nombre", SqlDbType.VarChar, 0, izq+ afiliado.nombre +der),
-                        DAL.Classes.DBHelper.MakeParam("@apellido", SqlDbType.VarChar, 0, izq+ afiliado.apellido +der),
-                        DAL.Classes.DBHelper.MakeParam("@documento", SqlDbType.VarChar, 0, izq+ afiliado.documento_s+der),
-                        DAL.Classes.DBHelper.MakeParam("@direccion", SqlDbType.VarChar, 0, izq+ afiliado.direccion +der),
-                        DAL.Classes.DBHelper.MakeParam("@telefono", SqlDbType.VarChar, 0, izq+ afiliado.telefono_s +der),
-                        DAL.Classes.DBHelper.MakeParam("@mail", SqlDbType.VarChar, 0, izq+ afiliado.mail +der),
-                        DAL.Classes.DBHelper.MakeParam("@sexo", SqlDbType.VarChar, 0, izq+ afiliado.sexo +der),
-                        DAL.Classes.DBHelper.MakeParam("@fechaNac", SqlDbType.VarChar, 0, izq+ afiliado.nacimiento.ToString() +der),
-                        DAL.Classes.DBHelper.MakeParam("@plan", SqlDbType.VarChar, 0, izq+ planes[afiliado.planMedico].ToString() +der),
-                        DAL.Classes.DBHelper.MakeParam("@nroAfiliado", SqlDbType.VarChar, 0, izq+ afiliado.numeroAfiliado_s +der),
+                        DAL.Classes.DBHelper.MakeParam("@username", SqlDbType.VarChar, 100, izq+ afiliado.username +der),
+                        DAL.Classes.DBHelper.MakeParam("@tipo_doc", SqlDbType.VarChar, 100, izq+ tipo_doc[afiliado.tipo_doc].ToString() +der),
+                        DAL.Classes.DBHelper.MakeParam("@nombre", SqlDbType.VarChar, 100, izq+ afiliado.nombre +der),
+                        DAL.Classes.DBHelper.MakeParam("@apellido", SqlDbType.VarChar, 100, izq+ afiliado.apellido +der),
+                        DAL.Classes.DBHelper.MakeParam("@documento", SqlDbType.VarChar, 100, izq+ afiliado.documento_s+der),
+                        DAL.Classes.DBHelper.MakeParam("@direccion", SqlDbType.VarChar, 100, izq+ afiliado.direccion +der),
+                        DAL.Classes.DBHelper.MakeParam("@telefono", SqlDbType.VarChar, 100, izq+ afiliado.telefono_s +der),
+                        DAL.Classes.DBHelper.MakeParam("@mail", SqlDbType.VarChar, 100, izq+ afiliado.mail +der),
+                        DAL.Classes.DBHelper.MakeParam("@sexo", SqlDbType.VarChar, 100, izq+ afiliado.sexo +der),
+                        DAL.Classes.DBHelper.MakeParam("@fechaNac", SqlDbType.VarChar, 100, izq+der),
+                        DAL.Classes.DBHelper.MakeParam("@plan", SqlDbType.VarChar, 100, izq+ planes[afiliado.planMedico].ToString() +der),
+                        DAL.Classes.DBHelper.MakeParam("@nroAfiliado", SqlDbType.VarChar, 100, izq+ afiliado.numeroAfiliado_s +der),
                     };
 
 
@@ -111,6 +111,7 @@ namespace ClinicaFrba.Abm_Afiliado
         private void cmdBuscar_Click(object sender, EventArgs e)
         {
             obtenerDatos(this.afiliado);
+
             result = getAfiliadosSegunDatos(this.afiliado);
             this.dataGridViewAfiliados.DataSource = result;
         }
@@ -125,6 +126,7 @@ namespace ClinicaFrba.Abm_Afiliado
             this.textBoxDireccion.Text = "";
             this.textBoxTelefono.Text = "";
             this.textBoxNroAfiliado.Text = "";
+
         }
 
         private void buttonVolver_Click(object sender, EventArgs e)

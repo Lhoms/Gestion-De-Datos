@@ -340,7 +340,7 @@ INSERT INTO NUL.Usuario (user_tipodoc, user_username, user_pass) VALUES
 
 INSERT INTO NUL.Persona (pers_id ,pers_nombre, pers_apellido, pers_doc, pers_dire, pers_tel, pers_mail, pers_fecha_nac)
 (
-		SELECT DISTINCT M.Paciente_Dni,  M.Paciente_Nombre, M.Paciente_Apellido, M.Paciente_Dni, M.Paciente_Direccion, M.Paciente_Telefono,
+		SELECT DISTINCT U.user_id,  M.Paciente_Nombre, M.Paciente_Apellido, M.Paciente_Dni, M.Paciente_Direccion, M.Paciente_Telefono,
 						M.Paciente_Mail, M.Paciente_Fecha_Nac
 		FROM gd_esquema.Maestra M JOIN  NUL.Usuario U ON CAST(M.Paciente_Dni AS CHAR) = U.user_username
 		WHERE U.user_tipodoc  = 1
