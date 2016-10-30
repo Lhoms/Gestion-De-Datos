@@ -170,6 +170,7 @@ CREATE TABLE NUL.Bono_compra
 		bonoc_id 				numeric(18,0) IDENTITY(1,1) PRIMARY KEY,
 		bonoc_id_usuario  		numeric(18,0),
 		bonoc_fecha		  		datetime,
+		bonoc_fecha_impresion   datetime,
 		bonoc_cantidad  		numeric(18,0),
 		bonoc_monto_total  		numeric(16,2),
 
@@ -421,9 +422,9 @@ INSERT INTO NUL.Afiliado(afil_id, afil_estado, afil_plan_med, afil_nro_afiliado,
 );
 
 
-INSERT INTO NUL.Bono_compra(bonoc_id_usuario, bonoc_fecha, bonoc_cantidad, bonoc_monto_total) 
+INSERT INTO NUL.Bono_compra(bonoc_id_usuario, bonoc_fecha, bonoc_fecha_impresion, bonoc_cantidad, bonoc_monto_total) 
 (
-	SELECT U.user_id, M.Compra_Bono_Fecha, COUNT(M.Bono_Consulta_Numero), (COUNT(*) * M.Plan_Med_Precio_Bono_Consulta) 
+	SELECT U.user_id, M.Compra_Bono_Fecha, M.Bono_Consulta_Fecha_Impresion, COUNT(M.Bono_Consulta_Numero), (COUNT(*) * M.Plan_Med_Precio_Bono_Consulta) 
 	FROM gd_esquema.Maestra M JOIN  NUL.Usuario U ON CAST(M.Paciente_Dni AS CHAR) = U.user_username
 											     AND U.user_tipodoc = 1
 	WHERE M.Bono_Consulta_Numero IS NOT NULL AND M.Turno_Numero IS NULL
@@ -772,6 +773,11 @@ END
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID('NUL.sp_set_llegada'))
 BEGIN
     DROP PROCEDURE NUL.sp_set_llegada
+END
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID('NUL.sp_new_bono'))
+BEGIN
+    DROP PROCEDURE NUL.sp_new_bono
 END
 
 GO
