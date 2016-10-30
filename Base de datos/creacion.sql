@@ -739,6 +739,11 @@ BEGIN
     DROP PROCEDURE NUL.sp_cancelar_turno
 END
 
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID('NUL.sp_set_pedir_turno'))
+BEGIN
+    DROP PROCEDURE NUL.sp_set_pedir_turno
+END
+
 GO
 
 CREATE PROCEDURE NUL.sp_get_top5_esp_cancel
@@ -993,7 +998,7 @@ BEGIN
 END
 GO
 
-CREATE PROCEDURE sp_get_turnos_pedidos(@user_id numeric(18,0), @nro_afil numeric(18,0), @desde datetime, @hasta datetime, @prof_id numeric(18,0), @esp_id numeric(18,0))
+CREATE PROCEDURE NUL.sp_get_turnos_pedidos(@user_id numeric(18,0), @nro_afil numeric(18,0), @desde datetime, @hasta datetime, @prof_id numeric(18,0), @esp_id numeric(18,0))
 AS
 BEGIN
 	SELECT * FROM NUL.Turno T
@@ -1005,11 +1010,21 @@ BEGIN
 END
 GO
 
-CREATE PROCEDURE sp_cancelar_turno(@id_turno numeric(18,0), @tipo_cancel numeric(18,0), @detalle varchar(255), @result int output)
+CREATE PROCEDURE NUL.sp_cancelar_turno(@id_turno numeric(18,0), @tipo_cancel numeric(18,0), @detalle varchar(255), @result int output)
 AS
 BEGIN
 	INSERT INTO NUL.Cancelacion(cancel_turno_id, cancel_tipo, cancel_detalle)
 	VALUES(@id_turno, @tipo_cancel, @detalle)
+
+	set @result = @@ERROR
+END
+GO
+
+CREATE PROCEDURE NUL.sp_set_pedir_turno(@afil_id numeric(18,0), @prof_id numeric(18,0), @esp_id numeric(18,0), @fecha datetime, @result int output)
+AS 
+BEGIN
+	INSERT INTO NUL.Turno(turno_afiliado, turno_profesional, turno_especialidad, turno_fecha_hora)
+	VALUES(@afil_id,@prof_id,@esp_id,@fecha)
 
 	set @result = @@ERROR
 END
