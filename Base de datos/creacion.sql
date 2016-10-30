@@ -749,6 +749,16 @@ BEGIN
     DROP PROCEDURE NUL.sp_set_resultado_consulta
 END
 
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID('NUL.sp_new_agenda_profesional'))
+BEGIN
+    DROP PROCEDURE NUL.sp_new_agenda_profesional
+END
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID('NUL.sp_new_dia_agenda_profesional'))
+BEGIN
+    DROP PROCEDURE NUL.sp_new_dia_agenda_profesional
+END
+
 GO
 
 CREATE PROCEDURE NUL.sp_get_top5_esp_cancel
