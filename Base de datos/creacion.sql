@@ -411,7 +411,7 @@ INSERT INTO NUL.Plan_medico(plan_id, plan_descrip, plan_precio_bono_cons, plan_p
 
 INSERT INTO NUL.Afiliado(afil_id, afil_estado, afil_plan_med, afil_nro_afiliado, afil_familiares, afil_nro_consulta)
 (
-	SELECT DISTINCT U.user_id, '1', M.Plan_Med_Codigo, (M.Paciente_Dni*100), '0', ISNULL((SELECT COUNT(M2.Bono_Consulta_Numero)
+	SELECT DISTINCT U.user_id, '1', M.Plan_Med_Codigo, (M.Paciente_Dni*10+1)*100, '0', ISNULL((SELECT COUNT(M2.Bono_Consulta_Numero)
 																							FROM gd_esquema.Maestra M2
 																							WHERE M2.Paciente_Mail = M.Paciente_Mail
 																							  AND M2.Bono_Consulta_Numero IS NOT NULL 
@@ -526,13 +526,13 @@ INSERT INTO NUL.Agenda(agenda_prof_id, agenda_prof_esp_id, agenda_disp_desde, ag
 
 INSERT INTO NUL.Agenda_dia(dia_id, agenda_id, dia_hora_inicio, dia_hora_fin)
 (
-	SELECT DISTINCT DATEPART(dw, M.Turno_Fecha), A.agenda_id, MIN(CAST(M.Turno_Fecha as time)), MAX(CAST(M.Turno_Fecha as time))
+	SELECT DISTINCT DATEPART(dw, M.Turno_Fecha), A.agenda_id, MIN(CAST(M.Turno_Fecha as time)), dateadd(MI, 30, MAX(CAST(M.Turno_Fecha as time)))
 	FROM gd_esquema.Maestra M JOIN NUL.Usuario U ON M.Medico_Dni = U.user_username
 												AND U.user_tipodoc  = 1
 							  JOIN NUL.Agenda  A ON A.agenda_prof_id = U.user_id
 							                    AND A.agenda_prof_esp_id = M.Especialidad_Codigo
 	GROUP BY DATEPART(dw, M.Turno_Fecha), A.agenda_id
-	HAVING DATEPART(dw, M.Turno_Fecha) <> 7
+	--HAVING DATEPART(dw, M.Turno_Fecha) <> 7
 
 );
 
