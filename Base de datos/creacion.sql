@@ -428,7 +428,7 @@ INSERT INTO NUL.Bono_compra(bonoc_id_usuario, bonoc_fecha, bonoc_fecha_impresion
 	FROM gd_esquema.Maestra M JOIN  NUL.Usuario U ON CAST(M.Paciente_Dni AS CHAR) = U.user_username
 											     AND U.user_tipodoc = 1
 	WHERE M.Bono_Consulta_Numero IS NOT NULL AND M.Turno_Numero IS NULL
-	GROUP BY U.user_id, M.Compra_Bono_Fecha, M.Plan_Med_Precio_Bono_Consulta
+	GROUP BY U.user_id, M.Compra_Bono_Fecha, M.Bono_Consulta_Fecha_Impresion, M.Plan_Med_Precio_Bono_Consulta
 	--HAVING M.Compra_Bono_Fecha IS NOT NULL
 );
 
