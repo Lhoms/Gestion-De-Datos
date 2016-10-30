@@ -937,6 +937,13 @@ BEGIN
 END
 GO
 
+CREATE PROCEDURE NUL.sp_del_funciones_rol(@id numeric(18,0), @result int)
+AS
+BEGIN
+	DELETE FROM NUL.Rol_funcionalidad WHERE rol_id = @id
+END
+GO
+
 CREATE PROCEDURE NUL.sp_new_rol(@descrip varchar(255), @id_new numeric(38,0) output)
 AS 
 BEGIN
