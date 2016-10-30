@@ -759,6 +759,11 @@ BEGIN
     DROP PROCEDURE NUL.sp_new_dia_agenda_profesional
 END
 
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID('NUL.sp_set_matricula_profesional'))
+BEGIN
+    DROP PROCEDURE NUL.sp_set_matricula_profesional
+END
+
 GO
 
 CREATE PROCEDURE NUL.sp_get_top5_esp_cancel
@@ -1072,6 +1077,16 @@ AS
 BEGIN
 	INSERT INTO NUL.Agenda_dia(dia_id, agenda_id, dia_hora_inicio, dia_hora_fin)
 	VALUES(@dia_id, @agenda_id, @hora_desde, @hora_hasta)
+
+	set @result = @@ERROR
+END
+GO
+
+CREATE PROCEDURE NUL.sp_set_matricula_profesional(@prof_id numeric(18,0), @matric numeric(18,0), @result int output)
+AS
+BEGIN
+	UPDATE NUL.Profesional SET prof_matric = @matric
+	WHERE prof_id = @prof_id
 
 	set @result = @@ERROR
 END
