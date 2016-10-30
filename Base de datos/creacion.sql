@@ -744,6 +744,11 @@ BEGIN
     DROP PROCEDURE NUL.sp_set_pedir_turno
 END
 
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID('NUL.sp_set_resultado_consulta'))
+BEGIN
+    DROP PROCEDURE NUL.sp_set_resultado_consulta
+END
+
 GO
 
 CREATE PROCEDURE NUL.sp_get_top5_esp_cancel
@@ -1027,5 +1032,16 @@ BEGIN
 	VALUES(@afil_id,@prof_id,@esp_id,@fecha)
 
 	set @result = @@ERROR
+END
+GO
+
+CREATE PROCEDURE NUL.sp_set_resultado_consulta(@cons_id numeric(18,0), @sintomas varchar(255), @enfermedades varchar(255), @result int output)
+AS
+BEGIN
+	UPDATE NUL.Consulta SET cons_enfermedades = @enfermedades,
+							cons_sintomas	  = @sintomas
+					  WHERE cons_id = @cons_id
+
+    set @result = @@ERROR
 END
 GO
