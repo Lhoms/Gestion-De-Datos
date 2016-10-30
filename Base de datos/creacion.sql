@@ -724,6 +724,16 @@ BEGIN
     DROP PROCEDURE NUL.sp_buscar_usuarios
 END
 
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID('NUL.sp_del_funciones_rol'))
+BEGIN
+    DROP PROCEDURE NUL.sp_del_funciones_rol
+END
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID('NUL.sp_get_turnos_pedidos'))
+BEGIN
+    DROP PROCEDURE NUL.sp_get_turnos_pedidos
+END
+
 GO
 
 CREATE PROCEDURE NUL.sp_get_top5_esp_cancel
@@ -973,5 +983,17 @@ BEGIN
 	   AND P.pers_fecha_nac LIKE @fechaNac
 	   AND A.afil_plan_med LIKE @plan
 	   AND A.afil_nro_afiliado LIKE @nroAfiliado
+END
+GO
+
+CREATE PROCEDURE sp_get_turnos_pedidos(@user_id numeric(18,0), @nro_afil numeric(18,0), @desde datetime, @hasta datetime, @prof_id numeric(18,0), @esp_id numeric(18,0))
+AS
+BEGIN
+	SELECT * FROM NUL.Turno T
+	WHERE T.turno_afiliado = @nro_afil
+	  AND T.turno_fecha_hora >= @desde
+	  AND T.turno_fecha_hora <= @hasta
+	  AND T.turno_profesional  LIKE @prof_id
+	  AND T.turno_especialidad LIKE @esp_id
 END
 GO
