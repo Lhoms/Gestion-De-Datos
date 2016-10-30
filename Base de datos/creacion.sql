@@ -1045,3 +1045,24 @@ BEGIN
     set @result = @@ERROR
 END
 GO
+
+CREATE PROCEDURE NUL.sp_new_agenda_profesional(@prof_id numeric(18,0), @esp_id numeric(18,0), @desde datetime, @hasta datetime, @id_new numeric(18,0) output)
+AS
+BEGIN
+	INSERT INTO NUL.Agenda(agenda_prof_id, agenda_prof_esp_id, agenda_disp_desde, agenda_disp_hasta)
+	VALUES(@prof_id, @esp_id, @desde, @hasta)
+
+	set @id_new = @@IDENTITY
+
+END
+GO
+
+CREATE PROCEDURE NUL.sp_new_dia_agenda_profesional(@dia_id numeric(18,0), @agenda_id numeric(18,0), @hora_desde time, @hora_hasta time, @result int output)
+AS
+BEGIN
+	INSERT INTO NUL.Agenda_dia(dia_id, agenda_id, dia_hora_inicio, dia_hora_fin)
+	VALUES(@dia_id, @agenda_id, @hora_desde, @hora_hasta)
+
+	set @result = @@ERROR
+END
+GO
