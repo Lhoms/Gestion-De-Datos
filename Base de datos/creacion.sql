@@ -764,6 +764,16 @@ BEGIN
     DROP PROCEDURE NUL.sp_set_matricula_profesional
 END
 
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID('NUL.sp_validar_bono'))
+BEGIN
+    DROP PROCEDURE NUL.sp_validar_bono
+END
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID('NUL.sp_set_llegada'))
+BEGIN
+    DROP PROCEDURE NUL.sp_set_llegada
+END
+
 GO
 
 CREATE PROCEDURE NUL.sp_get_top5_esp_cancel
@@ -1089,5 +1099,37 @@ BEGIN
 	WHERE prof_id = @prof_id
 
 	set @result = @@ERROR
+END
+GO
+
+CREATE PROCEDURE NUL.sp_validar_bono(@id_user numeric(18,0), @bono_id numeric(18,0), @result int output)
+AS
+BEGIN
+	SELECT COUNT(*) FROM NUL.Bono B JOIN NUL.Bono_compra BC ON BC.bonoc_id = B.bono_id
+								    JOIN NUL.Afiliado A ON BC.bonoc_id_usuario LIKE A.afil_nro_afiliado
+	WHERE B.bono_id = @bono_id
+	  AND A.afil_id = @id_user
+
+	set @result = @@ERROR
+END
+GO
+
+CREATE PROCEDURE NUL.sp_set_llegada(@id_cons numeric(18,0), @id_turno numeric(18,0), @hora_llegada time, @bono_id numeric(18,0), @result int output)
+AS
+BEGIN
+	UPDATE NUL.Turno SET turno_llegada = @hora_llegada
+	WHERE turno_id = @id_turno
+
+	set @result = @@ERROR
+
+	if @result = 0
+		begin
+
+		UPDATE NUL.Consulta SET cons_bono_usado = @bono_id
+		WHERE cons_id = @id_cons
+
+		set @result = @@ERROR
+
+		end
 END
 GO
