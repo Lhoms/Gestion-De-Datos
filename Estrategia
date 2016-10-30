@@ -1,10 +1,10 @@
 Estrategia
 
 -La migracion se hizo tomando como clave no repetible el documento de los pacientes y de los profesionales
--Se asumen que todos los documentos ingresados son tipo DNI
+-Se asumen que todos los documentos migrados son tipo DNI
 -Los usuarios se van a identificar mediante la combinacion de documento + tipo documento ya que el documento solo luego se podria repetir
 -Como admin es un caso especial en el login, se le dara tipo documento DNI, aunque no tenga documento se usara como validacion que ponga el campo DNI y no otro
--Al primer uso se le pide al profesional que ingrese su matricula
+-Al primer uso se le pide al profesional que ingrese su matricula, el cuadro de mensaje estara en pantalla junto al "home" hasta que ingrese su matricula y sea valida (!= "" y no tenga letras)
 -Como sexo default se definio M:masculino, un administrador podra modificarlo
 -Cada persona pertenece a un grupo familiar de solo el mismo, luego se podran conformar los grupos familiares 
 -Como la tabla maestra no tiene numero de afiliado se decidio usar dni+01 en caso del afiliado base, dni del base + 02 por conyuge, etc..

@@ -35,11 +35,11 @@
             this.groupBoxBaja = new System.Windows.Forms.GroupBox();
             this.buttonBaja = new System.Windows.Forms.Button();
             this.groupBoxModificarNombre = new System.Windows.Forms.GroupBox();
+            this.buttonCambiar = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.textBoxNuevoNombre = new System.Windows.Forms.TextBox();
             this.buttonAceptar = new System.Windows.Forms.Button();
             this.buttonCancelar = new System.Windows.Forms.Button();
-            this.buttonCambiar = new System.Windows.Forms.Button();
             this.groupBoxFuncionalidades.SuspendLayout();
             this.groupBoxBaja.SuspendLayout();
             this.groupBoxModificarNombre.SuspendLayout();
@@ -113,6 +113,16 @@
             this.groupBoxModificarNombre.TabStop = false;
             this.groupBoxModificarNombre.Text = "Cambiar nombre";
             // 
+            // buttonCambiar
+            // 
+            this.buttonCambiar.Location = new System.Drawing.Point(173, 79);
+            this.buttonCambiar.Name = "buttonCambiar";
+            this.buttonCambiar.Size = new System.Drawing.Size(75, 23);
+            this.buttonCambiar.TabIndex = 8;
+            this.buttonCambiar.Text = "Cambiar";
+            this.buttonCambiar.UseVisualStyleBackColor = true;
+            this.buttonCambiar.Click += new System.EventHandler(this.buttonCambiar_Click);
+            // 
             // label2
             // 
             this.label2.AutoSize = true;
@@ -141,23 +151,13 @@
             // 
             // buttonCancelar
             // 
-            this.buttonCancelar.Location = new System.Drawing.Point(536, 312);
+            this.buttonCancelar.Location = new System.Drawing.Point(535, 312);
             this.buttonCancelar.Name = "buttonCancelar";
             this.buttonCancelar.Size = new System.Drawing.Size(75, 23);
             this.buttonCancelar.TabIndex = 7;
-            this.buttonCancelar.Text = "Cancelar";
+            this.buttonCancelar.Text = "Volver";
             this.buttonCancelar.UseVisualStyleBackColor = true;
             this.buttonCancelar.Click += new System.EventHandler(this.buttonCancelar_Click);
-            // 
-            // buttonCambiar
-            // 
-            this.buttonCambiar.Location = new System.Drawing.Point(173, 79);
-            this.buttonCambiar.Name = "buttonCambiar";
-            this.buttonCambiar.Size = new System.Drawing.Size(75, 23);
-            this.buttonCambiar.TabIndex = 8;
-            this.buttonCambiar.Text = "Cambiar";
-            this.buttonCambiar.UseVisualStyleBackColor = true;
-            this.buttonCambiar.Click += new System.EventHandler(this.buttonCambiar_Click);
             // 
             // ModificarRol
             // 

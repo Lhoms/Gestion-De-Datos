@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ClinicaFrba.extras;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -13,9 +14,7 @@ namespace ClinicaFrba.Listados
 {
     public partial class Listados : Form
     {
-        string tipo_doc;
-        string username;
-        int user_id;
+        Sesion sesion;
 
         Dictionary<string, int> planes;
         List<string> plan_descrip;
@@ -25,13 +24,11 @@ namespace ClinicaFrba.Listados
 
         DataTable dt;
 
-        public Listados(string tipo_doc, string username, int user_id)
+        public Listados(Sesion sesion)
         {
             InitializeComponent();
 
-            this.tipo_doc = tipo_doc;
-            this.username = username;
-            this.user_id = user_id;
+            this.sesion = sesion;
 
             plan_descrip = new List<string>();
             planes = new Dictionary<string, int>();
@@ -212,7 +209,7 @@ namespace ClinicaFrba.Listados
 
         private void buttonVolver_Click(object sender, EventArgs e)
         {
-            Form1 form = new Form1(this.tipo_doc, this.username, this.user_id);
+            Form1 form = new Form1(this.sesion);
             form.Show();
             this.Close();
         }

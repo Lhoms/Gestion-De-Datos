@@ -16,6 +16,8 @@ namespace ClinicaFrba.Login
 {
     public partial class Login : Form
     {
+        Sesion sesion;
+
         string username;
         string password;
         int    tipo_doc_id;
@@ -54,8 +56,9 @@ namespace ClinicaFrba.Login
 
                 if (validarUsuario(textBoxUser.Text, this.tipo_doc_id, textBoxPass.Text))
                 {
+                    sesion = new Sesion(this.textBoxUser.Text, this.tipo_doc_id, this.user_id);
 
-                    Form1 form = new Form1(this.comboBoxTipo.Text, this.textBoxUser.Text, this.user_id);
+                    Form1 form = new Form1(this.sesion);
 
                     form.Show();
 

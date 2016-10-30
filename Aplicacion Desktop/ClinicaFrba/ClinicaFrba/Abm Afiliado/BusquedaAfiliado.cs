@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ClinicaFrba.extras;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -13,9 +14,8 @@ namespace ClinicaFrba.Abm_Afiliado
 {
     public partial class BusquedaAfiliado : Form
     {
-        string admin_tipo_doc;
-        string admin_username;
-        int admin_id;
+
+        Sesion sesion;
 
         DataTable result;
         extras.Afiliado afiliado;
@@ -27,15 +27,13 @@ namespace ClinicaFrba.Abm_Afiliado
         List<string> plan_descrip;
 
 
-        public BusquedaAfiliado(string admin_tipo_doc, string admin_username,int admin_id)
+        public BusquedaAfiliado(Sesion sesion)
         {
-            //try
-            //{
+            try
+            {
                 InitializeComponent();
 
-                this.admin_tipo_doc = admin_tipo_doc;
-                this.admin_username = admin_username;
-                this.admin_id = admin_id;
+                this.sesion = sesion;
 
 
 
@@ -50,11 +48,11 @@ namespace ClinicaFrba.Abm_Afiliado
                 llenarComboBoxes();
 
 
-            //}
-            //catch (Exception exc)
-            //{
-            //    MessageBox.Show(exc.Message);
-            //}
+            }
+            catch (Exception exc)
+            {
+                MessageBox.Show(exc.Message);
+            }
 
         }
 
@@ -131,7 +129,7 @@ namespace ClinicaFrba.Abm_Afiliado
 
         private void buttonVolver_Click(object sender, EventArgs e)
         {
-            Form1 form = new Form1(this.admin_tipo_doc, this.admin_username, this.admin_id);
+            Form1 form = new Form1(this.sesion);
             form.Show();
             this.Close();
         }

@@ -19,30 +19,19 @@ namespace ClinicaFrba.Abm_Afiliado
 
     public partial class AltaAfiliado : Form
     {
-
+        Sesion sesion;
         Afiliado afiliado;
         ArrayList familiares;
-        
-        string adm_tipo_doc;
-        string adm_username;
-        int adm_user_id;
 
         DataSet dsDoc, dsEstado, dsPlanes;
 
-        public AltaAfiliado()
-        {
-            InitializeComponent();
-        }
-
-        public AltaAfiliado(String tipo_doc_usuario, String usuario, int adm_user_id)
+        public AltaAfiliado(Sesion sesion)
         {        
             InitializeComponent();
            
             this.afiliado = new Afiliado();
 
-            this.adm_tipo_doc = tipo_doc_usuario;
-            this.adm_username = usuario;
-            this.adm_user_id = adm_user_id;
+            this.sesion = sesion;    
             this.familiares = new ArrayList();
             
             llenarComboBoxes();
@@ -96,7 +85,7 @@ namespace ClinicaFrba.Abm_Afiliado
 
                     
 
-                    Form1 form = new Form1(this.adm_tipo_doc, this.adm_username, this.adm_user_id);
+                    Form1 form = new Form1(this.sesion);
 
                     form.Show();
 
@@ -219,7 +208,7 @@ namespace ClinicaFrba.Abm_Afiliado
         private void buttonCancelar_Click(object sender, EventArgs e)
         {
 
-            Form1 form = new Form1(this.adm_tipo_doc, this.adm_username, this.adm_user_id);
+            Form1 form = new Form1(this.sesion);
 
             form.Show();
 

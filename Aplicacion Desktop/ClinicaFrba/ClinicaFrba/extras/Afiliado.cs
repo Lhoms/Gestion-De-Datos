@@ -8,6 +8,7 @@ namespace ClinicaFrba.extras
 {
     public class Afiliado
     {
+        public int id;
 
         //Atributos como usuario
         public string username; //documento en string
@@ -30,6 +31,7 @@ namespace ClinicaFrba.extras
         public string numeroAfiliado_s;
         public string estadoCivil;
         public string planMedico;
+        public int planMedico_id;
         public int cantFamiliares;
         public int nroConsulta;
 

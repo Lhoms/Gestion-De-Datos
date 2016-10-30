@@ -14,9 +14,8 @@ namespace ClinicaFrba.AbmRol
 {
     public partial class ModificarRol : Form
     {
-        private string tipo_doc_usuario;        //datos del usuario actual
-        private string username;
-        private int user_id;
+
+        Sesion sesion;
 
         List<string> func_descrip;              //arrays para trabajar combo box + check list
         Dictionary<string, int> funcionalidades;
@@ -30,13 +29,11 @@ namespace ClinicaFrba.AbmRol
 
         int rol_actual;
 
-        public ModificarRol(string tipo_doc_usuario, string username, int user_id)
+        public ModificarRol(Sesion sesion)
         {
             InitializeComponent();
 
-            this.tipo_doc_usuario = tipo_doc_usuario;      //guardo los datos del usuario actual
-            this.username = username;
-            this.user_id = user_id;
+            this.sesion = sesion;
 
             func_descrip = new List<string>();              //inicializo
             funcionalidadesElegidas = new List<int>();
@@ -68,8 +65,8 @@ namespace ClinicaFrba.AbmRol
             funcionalidadesDelRol.Clear();
             ObtenerFuncionalidadesPorRol();     //va a obtener una lista de booleanos en orden para asignar al checklist
 
-            int i;
 
+            int i;
 
             for (i = 0; i < funcionalidades.Count; i++)
             {
@@ -326,7 +323,7 @@ namespace ClinicaFrba.AbmRol
             else         
             {
                 MessageBox.Show("Se modifico el rol correctamente");
-                ModificarRol form = new ModificarRol(this.tipo_doc_usuario, this.username, this.user_id);
+                ModificarRol form = new ModificarRol(this.sesion);
                 form.Show();
                 this.Close();
             }
@@ -351,7 +348,7 @@ namespace ClinicaFrba.AbmRol
             else
             {
                 MessageBox.Show("Se deshabilito el rol corretamente");
-                ModificarRol form = new ModificarRol(this.tipo_doc_usuario, this.username, this.user_id);
+                ModificarRol form = new ModificarRol(this.sesion);
                 form.Show();
                 this.Close();
             }
@@ -370,20 +367,25 @@ namespace ClinicaFrba.AbmRol
 
         private void buttonCancelar_Click(object sender, EventArgs e)
         {
-            Form1 form = new Form1(this.tipo_doc_usuario, this.username, this.user_id);
+            Form1 form = new Form1(this.sesion);
             form.Show();
             this.Close();
         }
 
         private void buttonAceptar_Click(object sender, EventArgs e)
         {
-
             eliminarFuncionalidadesDelRol(rol_actual);
 
             foreach(string s in this.checkedListFunciones.CheckedItems)
             {
                 AgregarFuncionalidadARol(rol_actual, funcionalidades[s]);
             }
+
+            MessageBox.Show("Rol modificado correctamente");
+
+            Form1 form = new Form1(this.sesion);
+            form.Show();
+            this.Close();
 
         }
 

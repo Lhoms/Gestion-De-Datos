@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ClinicaFrba.extras;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -13,22 +14,19 @@ namespace ClinicaFrba.AbmRol
 {
     public partial class AltaRol : Form
     {
-        private string tipo_doc_usuario;
-        private string username;
-        private int user_id;
+
+        Sesion sesion;
 
         List<string> func_descrip;
         Dictionary<string, int> funcionalidades;
         List<int> funcionalidadesElegidas;
 
 
-        public AltaRol(string tipo_doc_usuario, string username, int user_id)
+        public AltaRol(Sesion sesion)
         {
             InitializeComponent();
 
-            this.tipo_doc_usuario = tipo_doc_usuario;
-            this.username = username;
-            this.user_id = user_id;
+            this.sesion = sesion;
 
             func_descrip = new List<string>();
             funcionalidadesElegidas = new List<int>();
@@ -80,7 +78,7 @@ namespace ClinicaFrba.AbmRol
                 }
 
 
-                Form1 form = new Form1(this.tipo_doc_usuario, this.username, this.user_id);
+                Form1 form = new Form1(this.sesion);
 
                 form.Show();
 
@@ -90,7 +88,7 @@ namespace ClinicaFrba.AbmRol
 
             catch (Exception exc)
             {
-                MessageBox.Show(exc.Message);
+                MessageBox.Show(exc.Message, "Aviso", MessageBoxButtons.OK);
             }
 
         }
@@ -172,7 +170,7 @@ namespace ClinicaFrba.AbmRol
 
         private void buttonCancelar_Click(object sender, EventArgs e)
         {
-            Form1 form = new Form1(this.tipo_doc_usuario, this.username, this.user_id);
+            Form1 form = new Form1(this.sesion);
 
             form.Show();
 

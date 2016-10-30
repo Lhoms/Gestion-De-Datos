@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ClinicaFrba.extras;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Configuration;
@@ -14,21 +15,19 @@ namespace ClinicaFrba
 {
     public partial class Form1 : Form
     {
-        string username;
-        string tipo_doc_usuario;
-        int user_id;
+        Sesion sesion;
+
         DataTable dtRoles;
         Dictionary<string, int> rolesId;
 
 
-        public Form1(String tipo_doc_usuario, String username, int user_id)
+        public Form1(Sesion sesion)
         {
-
             InitializeComponent();
 
-            this.tipo_doc_usuario = tipo_doc_usuario;   //Me guardo el usuario actual del sistema
-            this.username = username;
-            this.user_id = user_id;
+            this.sesion = sesion;
+
+            siEsProfesionalComprobarSuMatricula();
 
             comboBoxRol.ValueMember = "rol_descrip";
             this.dtRoles = rolesDelUsuario();
@@ -37,9 +36,30 @@ namespace ClinicaFrba
             rolesId = new Dictionary<string,int>();
 
             this.labelFechaActual.Text = ConfigurationManager.AppSettings.Get("FechaSistema");
-            ID_Usuario.Text = tipo_doc_usuario + " - " + username;
+            ID_Usuario.Text = sesion.tipo_doc_id + " - " + sesion.username;
 
             ObtenerFuncionalidadesPorRolPorUsuario();
+        }
+
+        private void siEsProfesionalComprobarSuMatricula()
+        {
+            string expresion = "SELECT * FROM NUL.Profesional WHERE prof_id = '" + this.sesion.user_id + "'";
+
+            SqlDataReader lector = DAL.Classes.DBHelper.ExecuteQuery_DR(expresion);
+
+            if (lector != null)
+            {
+                if (lector.HasRows)
+                {
+                    Abm_Afiliado.MatriculaFaltante form = new Abm_Afiliado.MatriculaFaltante(this.sesion);
+                    form.Show();
+                }
+            }
+            else
+            {
+                //no es profesional
+            }
+
         }
 
         private void ObtenerFuncionalidadesPorRolPorUsuario()
@@ -153,7 +173,7 @@ namespace ClinicaFrba
         {
             SqlParameter[] dbParams = new SqlParameter[]
                     {
-                         DAL.Classes.DBHelper.MakeParam("@id", SqlDbType.Int, 0, this.user_id),
+                         DAL.Classes.DBHelper.MakeParam("@id", SqlDbType.Int, 0, sesion.user_id),
                     };
 
             DataTable d = DAL.Classes.DBHelper.ExecuteDataSet("NUL.sp_get_roles_disponibles_por_usuario", dbParams).Tables[0];
@@ -184,7 +204,7 @@ namespace ClinicaFrba
 
         private void buttonAltaRol_Click(object sender, EventArgs e)
         {
-            AbmRol.AltaRol form = new AbmRol.AltaRol(this.tipo_doc_usuario, this.username, this.user_id);
+            AbmRol.AltaRol form = new AbmRol.AltaRol(this.sesion);
 
             form.Show();
 
@@ -193,7 +213,7 @@ namespace ClinicaFrba
 
         private void buttonBajaRol_Click(object sender, EventArgs e)
         {
-            AbmRol.ModificarRol form = new AbmRol.ModificarRol(this.tipo_doc_usuario, this.username, this.user_id);
+            AbmRol.ModificarRol form = new AbmRol.ModificarRol(this.sesion);
 
             form.Show();
 
@@ -202,7 +222,7 @@ namespace ClinicaFrba
 
         private void buttonModificarRol_Click(object sender, EventArgs e)
         {
-            AbmRol.ModificarRol form = new AbmRol.ModificarRol(this.tipo_doc_usuario, this.username, this.user_id);
+            AbmRol.ModificarRol form = new AbmRol.ModificarRol(this.sesion);
 
             form.Show();
 
@@ -211,7 +231,7 @@ namespace ClinicaFrba
 
         private void buttonAltaAfiliado_Click(object sender, EventArgs e)
         {
-            Abm_Afiliado.AltaAfiliado form = new Abm_Afiliado.AltaAfiliado(this.tipo_doc_usuario, this.username, this.user_id);
+            Abm_Afiliado.AltaAfiliado form = new Abm_Afiliado.AltaAfiliado(this.sesion);
 
             form.Show();
 
@@ -220,7 +240,7 @@ namespace ClinicaFrba
 
         private void buttonBajaAfiliado_Click(object sender, EventArgs e)
         {
-            Abm_Afiliado.BusquedaAfiliado form = new Abm_Afiliado.BusquedaAfiliado(this.tipo_doc_usuario, this.username, this.user_id);
+            Abm_Afiliado.BusquedaAfiliado form = new Abm_Afiliado.BusquedaAfiliado(this.sesion);
 
             form.Show();
 
@@ -229,7 +249,7 @@ namespace ClinicaFrba
 
         private void buttonModificarAfiliado_Click(object sender, EventArgs e)
         {
-            Abm_Afiliado.BusquedaAfiliado form = new Abm_Afiliado.BusquedaAfiliado(this.tipo_doc_usuario, this.username, this.user_id);
+            Abm_Afiliado.BusquedaAfiliado form = new Abm_Afiliado.BusquedaAfiliado(this.sesion);
 
             form.Show();
 
@@ -238,7 +258,7 @@ namespace ClinicaFrba
 
         private void buttonCompraBono_Click(object sender, EventArgs e)
         {
-            Compra_Bono.CompraBono form = new Compra_Bono.CompraBono();
+            Compra_Bono.CompraBono form = new Compra_Bono.CompraBono(sesion);
 
             form.Show();
 
@@ -274,7 +294,7 @@ namespace ClinicaFrba
 
         private void buttonRegistrarResultado_Click(object sender, EventArgs e)
         {
-            Registro_Resultado.RegistrarResultado form = new Registro_Resultado.RegistrarResultado();
+            Registro_Resultado.RegistrarResultado form = new Registro_Resultado.RegistrarResultado(this.sesion);
 
             form.Show();
 
@@ -283,7 +303,7 @@ namespace ClinicaFrba
 
         private void buttonListadoEstadistico_Click(object sender, EventArgs e)
         {
-            Listados.Listados form = new Listados.Listados(this.tipo_doc_usuario, this.username, this.user_id);
+            Listados.Listados form = new Listados.Listados(this.sesion);
 
             form.Show();
 
