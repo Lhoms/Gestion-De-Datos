@@ -972,7 +972,7 @@ BEGIN
 END
 GO
 
-CREATE PROCEDURE NUL.sp_del_funciones_rol(@id numeric(18,0), @result int)
+CREATE PROCEDURE NUL.sp_del_funciones_rol(@id numeric(18,0), @result int output)
 AS
 BEGIN
 	DELETE FROM NUL.Rol_funcionalidad WHERE rol_id = @id
