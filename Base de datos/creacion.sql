@@ -734,6 +734,11 @@ BEGIN
     DROP PROCEDURE NUL.sp_get_turnos_pedidos
 END
 
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID('NUL.sp_cancelar_turno'))
+BEGIN
+    DROP PROCEDURE NUL.sp_cancelar_turno
+END
+
 GO
 
 CREATE PROCEDURE NUL.sp_get_top5_esp_cancel
@@ -951,6 +956,8 @@ CREATE PROCEDURE NUL.sp_del_funciones_rol(@id numeric(18,0), @result int)
 AS
 BEGIN
 	DELETE FROM NUL.Rol_funcionalidad WHERE rol_id = @id
+
+	set @result = @@ERROR
 END
 GO
 
@@ -995,5 +1002,15 @@ BEGIN
 	  AND T.turno_fecha_hora <= @hasta
 	  AND T.turno_profesional  LIKE @prof_id
 	  AND T.turno_especialidad LIKE @esp_id
+END
+GO
+
+CREATE PROCEDURE sp_cancelar_turno(@id_turno numeric(18,0), @tipo_cancel numeric(18,0), @detalle varchar(255), @result int output)
+AS
+BEGIN
+	INSERT INTO NUL.Cancelacion(cancel_turno_id, cancel_tipo, cancel_detalle)
+	VALUES(@id_turno, @tipo_cancel, @detalle)
+
+	set @result = @@ERROR
 END
 GO
