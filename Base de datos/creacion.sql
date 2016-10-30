@@ -1130,6 +1130,30 @@ BEGIN
 
 		set @result = @@ERROR
 
+		if @result = 0
+		   begin
+			UPDATE NUL.Bono SET bono_usado = 1
+			WHERE bono_id = @bono_id
+
+			set @result = @@ERROR
+
+		   end
+
 		end
+END
+GO
+
+CREATE PROCEDURE NUL.sp_new_bono(@id_user numeric(18,0), @fecha datetime, @cantidad numeric(18,0), @monto numeric(16,2), @plan numeric(18,0), @result int output)
+AS
+BEGIN
+	INSERT INTO NUL.Bono_compra(bonoc_id_usuario, bonoc_fecha, bonoc_cantidad, bonoc_monto_total)
+	VALUES(@id_user, @fecha, @cantidad, @monto)
+
+	if @@ERROR = 0
+		INSERT INTO NUL.Bono(bono_compra, bono_plan, bono_nro_consulta, bono_usado)
+		VALUES(@@IDENTITY, @plan, 0, 0)
+
+	set @result = @@ERROR
+
 END
 GO
