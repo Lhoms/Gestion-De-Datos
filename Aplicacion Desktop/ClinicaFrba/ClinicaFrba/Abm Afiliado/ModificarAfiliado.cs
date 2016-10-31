@@ -26,9 +26,27 @@ namespace ClinicaFrba.Abm_Afiliado
             this.labelUsuario.Text = this.afiliado.Cells[2].Value.ToString() + " - " +
                                      this.afiliado.Cells[4].Value.ToString() + " " +
                                      this.afiliado.Cells[5].Value.ToString(); ;
-            this.labelNroAfil.Text = this.afiliado.Cells[13].Value.ToString(); 
+            this.labelNroAfil.Text = this.afiliado.Cells[13].Value.ToString();
 
+            modificacionHabilitada();
 
+        }
+
+        private void modificacionHabilitada()
+        {
+            if ((bool)this.afiliado.Cells[14].Value)
+            {
+                this.buttonBaja.Text = "Dar de baja";
+                this.groupBoxDatosPersonales.Enabled = true;
+                this.groupBoxDatosAfiliado.Enabled = true;
+            }
+
+            else
+            {
+                this.buttonBaja.Text = "Dar de alta";
+                this.groupBoxDatosPersonales.Enabled = false;
+                this.groupBoxDatosAfiliado.Enabled = false;
+            }
         }
     }
 }

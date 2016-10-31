@@ -733,6 +733,11 @@ BEGIN
     DROP PROCEDURE NUL.sp_del_funciones_rol
 END
 
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID('NUL.sp_habil_usuario'))
+BEGIN
+    DROP PROCEDURE NUL.sp_habil_usuario
+END
+
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID('NUL.sp_get_turnos_pedidos'))
 BEGIN
     DROP PROCEDURE NUL.sp_get_turnos_pedidos
@@ -946,6 +951,16 @@ CREATE PROCEDURE NUL.sp_del_usuario(@id numeric(18,0), @result int output)
 AS 
 BEGIN
 	UPDATE NUL.Usuario SET user_habilitado = 0
+	WHERE user_id = @id
+
+	set @result = @@ERROR
+END
+GO
+
+CREATE PROCEDURE NUL.sp_habil_usuario(@id numeric(18,0), @result int output)
+AS 
+BEGIN
+	UPDATE NUL.Usuario SET user_habilitado = 1
 	WHERE user_id = @id
 
 	set @result = @@ERROR
