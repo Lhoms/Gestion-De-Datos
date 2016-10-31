@@ -346,7 +346,15 @@ INSERT INTO NUL.Persona (pers_id ,pers_nombre, pers_apellido, pers_doc, pers_dir
 						M.Paciente_Mail, M.Paciente_Fecha_Nac
 		FROM gd_esquema.Maestra M JOIN  NUL.Usuario U ON CAST(M.Paciente_Dni AS CHAR) = U.user_username
 		WHERE U.user_tipodoc  = 1
-);		                                             
+);
+
+INSERT INTO NUL.Persona (pers_id ,pers_nombre, pers_apellido, pers_doc, pers_dire, pers_tel, pers_mail, pers_fecha_nac)
+(
+		SELECT DISTINCT U.user_id,  M.Medico_Nombre, M.Medico_Apellido, M.Medico_Dni, M.Medico_Direccion, M.Medico_Telefono,
+						M.Medico_Mail, M.Medico_Fecha_Nac
+		FROM gd_esquema.Maestra M JOIN  NUL.Usuario U ON CAST(M.Medico_Dni AS CHAR) = U.user_username
+		WHERE U.user_tipodoc  = 1
+);				                                             
 
 
 
@@ -1042,7 +1050,7 @@ GO
 CREATE PROCEDURE NUL.sp_buscar_usuarios(@username varchar(255), @tipo_doc varchar(255), @nombre varchar(255), @apellido varchar(255), @documento varchar(255), @direccion varchar(255), @telefono varchar(255), @mail varchar(255), @sexo varchar(255), @fechaNac varchar(255), @plan varchar(255), @nroAfiliado varchar(255))
 AS
 BEGIN
-	SELECT U.user_id, U.user_username, U.user_tipodoc, P.pers_nombre, P.pers_apellido, P.pers_doc, P.pers_dire, P.pers_tel, P.pers_mail, P.pers_sexo, P.pers_fecha_nac, A.afil_plan_med, A.afil_nro_afiliado, U.user_habilitado
+	SELECT U.user_id, U.user_username, U.user_tipodoc, P.pers_nombre, P.pers_apellido, P.pers_doc, P.pers_dire, P.pers_tel, P.pers_mail, P.pers_sexo, P.pers_fecha_nac, A.afil_plan_med, A.afil_nro_afiliado, U.user_habilitado, A.afil_estado
 	  FROM NUL.Usuario U JOIN NUL.Persona P ON P.pers_id = U.user_id
 	                     JOIN NUL.Afiliado A ON A.afil_id = P.pers_id
 	 WHERE U.user_username LIKE @username
