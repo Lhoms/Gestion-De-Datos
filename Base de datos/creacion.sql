@@ -213,6 +213,7 @@ CREATE TABLE NUL.Cancelacion
 		cancel_turno_id 			numeric(18,0) IDENTITY(1,1) PRIMARY KEY,
 		cancel_tipo					numeric(18,0),
 		cancel_detalle				varchar(255),
+		cancel_fecha				datetime,
 
 		CONSTRAINT FK_cancelacion_tipo FOREIGN KEY (cancel_tipo) REFERENCES NUL.Tipo_cancelacion (tipo_cancel_id)
 	);
@@ -551,7 +552,7 @@ IF OBJECT_ID ('NUL.v_esp_canceladas', 'V') IS NOT NULL
 GO
 CREATE VIEW NUL.v_esp_canceladas(esp_id, esp_descrip, tipo_esp_id, tipo_esp_descrip, cant)
 AS
-	SELECT E.esp_id, E.esp_descrip, TE.tipo_esp_id, TE.tipo_esp_descrip, COUNT(C.cancel_turno_id) AS cant 
+	SELECT E.esp_id, E.esp_descrip, TE.tipo_esp_id, TE.tipo_esp_descrip, COUNT(C.cancel_turno_id) AS cant, C.cancel_fecha 
 	  FROM NUL.Especialidad E JOIN NUL.Tipo_esp TE ON TE.tipo_esp_id = E.esp_tipo
 							  JOIN NUL.Turno	T  ON T.turno_especialidad = E.esp_id
 							  JOIN NUL.Cancelacion C ON C.cancel_turno_id = T.turno_id
@@ -1039,11 +1040,11 @@ BEGIN
 END
 GO
 
-CREATE PROCEDURE NUL.sp_get_turnos_pedidos(@user_id numeric(18,0), @nro_afil numeric(18,0), @desde datetime, @hasta datetime, @prof_id numeric(18,0), @esp_id numeric(18,0))
+CREATE PROCEDURE NUL.sp_get_turnos_pedidos(@user_id numeric(18,0), @desde datetime, @hasta datetime, @prof_id numeric(18,0), @esp_id numeric(18,0))
 AS
 BEGIN
 	SELECT * FROM NUL.Turno T
-	WHERE T.turno_afiliado = @nro_afil
+	WHERE T.turno_afiliado = @user_id
 	  AND T.turno_fecha_hora >= @desde
 	  AND T.turno_fecha_hora <= @hasta
 	  AND T.turno_profesional  LIKE @prof_id
@@ -1051,11 +1052,11 @@ BEGIN
 END
 GO
 
-CREATE PROCEDURE NUL.sp_cancelar_turno(@id_turno numeric(18,0), @tipo_cancel numeric(18,0), @detalle varchar(255), @result int output)
+CREATE PROCEDURE NUL.sp_cancelar_turno(@id_turno numeric(18,0), @tipo_cancel numeric(18,0), @detalle varchar(255), @fecha datetime, @result int output)
 AS
 BEGIN
-	INSERT INTO NUL.Cancelacion(cancel_turno_id, cancel_tipo, cancel_detalle)
-	VALUES(@id_turno, @tipo_cancel, @detalle)
+	INSERT INTO NUL.Cancelacion(cancel_turno_id, cancel_tipo, cancel_detalle, cancel_fecha)
+	VALUES(@id_turno, @tipo_cancel, @detalle, @fecha)
 
 	set @result = @@ERROR
 END
