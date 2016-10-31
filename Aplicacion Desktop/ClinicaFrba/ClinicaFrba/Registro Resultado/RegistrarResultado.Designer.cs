@@ -29,13 +29,15 @@
         private void InitializeComponent()
         {
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.label8 = new System.Windows.Forms.Label();
+            this.numericMinutos = new System.Windows.Forms.NumericUpDown();
+            this.numericHora = new System.Windows.Forms.NumericUpDown();
+            this.label7 = new System.Windows.Forms.Label();
             this.comboBoxTipoEsp = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
             this.buttonAceptar = new System.Windows.Forms.Button();
-            this.buttonLimpiar = new System.Windows.Forms.Button();
             this.comboBoxEsp = new System.Windows.Forms.ComboBox();
             this.label5 = new System.Windows.Forms.Label();
-            this.comboBoxLlegada = new System.Windows.Forms.ComboBox();
             this.dateFecha = new System.Windows.Forms.DateTimePicker();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
@@ -46,21 +48,23 @@
             this.label4 = new System.Windows.Forms.Label();
             this.richTextBoxDiagnostico = new System.Windows.Forms.RichTextBox();
             this.richTextBoxSintoma = new System.Windows.Forms.RichTextBox();
-            this.splitter1 = new System.Windows.Forms.Splitter();
             this.groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericMinutos)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericHora)).BeginInit();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.splitter1);
+            this.groupBox1.Controls.Add(this.label8);
+            this.groupBox1.Controls.Add(this.numericMinutos);
+            this.groupBox1.Controls.Add(this.numericHora);
+            this.groupBox1.Controls.Add(this.label7);
             this.groupBox1.Controls.Add(this.comboBoxTipoEsp);
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Controls.Add(this.buttonAceptar);
-            this.groupBox1.Controls.Add(this.buttonLimpiar);
             this.groupBox1.Controls.Add(this.comboBoxEsp);
             this.groupBox1.Controls.Add(this.label5);
-            this.groupBox1.Controls.Add(this.comboBoxLlegada);
             this.groupBox1.Controls.Add(this.dateFecha);
             this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.Controls.Add(this.label2);
@@ -69,6 +73,54 @@
             this.groupBox1.Size = new System.Drawing.Size(639, 156);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(6, 137);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(35, 13);
+            this.label8.TabIndex = 23;
+            this.label8.Text = "label8";
+            // 
+            // numericMinutos
+            // 
+            this.numericMinutos.Increment = new decimal(new int[] {
+            30,
+            0,
+            0,
+            0});
+            this.numericMinutos.Location = new System.Drawing.Point(536, 76);
+            this.numericMinutos.Maximum = new decimal(new int[] {
+            30,
+            0,
+            0,
+            0});
+            this.numericMinutos.Name = "numericMinutos";
+            this.numericMinutos.Size = new System.Drawing.Size(49, 20);
+            this.numericMinutos.TabIndex = 22;
+            // 
+            // numericHora
+            // 
+            this.numericHora.Location = new System.Drawing.Point(467, 75);
+            this.numericHora.Maximum = new decimal(new int[] {
+            23,
+            0,
+            0,
+            0});
+            this.numericHora.Name = "numericHora";
+            this.numericHora.Size = new System.Drawing.Size(49, 20);
+            this.numericHora.TabIndex = 21;
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label7.Location = new System.Drawing.Point(522, 76);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(12, 17);
+            this.label7.TabIndex = 20;
+            this.label7.Text = ":";
             // 
             // comboBoxTipoEsp
             // 
@@ -91,23 +143,13 @@
             // 
             // buttonAceptar
             // 
-            this.buttonAceptar.Location = new System.Drawing.Point(513, 122);
+            this.buttonAceptar.Location = new System.Drawing.Point(536, 127);
             this.buttonAceptar.Name = "buttonAceptar";
             this.buttonAceptar.Size = new System.Drawing.Size(75, 23);
             this.buttonAceptar.TabIndex = 16;
             this.buttonAceptar.Text = "Aceptar";
             this.buttonAceptar.UseVisualStyleBackColor = true;
             this.buttonAceptar.Click += new System.EventHandler(this.buttonAceptar_Click);
-            // 
-            // buttonLimpiar
-            // 
-            this.buttonLimpiar.Location = new System.Drawing.Point(419, 122);
-            this.buttonLimpiar.Name = "buttonLimpiar";
-            this.buttonLimpiar.Size = new System.Drawing.Size(75, 23);
-            this.buttonLimpiar.TabIndex = 15;
-            this.buttonLimpiar.Text = "Limpiar";
-            this.buttonLimpiar.UseVisualStyleBackColor = true;
-            this.buttonLimpiar.Click += new System.EventHandler(this.buttonLimpiar_Click);
             // 
             // comboBoxEsp
             // 
@@ -126,15 +168,6 @@
             this.label5.Size = new System.Drawing.Size(131, 13);
             this.label5.TabIndex = 13;
             this.label5.Text = "Hora llegada del paciente:";
-            // 
-            // comboBoxLlegada
-            // 
-            this.comboBoxLlegada.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBoxLlegada.FormattingEnabled = true;
-            this.comboBoxLlegada.Location = new System.Drawing.Point(466, 79);
-            this.comboBoxLlegada.Name = "comboBoxLlegada";
-            this.comboBoxLlegada.Size = new System.Drawing.Size(145, 21);
-            this.comboBoxLlegada.TabIndex = 12;
             // 
             // dateFecha
             // 
@@ -214,6 +247,7 @@
             // richTextBoxDiagnostico
             // 
             this.richTextBoxDiagnostico.Location = new System.Drawing.Point(77, 123);
+            this.richTextBoxDiagnostico.MaxLength = 250;
             this.richTextBoxDiagnostico.Name = "richTextBoxDiagnostico";
             this.richTextBoxDiagnostico.Size = new System.Drawing.Size(556, 61);
             this.richTextBoxDiagnostico.TabIndex = 2;
@@ -222,18 +256,11 @@
             // richTextBoxSintoma
             // 
             this.richTextBoxSintoma.Location = new System.Drawing.Point(77, 19);
+            this.richTextBoxSintoma.MaxLength = 250;
             this.richTextBoxSintoma.Name = "richTextBoxSintoma";
             this.richTextBoxSintoma.Size = new System.Drawing.Size(556, 61);
             this.richTextBoxSintoma.TabIndex = 1;
             this.richTextBoxSintoma.Text = "";
-            // 
-            // splitter1
-            // 
-            this.splitter1.Location = new System.Drawing.Point(3, 16);
-            this.splitter1.Name = "splitter1";
-            this.splitter1.Size = new System.Drawing.Size(3, 137);
-            this.splitter1.TabIndex = 19;
-            this.splitter1.TabStop = false;
             // 
             // RegistrarResultado
             // 
@@ -250,6 +277,8 @@
             this.Text = "Registrar resultado de consulta";
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericMinutos)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericHora)).EndInit();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             this.ResumeLayout(false);
@@ -260,14 +289,12 @@
 
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.ComboBox comboBoxLlegada;
         private System.Windows.Forms.DateTimePicker dateFecha;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.ComboBox comboBoxTipoEsp;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button buttonAceptar;
-        private System.Windows.Forms.Button buttonLimpiar;
         private System.Windows.Forms.ComboBox comboBoxEsp;
         private System.Windows.Forms.Button buttonCancelar;
         private System.Windows.Forms.Button buttonRegistrar;
@@ -276,6 +303,9 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.RichTextBox richTextBoxDiagnostico;
         private System.Windows.Forms.RichTextBox richTextBoxSintoma;
-        private System.Windows.Forms.Splitter splitter1;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.NumericUpDown numericMinutos;
+        private System.Windows.Forms.NumericUpDown numericHora;
+        private System.Windows.Forms.Label label8;
     }
 }

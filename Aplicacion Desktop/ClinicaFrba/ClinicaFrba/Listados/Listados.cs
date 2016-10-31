@@ -19,10 +19,20 @@ namespace ClinicaFrba.Listados
         Dictionary<string, int> planes;
         List<string> plan_descrip;
 
+        Dictionary<string, int> tipos_esp_id;
+        List<string> tipos_esp;
+
         Dictionary<string, int> especialidades;
         List<string> esp_descrip;
 
+        List<string> vacia;
+
         DataTable dt;
+
+        int año;
+        int mes_total;
+        int plan;
+        int especialidad;
 
         public Listados(Sesion sesion)
         {
@@ -36,22 +46,35 @@ namespace ClinicaFrba.Listados
             esp_descrip = new List<string>();
             especialidades = new Dictionary<string, int>();
 
+            tipos_esp_id = new Dictionary<string, int>();
+            tipos_esp = new List<string>();
+
+            vacia = new List<string>();
+
+            llenarTipoEsp();
             get_planes();
-            get_especialidades();
+            llenarEspecialidades();
 
             this.comboBoxPlan.DataSource = plan_descrip;
-            this.comboBoxEspecialidad.DataSource = esp_descrip;
-
             ocultarPlanEspecialidad();
-
-            
 
         }
 
+        private void llenarTipoEsp()
+        {
+            this.tipos_esp_id.Clear();
+            this.tipos_esp.Clear();
+
+            get_tipo_esp();
+            this.comboBoxTipoEsp.DataSource = tipos_esp;
+
+        }
         private void ocultarPlanEspecialidad()
         {
             this.labelPlan.Visible = false;
             this.comboBoxPlan.Visible = false;
+            this.comboBoxTipoEsp.Visible = false;
+            this.labelTipo.Visible = false;
             this.labelEspecialidad.Visible = false;
             this.comboBoxEspecialidad.Visible = false;
         }
@@ -80,6 +103,8 @@ namespace ClinicaFrba.Listados
 
                         this.labelPlan.Visible = true;
                         this.comboBoxPlan.Visible = true;
+                        this.comboBoxTipoEsp.Visible = true;
+                        this.labelTipo.Visible = true;
                         this.labelEspecialidad.Visible = true;
                         this.comboBoxEspecialidad.Visible = true;
                         break;
@@ -102,6 +127,45 @@ namespace ClinicaFrba.Listados
 
         }
 
+        private void get_top5_esp_cancel()
+        {
+            SqlParameter[] dbParams = new SqlParameter[]
+            {
+                //DAL.Classes.DBHelper.MakeParam("@id", SqlDbType.Decimal, 0, rol_id),
+                //DAL.Classes.DBHelper.MakeParam("@descrip", SqlDbType.VarChar, 0, rol_nombre),
+                //DAL.Classes.DBHelper.MakeParam("@habilitado", SqlDbType.Bit, 0, habilitado),
+                //result,
+            };
+
+            this.dt = DAL.Classes.DBHelper.ExecuteDataSet("NUL.sp_get_top5_esp_cancel", dbParams).Tables[0];
+        }
+
+        private void get_top5_prof_consultados(string plan)
+        {
+            SqlParameter[] dbParams = new SqlParameter[]
+            {
+                //DAL.Classes.DBHelper.MakeParam("@id", SqlDbType.Decimal, 0, rol_id),
+                //DAL.Classes.DBHelper.MakeParam("@descrip", SqlDbType.VarChar, 0, rol_nombre),
+                //DAL.Classes.DBHelper.MakeParam("@habilitado", SqlDbType.Bit, 0, habilitado),
+                //result,
+            };
+
+            this.dt = DAL.Classes.DBHelper.ExecuteDataSet("NUL.sp_get_top5_prof_consultados", dbParams).Tables[0];
+        }
+
+        private void get_top5_prof_horas(string plan, string especialidad)
+        {
+            SqlParameter[] dbParams = new SqlParameter[]
+            {
+                //DAL.Classes.DBHelper.MakeParam("@id", SqlDbType.Decimal, 0, rol_id),
+                //DAL.Classes.DBHelper.MakeParam("@descrip", SqlDbType.VarChar, 0, rol_nombre),
+                //DAL.Classes.DBHelper.MakeParam("@habilitado", SqlDbType.Bit, 0, habilitado),
+                //result,
+            };
+
+            this.dt = DAL.Classes.DBHelper.ExecuteDataSet("NUL.sp_get_top5_prof_horas", dbParams).Tables[0];
+        }
+
         private void get_top5_afil_bonos()
         {
             SqlParameter[] dbParams = new SqlParameter[]
@@ -115,44 +179,6 @@ namespace ClinicaFrba.Listados
             this.dt = DAL.Classes.DBHelper.ExecuteDataSet("NUL.sp_get_top5_afil_bonos", dbParams).Tables[0];
         }
 
-        private void get_top5_prof_horas(string plan, string especialidad)
-        {
-            SqlParameter[] dbParams = new SqlParameter[]
-            {
-                //DAL.Classes.DBHelper.MakeParam("@id", SqlDbType.Decimal, 0, rol_id),
-                //DAL.Classes.DBHelper.MakeParam("@descrip", SqlDbType.VarChar, 0, rol_nombre),
-                //DAL.Classes.DBHelper.MakeParam("@habilitado", SqlDbType.Bit, 0, habilitado),
-                //result,
-            };
-
-            this.dt = DAL.Classes.DBHelper.ExecuteDataSet("NUL.sp_get_top5_afil_bonos", dbParams).Tables[0];
-        }
-
-        private void get_top5_prof_consultados(string plan)
-        {
-            SqlParameter[] dbParams = new SqlParameter[]
-            {
-                //DAL.Classes.DBHelper.MakeParam("@id", SqlDbType.Decimal, 0, rol_id),
-                //DAL.Classes.DBHelper.MakeParam("@descrip", SqlDbType.VarChar, 0, rol_nombre),
-                //DAL.Classes.DBHelper.MakeParam("@habilitado", SqlDbType.Bit, 0, habilitado),
-                //result,
-            };
-
-            this.dt = DAL.Classes.DBHelper.ExecuteDataSet("NUL.sp_get_top5_afil_bonos", dbParams).Tables[0];
-        }
-
-        private void get_top5_esp_cancel()
-        {
-            SqlParameter[] dbParams = new SqlParameter[]
-            {
-                //DAL.Classes.DBHelper.MakeParam("@id", SqlDbType.Decimal, 0, rol_id),
-                //DAL.Classes.DBHelper.MakeParam("@descrip", SqlDbType.VarChar, 0, rol_nombre),
-                //DAL.Classes.DBHelper.MakeParam("@habilitado", SqlDbType.Bit, 0, habilitado),
-                //result,
-            };
-
-            this.dt = DAL.Classes.DBHelper.ExecuteDataSet("NUL.sp_get_top5_afil_bonos", dbParams).Tables[0];
-        }
 
         private void get_top5_esp_bonos()
         {
@@ -164,7 +190,7 @@ namespace ClinicaFrba.Listados
                 //result,
             };
 
-            this.dt = DAL.Classes.DBHelper.ExecuteDataSet("NUL.sp_get_top5_afil_bonos", dbParams).Tables[0];
+            this.dt = DAL.Classes.DBHelper.ExecuteDataSet("NUL.sp_get_top5_esp_bonos", dbParams).Tables[0];
         }
 
         private void get_planes()
@@ -187,26 +213,6 @@ namespace ClinicaFrba.Listados
 
         }
 
-        private void get_especialidades()
-        {
-            string expresion = "SELECT esp_id, esp_descrip FROM NUL.Especialidad";
-
-            SqlDataReader lector = DAL.Classes.DBHelper.ExecuteQuery_DR(expresion);
-
-            if (lector.HasRows)
-            {
-                especialidades.Add((string)lector["esp_descrip"].ToString(), int.Parse(lector["esp_id"].ToString()));
-                esp_descrip.Add((string)lector["esp_descrip"].ToString());
-
-                while (lector.Read())
-                {
-                    especialidades.Add((string)lector["esp_descrip"].ToString(), int.Parse(lector["esp_id"].ToString()));
-                    esp_descrip.Add((string)lector["esp_descrip"].ToString());
-                }
-            }
-
-        }
-
         private void buttonVolver_Click(object sender, EventArgs e)
         {
             Form1 form = new Form1(this.sesion);
@@ -216,6 +222,9 @@ namespace ClinicaFrba.Listados
 
         private void buttonMostrar_Click(object sender, EventArgs e)
         {
+            this.año = (int)this.numericAño.Value;
+            this.mes_total = (int)(this.numericMes.Value + (this.numericSemestre.Value == 1 ? 0 : 6));
+
             switch (this.comboBoxListado.Text)
             {
 
@@ -244,6 +253,63 @@ namespace ClinicaFrba.Listados
                     get_top5_esp_bonos();
                     break;
             }
+        }
+
+        private void comboBoxTipoEsp_SelectionChangeCommitted(object sender, EventArgs e)
+        {
+            llenarEspecialidades();
+        }
+
+        private void llenarEspecialidades()
+        {
+            this.esp_descrip.Clear();
+            this.especialidades.Clear();
+
+            this.comboBoxEspecialidad.DataSource = this.vacia;
+            get_especialidades();
+            this.comboBoxEspecialidad.DataSource = this.esp_descrip;
+
+        }
+
+
+        private void get_tipo_esp()
+        {
+            string expresion = "SELECT tipo_esp_id, tipo_esp_descrip FROM NUL.Tipo_esp";
+
+            SqlDataReader lector = DAL.Classes.DBHelper.ExecuteQuery_DR(expresion);
+
+            if (lector != null)
+            {
+                tipos_esp_id.Add((string)lector["tipo_esp_descrip"].ToString(), int.Parse(lector["tipo_esp_id"].ToString()));
+                tipos_esp.Add((string)lector["tipo_esp_descrip"].ToString());
+
+                while (lector.Read())
+                {
+                    tipos_esp_id.Add((string)lector["tipo_esp_descrip"].ToString(), int.Parse(lector["tipo_esp_id"].ToString()));
+                    tipos_esp.Add((string)lector["tipo_esp_descrip"].ToString());
+                }
+            }
+
+        }
+
+        private void get_especialidades()
+        {
+            string expresion = "SELECT esp_id, esp_descrip FROM NUL.Especialidad WHERE esp_tipo = " + this.tipos_esp_id[this.comboBoxTipoEsp.Text].ToString();
+
+            SqlDataReader lector = DAL.Classes.DBHelper.ExecuteQuery_DR(expresion);
+
+            if (lector != null)
+            {
+                especialidades.Add((string)lector["esp_descrip"].ToString(), int.Parse(lector["esp_id"].ToString()));
+                esp_descrip.Add((string)lector["esp_descrip"].ToString());
+
+                while (lector.Read())
+                {
+                    especialidades.Add((string)lector["esp_descrip"].ToString(), int.Parse(lector["esp_id"].ToString()));
+                    esp_descrip.Add((string)lector["esp_descrip"].ToString());
+                }
+            }
+
         }
     }
 }

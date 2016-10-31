@@ -16,6 +16,7 @@
 -El documento y tipo de documento se consideran como correctos al ingresarse, no podran modificarse ya que integran el username.
 -En la busqueda de afiliados, al contrario que en el alta, no se validan los datos (por ejemplo si el mail esta escrito completamente), habilitando asi que si recuerda una parte del mail se pueda buscar asi.
 -El campo familiares afil_familiares de afiliado se refiere al numero de personas que se encuentran en su grupo familiar y no a su numero de familiares real.
+-Un profesional podra editar los sintomas y enfermedades de una consulta por haberse equivocado o aberle faltado agregar alguna descripcion.
 -El campo nro_afiliado va a estar determinado en la forma: (Doc*10+1)*100 en donde Doc es el nro de documento del afiliado; 1 es el tipo de documento DNI(como dijimos anteriormente, se presume que todos son DNI) y se multiplica por 100 con el objetivo de que los siguientes afiliados pertenecientes al mismo grupo familiar tengan su correlativo a partir de éste número. Por Ejemplo: DNI: 28758698 - Nro afiliado: 287586980100 - Siguiente del grupo familiar: 287586980101
 -Se construyó la agenda del año 2015 basándose en los turnos que tuvo cada profesional, poniendo como vigencia de la agenda la primer y la última fecha de turnos que atendió. Asimismo, los horarios de cada día, se los determinó por los turnos mínimos y máximos que tuvo el profesional en esos días. 
 -

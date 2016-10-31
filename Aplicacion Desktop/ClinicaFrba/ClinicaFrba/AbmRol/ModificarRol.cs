@@ -87,7 +87,7 @@ namespace ClinicaFrba.AbmRol
 
             SqlDataReader lector = DAL.Classes.DBHelper.ExecuteQuery_DR(expresion);
 
-            if (lector.HasRows)
+            if (lector != null)
             {
                 funcionalidades.Add((string)lector["func_descrip"].ToString(), int.Parse(lector["func_id"].ToString()));
                 func_descrip.Add((string)lector["func_descrip"].ToString());
@@ -255,7 +255,7 @@ namespace ClinicaFrba.AbmRol
             }
             catch (Exception exc)
             {
-                MessageBox.Show(exc.Message);
+                MessageBox.Show(exc.Message, "Aviso", MessageBoxButtons.OK);
             }
         }
 
@@ -285,7 +285,7 @@ namespace ClinicaFrba.AbmRol
             }
             catch (Exception exc)
             {
-                MessageBox.Show(exc.Message);
+                MessageBox.Show(exc.Message, "Aviso", MessageBoxButtons.OK);
             }
         }
 

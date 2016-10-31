@@ -97,7 +97,7 @@ namespace ClinicaFrba.Abm_Afiliado
 
             catch (Exception exc)
             {
-                MessageBox.Show(exc.Message);
+                MessageBox.Show(exc.Message, "Aviso", MessageBoxButtons.OK);
             }
 
         }

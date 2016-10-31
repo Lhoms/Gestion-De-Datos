@@ -43,7 +43,7 @@ namespace ClinicaFrba
 
         private void siEsProfesionalComprobarSuMatricula()
         {
-            string expresion = "SELECT * FROM NUL.Profesional WHERE prof_id = '" + this.sesion.user_id + "'";
+            string expresion = "SELECT * FROM NUL.Profesional WHERE prof_id = " + this.sesion.user_id;
 
             SqlDataReader lector = DAL.Classes.DBHelper.ExecuteQuery_DR(expresion);
 
@@ -52,6 +52,7 @@ namespace ClinicaFrba
                 if (lector.HasRows)
                 {
                     Abm_Afiliado.MatriculaFaltante form = new Abm_Afiliado.MatriculaFaltante(this.sesion);
+                    if( int.Parse(lector["prof_matric"].ToString()) == 0)
                     form.Show();
                 }
             }
