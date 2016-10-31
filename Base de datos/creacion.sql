@@ -803,6 +803,14 @@ END
 
 GO
 
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID('NUL.sp_turnos_profesional'))
+BEGIN
+    DROP PROCEDURE NUL.sp_turnos_profesional
+END
+
+GO
+
+
 CREATE PROCEDURE NUL.sp_get_top5_esp_cancel(@anio numeric(18,0), @semestre numeric(18,0),@mes numeric(18,0))
 AS
 BEGIN
@@ -1239,6 +1247,18 @@ where
 	--AF.FECHA, dateadd(MI, 30, AF.fecha)
 order by 1, Fecha, Dato_Combo
 OPTION (MaxRecursion 0);
+
+END
+GO
+
+
+
+CREATE PROCEDURE NUL.sp_turnos_profesional(@prof NUMERIC(18,0), @fecha_desde DATETIME, @fecha_hasta DATETIME)
+AS
+BEGIN
+
+SELECT * FROM NUL.Turno t 
+WHERE t.turno_profesional = @prof AND t.turno_fecha_hora between @fecha_desde AND @fecha_hasta
 
 END
 GO
