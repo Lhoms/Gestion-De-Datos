@@ -13,6 +13,8 @@ namespace ClinicaFrba.extras
         //Atributos como usuario
         public string username; //documento en string
         public string tipo_doc;
+        public int tipo_doc_id;
+        public bool habilitado;
 
         //Atributos como persona
         public string nombre;
@@ -30,6 +32,7 @@ namespace ClinicaFrba.extras
         public long numeroAfiliado;
         public string numeroAfiliado_s;
         public string estadoCivil;
+        public int estadoCivil_id;
         public string planMedico;
         public int planMedico_id;
         public int cantFamiliares;

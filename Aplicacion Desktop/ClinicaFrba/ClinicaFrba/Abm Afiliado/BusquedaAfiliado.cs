@@ -171,12 +171,6 @@ namespace ClinicaFrba.Abm_Afiliado
 
         }
 
-        public string get_tipo_doc_id(string tipo)
-        {
-            return (this.tipo_doc[tipo]).ToString();
-        }
-
-
         public void getPlanes()
         {
             string expresion = "SELECT plan_id, plan_descrip FROM NUL.Plan_medico";
@@ -195,11 +189,6 @@ namespace ClinicaFrba.Abm_Afiliado
                 }
             }
 
-        }
-
-        public string get_plan_id(string plan)
-        {
-            return planes[plan].ToString();
         }
 
 
