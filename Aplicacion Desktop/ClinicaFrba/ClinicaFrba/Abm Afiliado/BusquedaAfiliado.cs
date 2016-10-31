@@ -46,7 +46,7 @@ namespace ClinicaFrba.Abm_Afiliado
                 plan_descrip = new List<string>();
 
                 llenarComboBoxes();
-
+                
 
             }
             catch (Exception exc)
@@ -103,6 +103,11 @@ namespace ClinicaFrba.Abm_Afiliado
 
         private void dataGridViewAfiliados_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
+            if (this.dataGridViewAfiliados.Columns[e.ColumnIndex].Name.Equals("Modificar"))
+                Abm_Afiliado.ModificarAfiliado form = new ModificarAfiliado(this.sesion, this.dataGridViewAfiliados.Rows[e.RowIndex]);
+                form.Show();
+                this.Hide();
+                
 
         }
 

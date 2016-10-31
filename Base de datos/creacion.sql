@@ -412,7 +412,7 @@ INSERT INTO NUL.Plan_medico(plan_id, plan_descrip, plan_precio_bono_cons, plan_p
 
 INSERT INTO NUL.Afiliado(afil_id, afil_estado, afil_plan_med, afil_nro_afiliado, afil_familiares, afil_nro_consulta)
 (
-	SELECT DISTINCT U.user_id, '1', M.Plan_Med_Codigo, (M.Paciente_Dni*10+1)*100, '0', ISNULL((SELECT COUNT(M2.Bono_Consulta_Numero)
+	SELECT DISTINCT U.user_id, '1', M.Plan_Med_Codigo, (M.Paciente_Dni*10+1)*100+1, '0', ISNULL((SELECT COUNT(M2.Bono_Consulta_Numero)
 																							FROM gd_esquema.Maestra M2
 																							WHERE M2.Paciente_Mail = M.Paciente_Mail
 																							  AND M2.Bono_Consulta_Numero IS NOT NULL 

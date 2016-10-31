@@ -12,9 +12,15 @@ namespace ClinicaFrba.Abm_Afiliado
 {
     public partial class ModificarAfiliado : Form
     {
-        public ModificarAfiliado()
+        private Sesion sesion;
+        private DataGridViewRow afiliado;
+
+        public ModificarAfiliado(extras.Sesion sesion, DataGridViewRow dataGridViewRow)
         {
-            InitializeComponent();
+            this.sesion = sesion;
+            this.afiliado = dataGridViewRow;
+
+
         }
     }
 }

@@ -32,7 +32,7 @@ namespace ClinicaFrba.Abm_Afiliado
 
 
 
-        public AltaFamiliar(long documento, string plan, string tipo_alta, ArrayList afiliados)
+        public AltaFamiliar(long raizGrupoFamiliar, string plan, string tipo_alta, ArrayList afiliados)
         {
 
             InitializeComponent();
@@ -53,11 +53,11 @@ namespace ClinicaFrba.Abm_Afiliado
 
             if (tipo_alta == "conyuge")
             {
-                afiliado.numeroAfiliado = documento * 100 + 2;
+                afiliado.numeroAfiliado = (raizGrupoFamiliar + 2); 
             }
             else if (tipo_alta == "hijo")
             {
-                afiliado.numeroAfiliado = (documento * 100 + 3 + afiliados.Count);
+                afiliado.numeroAfiliado = (raizGrupoFamiliar + 3 + afiliados.Count); 
             }
 
 
@@ -164,8 +164,6 @@ namespace ClinicaFrba.Abm_Afiliado
         private DataSet get_usuario(string username, string tipo_doc)
         {
             string expresion = "SELECT * FROM NUL.Usuario U WHERE U.user_username = '" + username +"' AND U.user_tipodoc = " + get_tipo_doc_id(tipo_doc).ToString();
-
-            MessageBox.Show(expresion);
 
             return DAL.Classes.DBHelper.ExecuteQuery_DS(expresion);      
         }

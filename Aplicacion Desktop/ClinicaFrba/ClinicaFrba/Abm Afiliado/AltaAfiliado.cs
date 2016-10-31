@@ -121,18 +121,19 @@ namespace ClinicaFrba.Abm_Afiliado
                 throw new Exception("El campo apellido no puede estar vacio");
             else this.afiliado.apellido = textBoxApellido.Text;
 
+            if (string.IsNullOrWhiteSpace(comboBoxTipoDoc.Text))
+                throw new Exception("El campo tipo de documento no puede estar vacio");
+            else this.afiliado.tipo_doc = comboBoxTipoDoc.Text;
+
             if (string.IsNullOrWhiteSpace(textBoxDocumento.Text))
                 throw new Exception("El campo documento no puede estar vacio");
             else
             {
                 this.afiliado.documento = long.Parse(textBoxDocumento.Text);
                 this.afiliado.username = textBoxDocumento.Text;
-                this.afiliado.numeroAfiliado = (long.Parse(textBoxDocumento.Text)) * 100 + 1;
+                this.afiliado.numeroAfiliado = 
+                    (((long.Parse(textBoxDocumento.Text))*10) + get_tipo_doc_id(this.afiliado.tipo_doc)) * 100 + 1;
             }
-
-            if (string.IsNullOrWhiteSpace(comboBoxTipoDoc.Text))
-                throw new Exception("El campo tipo de documento no puede estar vacio");
-            else this.afiliado.tipo_doc = comboBoxTipoDoc.Text;
 
             if (string.IsNullOrWhiteSpace(comboBoxSexo.Text))
                 throw new Exception("El campo sexo no puede estar vacio");
@@ -275,9 +276,11 @@ namespace ClinicaFrba.Abm_Afiliado
 
             else
             {
+                long raizGrupoFamiliar = (((long.Parse(textBoxDocumento.Text)) * 10) + get_tipo_doc_id(this.afiliado.tipo_doc)) * 100;
+
                 Abm_Afiliado.AltaFamiliar form;
 
-                form = new Abm_Afiliado.AltaFamiliar(long.Parse(textBoxDocumento.Text), comboBoxPlanMedico.Text, tipo_alta, familiares);
+                form = new Abm_Afiliado.AltaFamiliar(raizGrupoFamiliar, comboBoxPlanMedico.Text, tipo_alta, familiares);
 
                 form.Show();
                 
