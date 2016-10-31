@@ -29,10 +29,9 @@ namespace ClinicaFrba.Listados
 
         DataTable dt;
 
-        int año;
-        int mes_total;
-        int plan;
-        int especialidad;
+        int anio;
+        int semestre;
+        int mes;
 
         public Listados(Sesion sesion)
         {
@@ -128,39 +127,40 @@ namespace ClinicaFrba.Listados
         }
 
         private void get_top5_esp_cancel()
-        {
+        {  
             SqlParameter[] dbParams = new SqlParameter[]
             {
-                //DAL.Classes.DBHelper.MakeParam("@id", SqlDbType.Decimal, 0, rol_id),
-                //DAL.Classes.DBHelper.MakeParam("@descrip", SqlDbType.VarChar, 0, rol_nombre),
-                //DAL.Classes.DBHelper.MakeParam("@habilitado", SqlDbType.Bit, 0, habilitado),
-                //result,
+                DAL.Classes.DBHelper.MakeParam("@anio", SqlDbType.Decimal, 0, this.anio),
+                DAL.Classes.DBHelper.MakeParam("@semestre", SqlDbType.Decimal, 0, this.semestre),
+                DAL.Classes.DBHelper.MakeParam("@mes", SqlDbType.Decimal, 0, this.mes),
             };
 
             this.dt = DAL.Classes.DBHelper.ExecuteDataSet("NUL.sp_get_top5_esp_cancel", dbParams).Tables[0];
         }
 
-        private void get_top5_prof_consultados(string plan)
-        {
+        private void get_top5_prof_consultados(int plan)
+        {   
             SqlParameter[] dbParams = new SqlParameter[]
             {
-                //DAL.Classes.DBHelper.MakeParam("@id", SqlDbType.Decimal, 0, rol_id),
-                //DAL.Classes.DBHelper.MakeParam("@descrip", SqlDbType.VarChar, 0, rol_nombre),
-                //DAL.Classes.DBHelper.MakeParam("@habilitado", SqlDbType.Bit, 0, habilitado),
-                //result,
+                DAL.Classes.DBHelper.MakeParam("@anio", SqlDbType.Decimal, 0, this.anio),
+                DAL.Classes.DBHelper.MakeParam("@semestre", SqlDbType.Decimal, 0, this.semestre),
+                DAL.Classes.DBHelper.MakeParam("@mes", SqlDbType.Decimal, 0, this.mes),
+                DAL.Classes.DBHelper.MakeParam("@plan_id", SqlDbType.Decimal, 0, plan),
+
             };
 
             this.dt = DAL.Classes.DBHelper.ExecuteDataSet("NUL.sp_get_top5_prof_consultados", dbParams).Tables[0];
         }
 
-        private void get_top5_prof_horas(string plan, string especialidad)
+        private void get_top5_prof_horas(int plan, int especialidad)
         {
             SqlParameter[] dbParams = new SqlParameter[]
             {
-                //DAL.Classes.DBHelper.MakeParam("@id", SqlDbType.Decimal, 0, rol_id),
-                //DAL.Classes.DBHelper.MakeParam("@descrip", SqlDbType.VarChar, 0, rol_nombre),
-                //DAL.Classes.DBHelper.MakeParam("@habilitado", SqlDbType.Bit, 0, habilitado),
-                //result,
+                DAL.Classes.DBHelper.MakeParam("@anio", SqlDbType.Decimal, 0, this.anio),
+                DAL.Classes.DBHelper.MakeParam("@semestre", SqlDbType.Decimal, 0, this.semestre),
+                DAL.Classes.DBHelper.MakeParam("@mes", SqlDbType.Decimal, 0, this.mes),
+                DAL.Classes.DBHelper.MakeParam("@plan_id", SqlDbType.Decimal, 0, plan),
+                DAL.Classes.DBHelper.MakeParam("@esp_id", SqlDbType.Decimal, 0, especialidad),
             };
 
             this.dt = DAL.Classes.DBHelper.ExecuteDataSet("NUL.sp_get_top5_prof_horas", dbParams).Tables[0];
@@ -170,10 +170,9 @@ namespace ClinicaFrba.Listados
         {
             SqlParameter[] dbParams = new SqlParameter[]
             {
-                //DAL.Classes.DBHelper.MakeParam("@id", SqlDbType.Decimal, 0, rol_id),
-                //DAL.Classes.DBHelper.MakeParam("@descrip", SqlDbType.VarChar, 0, rol_nombre),
-                //DAL.Classes.DBHelper.MakeParam("@habilitado", SqlDbType.Bit, 0, habilitado),
-                //result,
+                DAL.Classes.DBHelper.MakeParam("@anio", SqlDbType.Decimal, 0, this.anio),
+                DAL.Classes.DBHelper.MakeParam("@semestre", SqlDbType.Decimal, 0, this.semestre),
+                DAL.Classes.DBHelper.MakeParam("@mes", SqlDbType.Decimal, 0, this.mes),
             };
 
             this.dt = DAL.Classes.DBHelper.ExecuteDataSet("NUL.sp_get_top5_afil_bonos", dbParams).Tables[0];
@@ -184,10 +183,9 @@ namespace ClinicaFrba.Listados
         {
             SqlParameter[] dbParams = new SqlParameter[]
             {
-                //DAL.Classes.DBHelper.MakeParam("@id", SqlDbType.Decimal, 0, rol_id),
-                //DAL.Classes.DBHelper.MakeParam("@descrip", SqlDbType.VarChar, 0, rol_nombre),
-                //DAL.Classes.DBHelper.MakeParam("@habilitado", SqlDbType.Bit, 0, habilitado),
-                //result,
+                DAL.Classes.DBHelper.MakeParam("@anio", SqlDbType.Decimal, 0, this.anio),
+                DAL.Classes.DBHelper.MakeParam("@semestre", SqlDbType.Decimal, 0, this.semestre),
+                DAL.Classes.DBHelper.MakeParam("@mes", SqlDbType.Decimal, 0, this.mes),
             };
 
             this.dt = DAL.Classes.DBHelper.ExecuteDataSet("NUL.sp_get_top5_esp_bonos", dbParams).Tables[0];
@@ -222,8 +220,9 @@ namespace ClinicaFrba.Listados
 
         private void buttonMostrar_Click(object sender, EventArgs e)
         {
-            this.año = (int)this.numericAño.Value;
-            this.mes_total = (int)(this.numericMes.Value + (this.numericSemestre.Value == 1 ? 0 : 6));
+            this.anio = (int)this.numericAño.Value;
+            this.semestre = (int)this.numericSemestre.Value;
+            this.mes = (int)this.numericMes.Value;
 
             switch (this.comboBoxListado.Text)
             {
@@ -235,12 +234,12 @@ namespace ClinicaFrba.Listados
 
                 case "Top 5 de los profesionales mas consultados por plan.":
 
-                    get_top5_prof_consultados(this.comboBoxPlan.Text);
+                    get_top5_prof_consultados(this.planes[this.comboBoxPlan.Text]);
                     break;
 
                 case "Top 5 de los profesionales con menos horas trabajadas por plan y especialidad.":
 
-                    get_top5_prof_horas(this.comboBoxPlan.Text, this.comboBoxEspecialidad.Text);
+                    get_top5_prof_horas(this.planes[this.comboBoxPlan.Text], especialidades[this.comboBoxEspecialidad.Text]);
                     break;
 
                 case "Top 5 de los afiliados con mayor cantidad de bonos comprados.":
@@ -253,6 +252,9 @@ namespace ClinicaFrba.Listados
                     get_top5_esp_bonos();
                     break;
             }
+
+            this.dataGridTop5.DataSource = this.dt;
+
         }
 
         private void comboBoxTipoEsp_SelectionChangeCommitted(object sender, EventArgs e)

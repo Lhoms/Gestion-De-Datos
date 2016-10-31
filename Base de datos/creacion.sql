@@ -550,13 +550,15 @@ GO
 IF OBJECT_ID ('NUL.v_esp_canceladas', 'V') IS NOT NULL  
 	DROP VIEW NUL.v_esp_canceladas ; 
 GO
-CREATE VIEW NUL.v_esp_canceladas(esp_id, esp_descrip, tipo_esp_id, tipo_esp_descrip, cant)
+CREATE VIEW NUL.v_esp_canceladas(esp_id, esp_descrip, tipo_esp_id, tipo_esp_descrip, cant, anio, semestre, mes)
 AS
-	SELECT E.esp_id, E.esp_descrip, TE.tipo_esp_id, TE.tipo_esp_descrip, COUNT(C.cancel_turno_id) AS cant, C.cancel_fecha 
+	SELECT E.esp_id, E.esp_descrip, TE.tipo_esp_id, TE.tipo_esp_descrip, COUNT(C.cancel_turno_id) AS cant, YEAR(C.cancel_fecha) as anio,
+			 CASE WHEN MONTH(C.cancel_fecha) < 7 THEN 1 ELSE 2 END  as semestre, CASE WHEN MONTH(C.cancel_fecha) < 7 THEN MONTH(C.cancel_fecha) ELSE MONTH(C.cancel_fecha)-5 END  as mes
 	  FROM NUL.Especialidad E JOIN NUL.Tipo_esp TE ON TE.tipo_esp_id = E.esp_tipo
 							  JOIN NUL.Turno	T  ON T.turno_especialidad = E.esp_id
 							  JOIN NUL.Cancelacion C ON C.cancel_turno_id = T.turno_id
-	GROUP BY E.esp_id, E.esp_descrip, TE.tipo_esp_id, TE.tipo_esp_descrip
+	GROUP BY E.esp_id, E.esp_descrip, TE.tipo_esp_id, TE.tipo_esp_descrip, YEAR(C.cancel_fecha), CASE WHEN MONTH(C.cancel_fecha) < 7 THEN 1 ELSE 2 END, MONTH(C.cancel_fecha),
+			CASE WHEN MONTH(C.cancel_fecha) < 7 THEN MONTH(C.cancel_fecha) ELSE MONTH(C.cancel_fecha)-5 END
 GO
 --------------------------------------
 IF OBJECT_ID ('NUL.v_prof_consultados', 'V') IS NOT NULL  
@@ -788,17 +790,20 @@ END
 
 GO
 
-CREATE PROCEDURE NUL.sp_get_top5_esp_cancel
+CREATE PROCEDURE NUL.sp_get_top5_esp_cancel(@anio numeric(18,0), @semestre numeric(18,0),@mes numeric(18,0))
 AS
 BEGIN
 
 	SELECT TOP 5 * FROM NUL.v_esp_canceladas
+		WHERE anio = @anio AND
+		  semestre = @semestre AND
+		  mes = @mes
 	ORDER BY cant DESC
 
 END
 GO
 
-CREATE PROCEDURE NUL.sp_get_top5_prof_consultados(@plan_id numeric(18,0))
+CREATE PROCEDURE NUL.sp_get_top5_prof_consultados(@plan_id numeric(18,0), @anio numeric(18,0), @semestre numeric(18,0),@mes numeric(18,0))
 AS
 BEGIN
 		
@@ -809,7 +814,7 @@ BEGIN
 END
 GO
 
-CREATE PROCEDURE NUL.sp_get_top5_prof_horas(@plan_id numeric(18,0), @esp_id numeric(18,0))
+CREATE PROCEDURE NUL.sp_get_top5_prof_horas(@plan_id numeric(18,0), @esp_id numeric(18,0), @anio numeric(18,0), @semestre numeric(18,0),@mes numeric(18,0))
 AS
 BEGIN
 		
@@ -821,7 +826,7 @@ BEGIN
 END
 GO
 
-CREATE PROCEDURE NUL.sp_get_top5_afil_bonos
+CREATE PROCEDURE NUL.sp_get_top5_afil_bonos(@anio numeric(18,0), @semestre numeric(18,0),@mes numeric(18,0))
 AS
 BEGIN
 		
@@ -831,7 +836,7 @@ BEGIN
 END
 GO
 
-CREATE PROCEDURE NUL.sp_get_top5_esp_bonos
+CREATE PROCEDURE NUL.sp_get_top5_esp_bonos(@anio numeric(18,0), @semestre numeric(18,0),@mes numeric(18,0))
 AS
 BEGIN
 		
