@@ -182,7 +182,7 @@ namespace ClinicaFrba.Abm_Afiliado
             this.afiliado.nroConsulta = 0;
         }
 
-        private void nuevo_afiliado(Afiliado afiliado)
+        private void nuevo_afiliado(Afiliado a)
         {
             //llamar store para crear nuevo usuario+persona+afiliado
         }

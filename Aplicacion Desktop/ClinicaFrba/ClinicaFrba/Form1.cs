@@ -277,7 +277,9 @@ namespace ClinicaFrba
 
         private void buttonCancelarTurno_Click(object sender, EventArgs e)
         {
-            Cancelar_Atencion.CancelarAtencion form = new Cancelar_Atencion.CancelarAtencion();
+            this.sesion.rol_actual_id = get_rol_id(this.comboBoxRol.Text);
+
+            Cancelar_Atencion.CancelarAtencion form = new Cancelar_Atencion.CancelarAtencion(this.sesion);
 
             form.Show();
 

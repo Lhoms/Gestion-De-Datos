@@ -11,6 +11,7 @@ namespace ClinicaFrba.extras
         public string username;
         public int tipo_doc_id;
         public int user_id;
+        public int rol_actual_id;
 
         public Sesion(string username, int tipo_doc_id, int user_id)
         {
