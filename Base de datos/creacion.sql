@@ -1087,8 +1087,8 @@ BEGIN
 	WHERE T.turno_afiliado = @user_id
 	  AND T.turno_fecha_hora >= @desde
 	  AND T.turno_fecha_hora <= @hasta
-	  AND T.turno_profesional  LIKE @prof_id
-	  AND T.turno_especialidad LIKE @esp_id
+	  AND T.turno_profesional = @prof_id
+	  AND T.turno_especialidad = @esp_id
 END
 GO
 
