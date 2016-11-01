@@ -84,8 +84,12 @@ namespace ClinicaFrba.Cancelar_Atencion
             if (this.sesion.rol_actual_id == 3)
             {
                 this.comboBoxProfesional.Visible = false;
+                this.label4.Visible = false;
+                this.label5.Visible = false;
                 this.label6.Visible = false;
                 this.dataGridView1.Enabled = false;
+                this.comboBoxTipoEsp.Visible = false;
+                this.comboBoxEsp.Visible = false;
             }
             else if (this.sesion.rol_actual_id == 2)
             {
@@ -255,7 +259,8 @@ namespace ClinicaFrba.Cancelar_Atencion
             {
                 if (this.sesion.rol_actual_id == 3)
                 {
-                    cancelarTurnosEnRango();
+                    obtenerTurnosEnRango();
+                    cancelarTurnosProfesional();
                 }
 
                 else
@@ -270,9 +275,28 @@ namespace ClinicaFrba.Cancelar_Atencion
             }
         }
 
-        private void cancelarTurnosEnRango()
+        private void cancelarTurnosProfesional()
         {
-            throw new NotImplementedException();
+            foreach (DataRow row in turnos.Rows)
+            {
+                cancelarTurno(int.Parse(row["turno_id"].ToString()), 2, this.richTextMotivo.Text);
+            }
+             MessageBox.Show("Se cancelaron los turnos desde: " + this.dateTimePicker2.Value.ToString() + " hasta: " + this.dateTimePicker1.Value.ToString(),
+                    "Aviso", MessageBoxButtons.OK);
+        }
+
+        private void obtenerTurnosEnRango()
+        {
+
+                SqlParameter[] dbParams = new SqlParameter[]
+            {
+                DAL.Classes.DBHelper.MakeParam("@prof", SqlDbType.Decimal, 250, obtenerUserId()),
+                DAL.Classes.DBHelper.MakeParam("@fecha_desde", SqlDbType.DateTime, 250, dateTimePicker2.Value),
+                DAL.Classes.DBHelper.MakeParam("@fecha_hasta", SqlDbType.DateTime, 250, dateTimePicker1.Value),
+            };
+
+                turnos = DAL.Classes.DBHelper.ExecuteDataSet("NUL.sp_turnos_profesional", dbParams).Tables[0];
+          
         }
 
         private void comboBoxEsp_SelectionChangeCommitted(object sender, EventArgs e)
@@ -343,13 +367,15 @@ namespace ClinicaFrba.Cancelar_Atencion
             cargarProfesionales();
         }
 
-        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e) //si tocan una celda y es el boton, borra el turno de la fila
         {
             if (this.dataGridView1.Columns[e.ColumnIndex].Name.Equals("Cancelar"))
             {
                 int t = int.Parse(this.dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex + 1].Value.ToString());
 
                 cancelarTurno( t, 1, this.richTextMotivo.Text);
+
+                MessageBox.Show("Se cancelo el turno correctamente");
             } 
         }
 
@@ -372,11 +398,11 @@ namespace ClinicaFrba.Cancelar_Atencion
 
                 if ((int.Parse(result.Value.ToString())) != 0)
                 {
-                    throw new Exception("No se pudo cancelar el turno");
+                    throw new Exception("No se pudo cancelar el turno: " + turno_id);
                 }
                 else
                 {
-                    MessageBox.Show("Se cancelo el turno correctamente");
+                    //se realizo correctamente, se notificara luego de llamar a cancelarTurnosProfesional() o en cancelarTurno() dependiendo del rol
                 }
 
                 llenarTurnosSegunNroAfiliado();
