@@ -584,7 +584,7 @@ AS
 							 JOIN NUL.Consulta C ON C.cons_turno_id = T.turno_id
 							 JOIN NUL.Bono     B ON B.bono_id = C.cons_bono_usado
 							 JOIN NUL.Plan_medico PM ON PM.plan_id = B.bono_plan
-	GROUP BY P.prof_id, PER.pers_nombre, PER.pers_apellido, PER.pers_tipo_doc, PER.pers_doc, E.esp_id, E.esp_descrip, TE.tipo_esp_id, TE.tipo_esp_descrip, PM.plan_id, PM.plan_descrip
+	GROUP BY DATEFROMPARTS(YEAR(C.cons_fecha_hora),MONTH(C.cons_fecha_hora),DAY(C.cons_fecha_hora)), P.prof_id, PER.pers_nombre, PER.pers_apellido, PER.pers_tipo_doc, PER.pers_doc, E.esp_id, E.esp_descrip, TE.tipo_esp_id, TE.tipo_esp_descrip, PM.plan_id, PM.plan_descrip
 GO
 ----------------------------------
 IF OBJECT_ID ('NUL.v_prof_horas', 'V') IS NOT NULL  
