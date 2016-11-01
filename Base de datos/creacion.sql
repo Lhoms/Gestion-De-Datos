@@ -827,10 +827,14 @@ GO
 CREATE PROCEDURE NUL.sp_get_top5_prof_consultados(@plan_id numeric(18,0), @anio numeric(18,0), @semestre numeric(18,0),@mes numeric(18,0))
 AS
 BEGIN
-		
+	DECLARE @mes_semestre int;
+	IF @semestre = 1 
+		SET @mes_semestre = @mes;
+	ELSE IF @semestre = 2 
+		SET @mes_semestre = @mes + 6;
+			
 	SELECT TOP 5 * FROM NUL.v_prof_consultados V
-	WHERE V.plan_id = @plan_id AND MONTH(V.fecha)/6 >= @semestre AND YEAR(V.fecha) = @anio AND MONTH(V.fecha) = @mes
-	ORDER BY cant DESC
+	WHERE V.plan_id = @plan_id AND YEAR(V.fecha) = @anio AND MONTH(V.fecha) = @mes_semestre 
 
 END
 GO
