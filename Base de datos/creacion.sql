@@ -210,7 +210,7 @@ CREATE TABLE NUL.Tipo_cancelacion
 
 CREATE TABLE NUL.Cancelacion
 (
-		cancel_turno_id 			numeric(18,0) IDENTITY(1,1) PRIMARY KEY,
+		cancel_turno_id 			numeric(18,0) PRIMARY KEY,
 		cancel_tipo					numeric(18,0),
 		cancel_detalle				varchar(255),
 		cancel_fecha				datetime,

@@ -35,8 +35,6 @@ namespace ClinicaFrba.Abm_Afiliado
 
                 this.sesion = sesion;
 
-
-
                 afiliado = new extras.Afiliado();
 
                 tipo_doc = new Dictionary<string, int>();

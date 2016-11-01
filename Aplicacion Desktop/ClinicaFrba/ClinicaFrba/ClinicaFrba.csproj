@@ -108,6 +108,7 @@
     <Compile Include="extras\Afiliado.cs" />
     <Compile Include="extras\Config.cs" />
     <Compile Include="extras\DBHelper.cs" />
+    <Compile Include="extras\Profesional.cs" />
     <Compile Include="extras\Rol.cs" />
     <Compile Include="extras\Sesion.cs" />
     <Compile Include="Form1.cs">
