@@ -126,6 +126,7 @@ namespace ClinicaFrba.Listados
 
         }
 
+
         private void get_top5_esp_cancel()
         {  
             SqlParameter[] dbParams = new SqlParameter[]
@@ -136,6 +137,22 @@ namespace ClinicaFrba.Listados
             };
 
             this.dt = DAL.Classes.DBHelper.ExecuteDataSet("NUL.sp_get_top5_esp_cancel", dbParams).Tables[0];
+
+            this.dataGridTop5.DataSource = this.dt;
+
+            this.dataGridTop5.Columns[0].Visible = false;
+            this.dataGridTop5.Columns[1].HeaderText = "Especialidad";
+            this.dataGridTop5.Columns[2].Visible = false;
+            this.dataGridTop5.Columns[3].HeaderText = "Tipo";
+            this.dataGridTop5.Columns[3].Width = 150;
+            this.dataGridTop5.Columns[4].HeaderText = "Cancelaciones"; this.dataGridTop5.Columns[4].Width = 80;
+            this.dataGridTop5.Columns[5].Visible = false;
+            this.dataGridTop5.Columns[6].Visible = false;
+            this.dataGridTop5.Columns[7].Visible = false;
+
+
+
+
         }
 
         private void get_top5_prof_consultados(int plan)
@@ -150,6 +167,22 @@ namespace ClinicaFrba.Listados
             };
 
             this.dt = DAL.Classes.DBHelper.ExecuteDataSet("NUL.sp_get_top5_prof_consultados", dbParams).Tables[0];
+
+            this.dataGridTop5.DataSource = this.dt;
+
+            this.dataGridTop5.Columns[0].Visible = false;
+            this.dataGridTop5.Columns[1].Visible = false;
+            this.dataGridTop5.Columns[2].HeaderText = "Nombre"; this.dataGridTop5.Columns[2].Visible = true;
+            this.dataGridTop5.Columns[3].HeaderText = "Apellido"; this.dataGridTop5.Columns[3].Visible = true;
+            this.dataGridTop5.Columns[4].Visible = false;
+            this.dataGridTop5.Columns[5].Visible = false;
+            this.dataGridTop5.Columns[6].Visible = false;
+            this.dataGridTop5.Columns[7].HeaderText = "Especialidad"; this.dataGridTop5.Columns[7].Visible = true;
+            this.dataGridTop5.Columns[8].Visible = false;
+            this.dataGridTop5.Columns[9].HeaderText = "Tipo"; this.dataGridTop5.Columns[9].Width = 150; this.dataGridTop5.Columns[9].Visible = true;
+            this.dataGridTop5.Columns[10].Visible = false;
+            this.dataGridTop5.Columns[11].Visible = false;
+            this.dataGridTop5.Columns[12].HeaderText = "Consultas"; this.dataGridTop5.Columns[12].Width = 65; this.dataGridTop5.Columns[12].Visible = true;
         }
 
         private void get_top5_prof_horas(int plan, int especialidad)
@@ -164,6 +197,8 @@ namespace ClinicaFrba.Listados
             };
 
             this.dt = DAL.Classes.DBHelper.ExecuteDataSet("NUL.sp_get_top5_prof_horas", dbParams).Tables[0];
+
+            this.dataGridTop5.DataSource = this.dt;
         }
 
         private void get_top5_afil_bonos()
@@ -176,6 +211,8 @@ namespace ClinicaFrba.Listados
             };
 
             this.dt = DAL.Classes.DBHelper.ExecuteDataSet("NUL.sp_get_top5_afil_bonos", dbParams).Tables[0];
+
+            this.dataGridTop5.DataSource = this.dt;
         }
 
 
@@ -189,6 +226,8 @@ namespace ClinicaFrba.Listados
             };
 
             this.dt = DAL.Classes.DBHelper.ExecuteDataSet("NUL.sp_get_top5_esp_bonos", dbParams).Tables[0];
+
+            this.dataGridTop5.DataSource = this.dt;
         }
 
         private void get_planes()
@@ -253,7 +292,7 @@ namespace ClinicaFrba.Listados
                     break;
             }
 
-            this.dataGridTop5.DataSource = this.dt;
+
 
         }
 

@@ -29,6 +29,7 @@ namespace ClinicaFrba.Cancelar_Atencion
         List<string> profesionales_na;
 
         DataTable turnos;
+        DateTime fechaActual;
 
         public CancelarAtencion(Sesion sesion)
         {
@@ -52,8 +53,7 @@ namespace ClinicaFrba.Cancelar_Atencion
                 llenarTipoEsp();
                 llenarEspecialidades();
 
-                this.dateTimePicker1.Value = DateTime.Parse(ConfigurationManager.AppSettings.Get("FechaSistema"));
-                this.dateTimePicker2.Value = DateTime.Parse(ConfigurationManager.AppSettings.Get("FechaSistema"));
+                llenarCalendarios();
 
                 cargarProfesionales();
                 comprobarSiEsProfesional();
@@ -66,19 +66,38 @@ namespace ClinicaFrba.Cancelar_Atencion
             }
         }
 
+        private void llenarCalendarios()
+        {
+            this.labelFechaActual.Text = ConfigurationManager.AppSettings.Get("FechaSistema").ToString();
+
+            this.dateTimePicker1.Value = DateTime.Parse(ConfigurationManager.AppSettings.Get("FechaSistema"));
+            this.dateTimePicker2.Value = DateTime.Parse(ConfigurationManager.AppSettings.Get("FechaSistema"));
+
+            fechaActual = DateTime.Parse(ConfigurationManager.AppSettings.Get("FechaSistema"));
+
+            this.dateTimePicker2.MaxDate = fechaActual.AddDays(-1);
+            this.dateTimePicker1.MaxDate = fechaActual.AddDays(-1);
+        }
+
         private void comprobarSiEsProfesional()
         {
             if (this.sesion.rol_actual_id == 3)
             {
-                this.textBoxNroAfiliado.Visible = false;
-                this.label3.Visible = false;
                 this.comboBoxProfesional.Visible = false;
                 this.label6.Visible = false;
+                this.dataGridView1.Enabled = false;
+            }
+            else if (this.sesion.rol_actual_id == 2)
+            {
+                //es afiliado
             }
             else
             {
-                //llenarTurnosSegunNroAfiliado();
+                //no es afiliado ni profesional, no tiene acciones
+                this.groupBox1.Enabled = false;
+                this.buttonVolver.Enabled = true;
             }
+
         }
 
         private void llenarTurnosSegunNroAfiliado()
@@ -99,6 +118,12 @@ namespace ClinicaFrba.Cancelar_Atencion
                 turnos = DAL.Classes.DBHelper.ExecuteDataSet("NUL.sp_get_turnos_pedidos", dbParams).Tables[0];
 
                 this.dataGridView1.DataSource = turnos;
+                this.dataGridView1.Columns[1].Visible = false;
+                this.dataGridView1.Columns[2].Visible = false;
+                this.dataGridView1.Columns[3].Visible = false;
+                this.dataGridView1.Columns[4].Visible = false;
+                this.dataGridView1.Columns[5].HeaderText = "Fecha y Hora";
+                this.dataGridView1.Columns[6].HeaderText = "Hora del turno";
             }
             catch (Exception exc)
             {
@@ -113,20 +138,7 @@ namespace ClinicaFrba.Cancelar_Atencion
 
         private int obtenerUserId()
         {
-            string expresion = "SELECT afil_id FROM NUL.Afiliado WHERE afil_nro_afiliado = " + this.textBoxNroAfiliado.Text;
-
-
-            SqlDataReader lector = DAL.Classes.DBHelper.ExecuteQuery_DR(expresion);
-
-            if (lector != null)
-            {
-                return int.Parse(lector["afil_id"].ToString());
-            }
-            else
-            {
-                throw new Exception("No se encuentra ese numero de afiliado, intente nuevamente");
-            }
-
+            return this.sesion.user_id;
         }
 
 
@@ -243,7 +255,7 @@ namespace ClinicaFrba.Cancelar_Atencion
             {
                 if (this.sesion.rol_actual_id == 3)
                 {
-                    //cancelar todos los turnos del medico
+                    cancelarTurnosEnRango();
                 }
 
                 else
@@ -256,6 +268,11 @@ namespace ClinicaFrba.Cancelar_Atencion
             {
                 MessageBox.Show(exc.Message, "Aviso", MessageBoxButtons.OK);
             }
+        }
+
+        private void cancelarTurnosEnRango()
+        {
+            throw new NotImplementedException();
         }
 
         private void comboBoxEsp_SelectionChangeCommitted(object sender, EventArgs e)
@@ -354,9 +371,15 @@ namespace ClinicaFrba.Cancelar_Atencion
                 DAL.Classes.DBHelper.ExecuteDataSet("NUL.sp_cancelar_turno", dbParams);
 
                 if ((int.Parse(result.Value.ToString())) != 0)
+                {
                     throw new Exception("No se pudo cancelar el turno");
+                }
                 else
+                {
                     MessageBox.Show("Se cancelo el turno correctamente");
+                }
+
+                llenarTurnosSegunNroAfiliado();
 
             }
             catch (Exception exc)
@@ -364,5 +387,6 @@ namespace ClinicaFrba.Cancelar_Atencion
                 MessageBox.Show(exc.Message, "Aviso", MessageBoxButtons.OK);
             }
         }
+
     }
 }

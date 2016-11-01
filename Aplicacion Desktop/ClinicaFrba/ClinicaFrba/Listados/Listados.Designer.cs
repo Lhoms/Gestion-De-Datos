@@ -29,6 +29,8 @@
         private void InitializeComponent()
         {
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.labelTipo = new System.Windows.Forms.Label();
+            this.comboBoxTipoEsp = new System.Windows.Forms.ComboBox();
             this.labelPlan = new System.Windows.Forms.Label();
             this.labelEspecialidad = new System.Windows.Forms.Label();
             this.comboBoxEspecialidad = new System.Windows.Forms.ComboBox();
@@ -44,8 +46,6 @@
             this.comboBoxListado = new System.Windows.Forms.ComboBox();
             this.dataGridTop5 = new System.Windows.Forms.DataGridView();
             this.buttonVolver = new System.Windows.Forms.Button();
-            this.labelTipo = new System.Windows.Forms.Label();
-            this.comboBoxTipoEsp = new System.Windows.Forms.ComboBox();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericSemestre)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericMes)).BeginInit();
@@ -77,6 +77,24 @@
             this.groupBox1.TabIndex = 1;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Listados";
+            // 
+            // labelTipo
+            // 
+            this.labelTipo.AutoSize = true;
+            this.labelTipo.Location = new System.Drawing.Point(15, 163);
+            this.labelTipo.Name = "labelTipo";
+            this.labelTipo.Size = new System.Drawing.Size(31, 13);
+            this.labelTipo.TabIndex = 17;
+            this.labelTipo.Text = "Tipo:";
+            // 
+            // comboBoxTipoEsp
+            // 
+            this.comboBoxTipoEsp.FormattingEnabled = true;
+            this.comboBoxTipoEsp.Location = new System.Drawing.Point(91, 160);
+            this.comboBoxTipoEsp.Name = "comboBoxTipoEsp";
+            this.comboBoxTipoEsp.Size = new System.Drawing.Size(145, 21);
+            this.comboBoxTipoEsp.TabIndex = 16;
+            this.comboBoxTipoEsp.SelectionChangeCommitted += new System.EventHandler(this.comboBoxTipoEsp_SelectionChangeCommitted);
             // 
             // labelPlan
             // 
@@ -244,6 +262,7 @@
             // 
             this.dataGridTop5.AllowUserToAddRows = false;
             this.dataGridTop5.AllowUserToDeleteRows = false;
+            this.dataGridTop5.BackgroundColor = System.Drawing.SystemColors.ButtonHighlight;
             this.dataGridTop5.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridTop5.Location = new System.Drawing.Point(6, 233);
             this.dataGridTop5.Name = "dataGridTop5";
@@ -260,24 +279,6 @@
             this.buttonVolver.Text = "Volver";
             this.buttonVolver.UseVisualStyleBackColor = true;
             this.buttonVolver.Click += new System.EventHandler(this.buttonVolver_Click);
-            // 
-            // labelTipo
-            // 
-            this.labelTipo.AutoSize = true;
-            this.labelTipo.Location = new System.Drawing.Point(15, 163);
-            this.labelTipo.Name = "labelTipo";
-            this.labelTipo.Size = new System.Drawing.Size(31, 13);
-            this.labelTipo.TabIndex = 17;
-            this.labelTipo.Text = "Tipo:";
-            // 
-            // comboBoxTipoEsp
-            // 
-            this.comboBoxTipoEsp.FormattingEnabled = true;
-            this.comboBoxTipoEsp.Location = new System.Drawing.Point(91, 160);
-            this.comboBoxTipoEsp.Name = "comboBoxTipoEsp";
-            this.comboBoxTipoEsp.Size = new System.Drawing.Size(145, 21);
-            this.comboBoxTipoEsp.TabIndex = 16;
-            this.comboBoxTipoEsp.SelectionChangeCommitted += new System.EventHandler(this.comboBoxTipoEsp_SelectionChangeCommitted);
             // 
             // Listados
             // 

@@ -561,12 +561,12 @@ GO
 CREATE VIEW NUL.v_esp_canceladas(esp_id, esp_descrip, tipo_esp_id, tipo_esp_descrip, cant, anio, semestre, mes)
 AS
 	SELECT E.esp_id, E.esp_descrip, TE.tipo_esp_id, TE.tipo_esp_descrip, COUNT(C.cancel_turno_id) AS cant, YEAR(C.cancel_fecha) as anio,
-			 CASE WHEN MONTH(C.cancel_fecha) < 7 THEN 1 ELSE 2 END  as semestre, CASE WHEN MONTH(C.cancel_fecha) < 7 THEN MONTH(C.cancel_fecha) ELSE MONTH(C.cancel_fecha)-5 END  as mes
+			 CASE WHEN MONTH(C.cancel_fecha) < 7 THEN 1 ELSE 2 END  as semestre, CASE WHEN MONTH(C.cancel_fecha) < 7 THEN MONTH(C.cancel_fecha) ELSE MONTH(C.cancel_fecha)-6 END  as mes
 	  FROM NUL.Especialidad E JOIN NUL.Tipo_esp TE ON TE.tipo_esp_id = E.esp_tipo
 							  JOIN NUL.Turno	T  ON T.turno_especialidad = E.esp_id
 							  JOIN NUL.Cancelacion C ON C.cancel_turno_id = T.turno_id
 	GROUP BY E.esp_id, E.esp_descrip, TE.tipo_esp_id, TE.tipo_esp_descrip, YEAR(C.cancel_fecha), CASE WHEN MONTH(C.cancel_fecha) < 7 THEN 1 ELSE 2 END, MONTH(C.cancel_fecha),
-			CASE WHEN MONTH(C.cancel_fecha) < 7 THEN MONTH(C.cancel_fecha) ELSE MONTH(C.cancel_fecha)-5 END
+			CASE WHEN MONTH(C.cancel_fecha) < 7 THEN MONTH(C.cancel_fecha) ELSE MONTH(C.cancel_fecha)-6 END
 GO
 --------------------------------------
 IF OBJECT_ID ('NUL.v_prof_consultados', 'V') IS NOT NULL  

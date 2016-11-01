@@ -1,4 +1,4 @@
-﻿Estrategia
+Estrategia
 
 -La migracion se hizo tomando como clave no repetible el documento de los pacientes y de los profesionales
 -Se asumen que todos los documentos migrados son tipo DNI
@@ -19,6 +19,6 @@
 -Un profesional podra editar los sintomas y enfermedades de una consulta por haberse equivocado o aberle faltado agregar alguna descripcion.
 -El campo nro_afiliado va a estar determinado en la forma: (Doc*10+1)*100 en donde Doc es el nro de documento del afiliado; 1 es el tipo de documento DNI(como dijimos anteriormente, se presume que todos son DNI) y se multiplica por 100 con el objetivo de que los siguientes afiliados pertenecientes al mismo grupo familiar tengan su correlativo a partir de éste número. Por Ejemplo: DNI: 28758698 - Nro afiliado: 287586980100 - Siguiente del grupo familiar: 287586980101
 -Se construyó la agenda del año 2015 basándose en los turnos que tuvo cada profesional, poniendo como vigencia de la agenda la primer y la última fecha de turnos que atendió. Asimismo, los horarios de cada día, se los determinó por los turnos mínimos y máximos que tuvo el profesional en esos días. 
--
+-Cancelacion de turno solo esta disponible para afiliados para cancelar sus turnos de a uno, o para profesionales para cancelar un rango de turnos, para los otros roles no hay acciones disponibles en esta funcionalidad
 -
 -
