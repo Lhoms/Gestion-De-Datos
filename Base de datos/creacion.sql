@@ -1089,6 +1089,7 @@ BEGIN
 	  AND T.turno_fecha_hora <= @hasta
 	  AND T.turno_profesional = @prof_id
 	  AND T.turno_especialidad = @esp_id
+	  AND T.turno_id NOT IN  (SELECT cancel_turno_id FROM NUL.Cancelacion)
 END
 GO
 
