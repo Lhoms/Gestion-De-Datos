@@ -829,7 +829,7 @@ AS
 BEGIN
 		
 	SELECT TOP 5 * FROM NUL.v_prof_consultados V
-	WHERE V.plan_id = @plan_id AND MONTH(V.fecha)/2 = @semestre-1 AND YEAR(V.fecha) = @anio AND MONTH(V.fecha) = @mes
+	WHERE V.plan_id = @plan_id AND MONTH(V.fecha)/6 >= @semestre AND YEAR(V.fecha) = @anio AND MONTH(V.fecha) = @mes
 	ORDER BY cant DESC
 
 END
