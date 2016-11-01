@@ -572,9 +572,9 @@ GO
 IF OBJECT_ID ('NUL.v_prof_consultados', 'V') IS NOT NULL  
 	DROP VIEW NUL.v_prof_consultados ; 
 GO
-CREATE VIEW NUL.v_prof_consultados(prof_id, pers_nombre, pers_apellido, pers_tipo_doc, pers_doc, esp_id, esp_descrip, tipo_esp_id, tipo_esp_descrip, plan_id, plan_descrip, cant)
+CREATE VIEW NUL.v_prof_consultados(fecha,prof_id, pers_nombre, pers_apellido, pers_tipo_doc, pers_doc, esp_id, esp_descrip, tipo_esp_id, tipo_esp_descrip, plan_id, plan_descrip, cant)
 AS
-	SELECT P.prof_id, PER.pers_nombre, PER.pers_apellido, PER.pers_tipo_doc, PER.pers_doc, E.esp_id, E.esp_descrip, TE.tipo_esp_id, TE.tipo_esp_descrip, PM.plan_id, PM.plan_descrip, COUNT(C.cons_turno_id) AS cant 
+	SELECT DATEFROMPARTS(YEAR(C.cons_fecha_hora),MONTH(C.cons_fecha_hora),DAY(C.cons_fecha_hora)) as fecha,P.prof_id, PER.pers_nombre, PER.pers_apellido, PER.pers_tipo_doc, PER.pers_doc, E.esp_id, E.esp_descrip, TE.tipo_esp_id, TE.tipo_esp_descrip, PM.plan_id, PM.plan_descrip, COUNT(C.cons_turno_id) AS cant 
 	  FROM NUL.Profesional P JOIN NUL.Profesional_especialidad PE ON PE.prof_id = P.prof_id
 							 JOIN NUL.Persona PER ON PER.pers_id = P.prof_id
 							 JOIN NUL.Especialidad E ON E.esp_id = PE.esp_id
@@ -829,7 +829,7 @@ AS
 BEGIN
 		
 	SELECT TOP 5 * FROM NUL.v_prof_consultados V
-	WHERE V.plan_id = @plan_id
+	WHERE V.plan_id = @plan_id AND MONTH(V.fecha)/2 = @semestre-1 AND YEAR(V.fecha) = @anio AND MONTH(V.fecha) = @mes
 	ORDER BY cant DESC
 
 END
