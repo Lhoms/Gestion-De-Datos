@@ -23,8 +23,6 @@ namespace ClinicaFrba.Login
         int    tipo_doc_id;
         int user_id;
 
-        DataSet ds;
-
         List<string> doc_descrip;
         Dictionary<string, int> doc_id;
 

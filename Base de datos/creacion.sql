@@ -1157,11 +1157,11 @@ GO
 CREATE PROCEDURE NUL.sp_validar_bono(@bono_id numeric(18,0), @result int output, @nroAfiliado varchar(255))
 AS
 BEGIN
-SELECT COUNT(*) FROM NUL.Bono B JOIN NUL.Bono_compra BC ON BC.bonoc_id = B.bono_compra
-								    JOIN NUL.Afiliado A ON BC.bonoc_id_usuario LIKE A.afil_id
+SELECT * FROM NUL.Bono B JOIN NUL.Bono_compra BC ON BC.bonoc_id = B.bono_compra
+								    JOIN NUL.Afiliado A ON BC.bonoc_id_usuario = A.afil_id
 	WHERE B.bono_id = @bono_id
-	  AND A.afil_id = @id_user
-	  AND A.afil_nro_afiliado LIKE @nroAfiliado 
+	  AND A.afil_nro_afiliado LIKE @nroAfiliado  --nroAfiliado llega con 'raiz _ _ _' 
+	  AND B.bono_usado = 0 
 
 	set @result = @@ERROR
 END
@@ -1210,8 +1210,8 @@ BEGIN
 
 	WHILE @cant < @cantidad 	--va a agregar bono por bono segun @cantidad
 	BEGIN
-		INSERT INTO NUL.Bono(bono_compra, bono_plan, bono_nro_consulta, bono_usado)
-		VALUES(@new_id, @plan, 0, 0)
+		INSERT INTO NUL.Bono(bono_id, bono_compra, bono_plan, bono_nro_consulta, bono_usado)
+		VALUES(@new_id, @@IDENTITY, @plan, 0, 0)
 		
 
 		set @cant = @cant + 1	--avanzo

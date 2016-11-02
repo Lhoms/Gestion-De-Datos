@@ -31,26 +31,26 @@
             this.buttonComprar = new System.Windows.Forms.Button();
             this.buttonCancelar = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.textBoxNroAfiliado = new System.Windows.Forms.TextBox();
-            this.numericCantidad = new System.Windows.Forms.NumericUpDown();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.buttonLimpiar = new System.Windows.Forms.Button();
-            this.labelGrupo = new System.Windows.Forms.Label();
-            this.labelFecha = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.labelPlan = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
-            this.labelPrecioUnit = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
+            this.buttonAceptar = new System.Windows.Forms.Button();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.labelMontoTot = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.buttonAceptar = new System.Windows.Forms.Button();
+            this.labelPrecioUnit = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.labelPlan = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.labelFecha = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.labelGrupo = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.buttonLimpiar = new System.Windows.Forms.Button();
+            this.label2 = new System.Windows.Forms.Label();
+            this.numericCantidad = new System.Windows.Forms.NumericUpDown();
+            this.textBoxNroAfiliado = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericCantidad)).BeginInit();
             this.groupBox2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericCantidad)).BeginInit();
             this.SuspendLayout();
             // 
             // buttonComprar
@@ -90,128 +90,34 @@
             this.groupBox1.TabIndex = 2;
             this.groupBox1.TabStop = false;
             // 
-            // label1
+            // buttonAceptar
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(18, 26);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(98, 13);
-            this.label1.TabIndex = 2;
-            this.label1.Text = "Numero de afiliado:";
+            this.buttonAceptar.Location = new System.Drawing.Point(164, 81);
+            this.buttonAceptar.Name = "buttonAceptar";
+            this.buttonAceptar.Size = new System.Drawing.Size(75, 23);
+            this.buttonAceptar.TabIndex = 18;
+            this.buttonAceptar.Text = "Aceptar";
+            this.buttonAceptar.UseVisualStyleBackColor = true;
+            this.buttonAceptar.Click += new System.EventHandler(this.buttonAceptar_Click);
             // 
-            // textBoxNroAfiliado
+            // groupBox2
             // 
-            this.textBoxNroAfiliado.Location = new System.Drawing.Point(119, 23);
-            this.textBoxNroAfiliado.Name = "textBoxNroAfiliado";
-            this.textBoxNroAfiliado.Size = new System.Drawing.Size(120, 20);
-            this.textBoxNroAfiliado.TabIndex = 3;
-            // 
-            // numericCantidad
-            // 
-            this.numericCantidad.Location = new System.Drawing.Point(120, 55);
-            this.numericCantidad.Name = "numericCantidad";
-            this.numericCantidad.Size = new System.Drawing.Size(120, 20);
-            this.numericCantidad.TabIndex = 4;
-            this.numericCantidad.ValueChanged += new System.EventHandler(this.numericCantidad_ValueChanged);
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(18, 57);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(99, 13);
-            this.label2.TabIndex = 5;
-            this.label2.Text = "Cantidad de bonos:";
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(17, 56);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(112, 20);
-            this.label3.TabIndex = 6;
-            this.label3.Text = "Grupo familiar:";
-            // 
-            // buttonLimpiar
-            // 
-            this.buttonLimpiar.Location = new System.Drawing.Point(6, 336);
-            this.buttonLimpiar.Name = "buttonLimpiar";
-            this.buttonLimpiar.Size = new System.Drawing.Size(75, 23);
-            this.buttonLimpiar.TabIndex = 7;
-            this.buttonLimpiar.Text = "Limpiar";
-            this.buttonLimpiar.UseVisualStyleBackColor = true;
-            this.buttonLimpiar.Click += new System.EventHandler(this.buttonLimpiar_Click);
-            // 
-            // labelGrupo
-            // 
-            this.labelGrupo.AutoSize = true;
-            this.labelGrupo.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelGrupo.Location = new System.Drawing.Point(163, 56);
-            this.labelGrupo.Name = "labelGrupo";
-            this.labelGrupo.Size = new System.Drawing.Size(50, 20);
-            this.labelGrupo.TabIndex = 8;
-            this.labelGrupo.Text = "grupo";
-            // 
-            // labelFecha
-            // 
-            this.labelFecha.AutoSize = true;
-            this.labelFecha.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelFecha.Location = new System.Drawing.Point(163, 33);
-            this.labelFecha.Name = "labelFecha";
-            this.labelFecha.Size = new System.Drawing.Size(99, 20);
-            this.labelFecha.TabIndex = 10;
-            this.labelFecha.Text = "dd-mm-aaaa";
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(17, 33);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(105, 20);
-            this.label4.TabIndex = 9;
-            this.label4.Text = "Fecha actual:";
-            // 
-            // labelPlan
-            // 
-            this.labelPlan.AutoSize = true;
-            this.labelPlan.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelPlan.Location = new System.Drawing.Point(163, 79);
-            this.labelPlan.Name = "labelPlan";
-            this.labelPlan.Size = new System.Drawing.Size(39, 20);
-            this.labelPlan.TabIndex = 12;
-            this.labelPlan.Text = "plan";
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(17, 79);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(99, 20);
-            this.label5.TabIndex = 11;
-            this.label5.Text = "Plan medico:";
-            // 
-            // labelPrecioUnit
-            // 
-            this.labelPrecioUnit.AutoSize = true;
-            this.labelPrecioUnit.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelPrecioUnit.Location = new System.Drawing.Point(163, 101);
-            this.labelPrecioUnit.Name = "labelPrecioUnit";
-            this.labelPrecioUnit.Size = new System.Drawing.Size(52, 20);
-            this.labelPrecioUnit.TabIndex = 14;
-            this.labelPrecioUnit.Text = "precio";
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.Location = new System.Drawing.Point(17, 101);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(124, 20);
-            this.label6.TabIndex = 13;
-            this.label6.Text = "Precio por bono:";
+            this.groupBox2.Controls.Add(this.labelMontoTot);
+            this.groupBox2.Controls.Add(this.label8);
+            this.groupBox2.Controls.Add(this.labelPrecioUnit);
+            this.groupBox2.Controls.Add(this.label6);
+            this.groupBox2.Controls.Add(this.labelPlan);
+            this.groupBox2.Controls.Add(this.label5);
+            this.groupBox2.Controls.Add(this.labelFecha);
+            this.groupBox2.Controls.Add(this.label4);
+            this.groupBox2.Controls.Add(this.labelGrupo);
+            this.groupBox2.Controls.Add(this.label3);
+            this.groupBox2.Location = new System.Drawing.Point(6, 127);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(373, 187);
+            this.groupBox2.TabIndex = 17;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Informacion de compra";
             // 
             // labelMontoTot
             // 
@@ -233,34 +139,138 @@
             this.label8.TabIndex = 15;
             this.label8.Text = "Monto a pagar:";
             // 
-            // groupBox2
+            // labelPrecioUnit
             // 
-            this.groupBox2.Controls.Add(this.labelMontoTot);
-            this.groupBox2.Controls.Add(this.label8);
-            this.groupBox2.Controls.Add(this.labelPrecioUnit);
-            this.groupBox2.Controls.Add(this.label6);
-            this.groupBox2.Controls.Add(this.labelPlan);
-            this.groupBox2.Controls.Add(this.label5);
-            this.groupBox2.Controls.Add(this.labelFecha);
-            this.groupBox2.Controls.Add(this.label4);
-            this.groupBox2.Controls.Add(this.labelGrupo);
-            this.groupBox2.Controls.Add(this.label3);
-            this.groupBox2.Location = new System.Drawing.Point(6, 127);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(373, 187);
-            this.groupBox2.TabIndex = 17;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Informacion de compra";
+            this.labelPrecioUnit.AutoSize = true;
+            this.labelPrecioUnit.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelPrecioUnit.Location = new System.Drawing.Point(163, 101);
+            this.labelPrecioUnit.Name = "labelPrecioUnit";
+            this.labelPrecioUnit.Size = new System.Drawing.Size(52, 20);
+            this.labelPrecioUnit.TabIndex = 14;
+            this.labelPrecioUnit.Text = "precio";
             // 
-            // buttonAceptar
+            // label6
             // 
-            this.buttonAceptar.Location = new System.Drawing.Point(164, 81);
-            this.buttonAceptar.Name = "buttonAceptar";
-            this.buttonAceptar.Size = new System.Drawing.Size(75, 23);
-            this.buttonAceptar.TabIndex = 18;
-            this.buttonAceptar.Text = "Aceptar";
-            this.buttonAceptar.UseVisualStyleBackColor = true;
-            this.buttonAceptar.Click += new System.EventHandler(this.buttonAceptar_Click);
+            this.label6.AutoSize = true;
+            this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label6.Location = new System.Drawing.Point(17, 101);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(124, 20);
+            this.label6.TabIndex = 13;
+            this.label6.Text = "Precio por bono:";
+            // 
+            // labelPlan
+            // 
+            this.labelPlan.AutoSize = true;
+            this.labelPlan.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelPlan.Location = new System.Drawing.Point(163, 79);
+            this.labelPlan.Name = "labelPlan";
+            this.labelPlan.Size = new System.Drawing.Size(39, 20);
+            this.labelPlan.TabIndex = 12;
+            this.labelPlan.Text = "plan";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label5.Location = new System.Drawing.Point(17, 79);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(99, 20);
+            this.label5.TabIndex = 11;
+            this.label5.Text = "Plan medico:";
+            // 
+            // labelFecha
+            // 
+            this.labelFecha.AutoSize = true;
+            this.labelFecha.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelFecha.Location = new System.Drawing.Point(163, 33);
+            this.labelFecha.Name = "labelFecha";
+            this.labelFecha.Size = new System.Drawing.Size(99, 20);
+            this.labelFecha.TabIndex = 10;
+            this.labelFecha.Text = "dd-mm-aaaa";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.Location = new System.Drawing.Point(17, 33);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(105, 20);
+            this.label4.TabIndex = 9;
+            this.label4.Text = "Fecha actual:";
+            // 
+            // labelGrupo
+            // 
+            this.labelGrupo.AutoSize = true;
+            this.labelGrupo.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelGrupo.Location = new System.Drawing.Point(163, 56);
+            this.labelGrupo.Name = "labelGrupo";
+            this.labelGrupo.Size = new System.Drawing.Size(50, 20);
+            this.labelGrupo.TabIndex = 8;
+            this.labelGrupo.Text = "grupo";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Location = new System.Drawing.Point(17, 56);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(112, 20);
+            this.label3.TabIndex = 6;
+            this.label3.Text = "Grupo familiar:";
+            // 
+            // buttonLimpiar
+            // 
+            this.buttonLimpiar.Location = new System.Drawing.Point(6, 336);
+            this.buttonLimpiar.Name = "buttonLimpiar";
+            this.buttonLimpiar.Size = new System.Drawing.Size(75, 23);
+            this.buttonLimpiar.TabIndex = 7;
+            this.buttonLimpiar.Text = "Limpiar";
+            this.buttonLimpiar.UseVisualStyleBackColor = true;
+            this.buttonLimpiar.Click += new System.EventHandler(this.buttonLimpiar_Click);
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(18, 57);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(99, 13);
+            this.label2.TabIndex = 5;
+            this.label2.Text = "Cantidad de bonos:";
+            // 
+            // numericCantidad
+            // 
+            this.numericCantidad.Location = new System.Drawing.Point(120, 55);
+            this.numericCantidad.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numericCantidad.Name = "numericCantidad";
+            this.numericCantidad.Size = new System.Drawing.Size(120, 20);
+            this.numericCantidad.TabIndex = 4;
+            this.numericCantidad.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numericCantidad.ValueChanged += new System.EventHandler(this.numericCantidad_ValueChanged);
+            // 
+            // textBoxNroAfiliado
+            // 
+            this.textBoxNroAfiliado.Location = new System.Drawing.Point(119, 23);
+            this.textBoxNroAfiliado.Name = "textBoxNroAfiliado";
+            this.textBoxNroAfiliado.Size = new System.Drawing.Size(120, 20);
+            this.textBoxNroAfiliado.TabIndex = 3;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(18, 26);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(98, 13);
+            this.label1.TabIndex = 2;
+            this.label1.Text = "Numero de afiliado:";
             // 
             // CompraBono
             // 
@@ -274,9 +284,9 @@
             this.Text = "Compra de bonos";
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericCantidad)).EndInit();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericCantidad)).EndInit();
             this.ResumeLayout(false);
 
         }

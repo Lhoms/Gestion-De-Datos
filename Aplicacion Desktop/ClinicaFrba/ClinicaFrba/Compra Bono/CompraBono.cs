@@ -58,7 +58,33 @@ namespace ClinicaFrba.Compra_Bono
 
         private void comprarBono()
         {
-            //sp de comprar bono
+            //NUL.sp_new_bono(@id_user numeric(18,0), @fecha datetime, @cantidad numeric(18,0), @monto numeric(16,2), @plan numeric(18,0), @result int output)
+            //try
+            //{
+
+                SqlParameter result = DAL.Classes.DBHelper.MakeParamOutput("@result", SqlDbType.Decimal, 0);
+                SqlParameter[] dbParams = new SqlParameter[]
+            {
+                DAL.Classes.DBHelper.MakeParam("@id_user", SqlDbType.Decimal, 250, afiliado.id),
+                DAL.Classes.DBHelper.MakeParam("@fecha", SqlDbType.DateTime, 250, DateTime.Parse(ConfigurationManager.AppSettings.Get("FechaSistema").ToString())),
+                DAL.Classes.DBHelper.MakeParam("@cantidad", SqlDbType.Decimal, 250, this.numericCantidad.Value),
+                DAL.Classes.DBHelper.MakeParam("@monto", SqlDbType.Decimal, 250, this.monto_total),
+                DAL.Classes.DBHelper.MakeParam("@plan", SqlDbType.Decimal, 250, afiliado.planMedico_id),
+                result,
+            };
+
+                DAL.Classes.DBHelper.ExecuteDataSet("NUL.sp_new_bono", dbParams);
+
+                if (int.Parse(result.Value.ToString()) == 0)
+                    MessageBox.Show("Se realizo la compra correctamente", "Aviso", MessageBoxButtons.OK);
+                else
+                    throw new Exception("");
+
+            //}
+            //catch (Exception exc)
+            //{
+            //    MessageBox.Show("Fallo la compra", "Aviso", MessageBoxButtons.OK);
+            //}
         }
 
         private void obtenerDatosDesdeNroAfiliado(string nroAfiliado)
@@ -95,7 +121,7 @@ namespace ClinicaFrba.Compra_Bono
             }
             else
             {
-                MessageBox.Show("Numero de afiliado no valido", "Aviso", MessageBoxButtons.OK);
+                //MessageBox.Show("Numero de afiliado no valido", "Aviso", MessageBoxButtons.OK);
             }
             
         }
@@ -112,7 +138,12 @@ namespace ClinicaFrba.Compra_Bono
         private void buttonLimpiar_Click(object sender, EventArgs e)
         {
             this.textBoxNroAfiliado.Text = "";
-            this.numericCantidad.Value = 0;
+            this.numericCantidad.Value = 1;
+            this.labelFecha.Text = ""; 
+            this.labelGrupo.Text = "";
+            this.labelPlan.Text = "";
+            this.labelPrecioUnit.Text = "";
+            this.labelMontoTot.Text = "";
         }
 
         private void buttonAceptar_Click(object sender, EventArgs e)
