@@ -332,12 +332,47 @@ namespace ClinicaFrba.Registro_Llegada
 
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (this.dataGridView1.Columns[e.ColumnIndex].Name.Equals("Cancelar"))
+            try
             {
-                ///
-                ///Llamar stored para crear el turno y marcar el bono
-                ///
-                ///
+                if (this.dataGridView1.Columns[e.ColumnIndex].Name.Equals("Registrar"))
+                {
+                    obtenerUserId();
+
+                    int turno_id = int.Parse(this.dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex + 1].Value.ToString());
+                    DateTime hoy = DateTime.Parse(ConfigurationManager.AppSettings.Get("FechaSistema"));
+
+                    SqlParameter result = DAL.Classes.DBHelper.MakeParamOutput("@result", SqlDbType.Decimal, 10);
+                    SqlParameter[] dbParams = new SqlParameter[]
+                {
+                    DAL.Classes.DBHelper.MakeParam("@user_id", SqlDbType.Decimal, 250, this.afil_id),
+                    DAL.Classes.DBHelper.MakeParam("@id_turno", SqlDbType.Decimal, 250, turno_id),
+                    DAL.Classes.DBHelper.MakeParam("@fecha", SqlDbType.DateTime, 250, hoy),
+                    DAL.Classes.DBHelper.MakeParam("@hora_llegada", SqlDbType.Time, 250, hoy.TimeOfDay),
+                    DAL.Classes.DBHelper.MakeParam("@bono_id", SqlDbType.VarChar, 250, Decimal.Parse(this.textBoxBono.Text)),
+                    result,
+                };
+
+                    DAL.Classes.DBHelper.ExecuteDataSet("NUL.sp_set_llegada", dbParams);
+
+                    if (int.Parse(result.Value.ToString()) == 0)
+                    {
+                        MessageBox.Show("Se registro correctamente la llegada", "Aviso", MessageBoxButtons.OK);
+                        
+                        Form1 form = new Form1(this.sesion);
+                        form.Show();
+                        this.Hide();
+                    }
+
+                    else
+                        throw new Exception("Fallo registrando la llegada");
+
+
+                }
+
+            }
+            catch (Exception exc)
+            {
+                MessageBox.Show(exc.Message, "Aviso", MessageBoxButtons.OK);
             }
         }
     }
