@@ -25,19 +25,22 @@ namespace ClinicaFrba.Login
 
         DataSet ds;
 
+        List<string> doc_descrip;
+        Dictionary<string, int> doc_id;
+
         public Login()
         {
             InitializeComponent();
 
-            ds = getTipoDoc();
-            this.comboBoxTipo.ValueMember = "doc_descrip";
-            this.comboBoxTipo.DataSource = ds.Tables[0];
-
             this.textBoxUser.Text = "admin";
             this.textBoxPass.Text = "w23e";
 
-            ////comboBoxTipo.DataSource = DAL.Classes.DBHelper.ExecuteQuery_DS("SELECT * FROM NUL.Tipo_doc").Tables[0];
-            //// DAL.Classes.DBHelper.ExecuteQuery_DS("SELECT * FROM NUL.Tipo_doc")["Doc_descrip"].ToString();
+            doc_descrip = new List<string>();
+            doc_id = new Dictionary<string, int>();
+
+            getTipoDoc();
+
+            this.comboBoxTipo.DataSource = this.doc_descrip;
 
         }
 
@@ -99,12 +102,7 @@ namespace ClinicaFrba.Login
 
         private int get_tipo_doc_id(string tipo_doc)
         {
-            string expresion = "doc_descrip = '" + tipo_doc + "'";
-            int tipo = 1;
-
-            tipo = int.Parse(ds.Tables[0].Rows[0][0].ToString());
-
-            return tipo;
+            return this.doc_id[this.comboBoxTipo.Text];
         }
 
         
@@ -140,17 +138,33 @@ namespace ClinicaFrba.Login
 
         }
 
-        public static DataSet getTipoDoc()
+        public void getTipoDoc()
         {
-                SqlParameter[] dbParams = new SqlParameter[]
-                    {
-                       
-                    };
+            //    SqlParameter[] dbParams = new SqlParameter[]
+            //        {
+
+            //        };
 
 
-            return DAL.Classes.DBHelper.ExecuteDataSet("NUL.sp_get_tipo_doc", dbParams);
+            //return DAL.Classes.DBHelper.ExecuteDataSet("NUL.sp_get_tipo_doc", dbParams);
+
+            string expresion = "SELECT doc_id, doc_descrip FROM NUL.Tipo_doc";
+
+            SqlDataReader lector = DAL.Classes.DBHelper.ExecuteQuery_DR(expresion);
+
+            if (lector != null)
+            {
+                this.doc_descrip.Add(lector["doc_descrip"].ToString());
+                this.doc_id.Add(lector["doc_descrip"].ToString(), int.Parse(lector["doc_id"].ToString()));
+
+                while (lector.Read())
+                {
+                    this.doc_descrip.Add(lector["doc_descrip"].ToString());
+                    this.doc_id.Add(lector["doc_descrip"].ToString(), int.Parse(lector["doc_id"].ToString()));
+                }
+
+            }
 
         }
-
     }
 }

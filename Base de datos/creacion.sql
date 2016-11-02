@@ -923,7 +923,7 @@ BEGIN
 	
 	declare curs CURSOR for
 	SELECT user_id, user_pass, user_log_fallidos, user_habilitado FROM NUL.Usuario
-	WHERE user_username = @username
+	WHERE user_username = @username AND user_tipodoc = @tipo_doc
 	for update
 
 	open curs
