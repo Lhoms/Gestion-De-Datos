@@ -1200,18 +1200,19 @@ GO
 CREATE PROCEDURE NUL.sp_new_bono(@id_user numeric(18,0), @fecha datetime, @cantidad numeric(18,0), @monto numeric(16,2), @plan numeric(18,0), @result int output)
 AS
 BEGIN
-	INSERT INTO NUL.Bono_compra(bonoc_id_usuario, bonoc_fecha, bonoc_cantidad, bonoc_monto_total)
-	VALUES(@id_user, @fecha, @cantidad, @monto)
+	INSERT INTO NUL.Bono_compra(bonoc_id_usuario, bonoc_fecha, bonoc_fecha_impresion, bonoc_cantidad, bonoc_monto_total)
+	VALUES(@id_user, @fecha, @fecha, @cantidad, @monto)
 
 	DECLARE @cant int = 0
 	DECLARE @new_id int = (SELECT MAX(bono_id)+1 FROM NUL.Bono) --no tiene identity
+	DECLARE @compra_id int = @@IDENTITY
 
 	if @@ERROR = 0
 
 	WHILE @cant < @cantidad 	--va a agregar bono por bono segun @cantidad
 	BEGIN
 		INSERT INTO NUL.Bono(bono_id, bono_compra, bono_plan, bono_nro_consulta, bono_usado)
-		VALUES(@new_id, @@IDENTITY, @plan, 0, 0)
+		VALUES(@new_id, @compra_id, @plan, 0, 0)
 		
 
 		set @cant = @cant + 1	--avanzo
