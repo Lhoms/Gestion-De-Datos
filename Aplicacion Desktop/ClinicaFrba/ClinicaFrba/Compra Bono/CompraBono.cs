@@ -77,12 +77,12 @@ namespace ClinicaFrba.Compra_Bono
                 if (int.Parse(result.Value.ToString()) == 0)
                     MessageBox.Show("Se realizo la compra correctamente", "Aviso", MessageBoxButtons.OK);
                 else
-                    throw new Exception("");
+                    throw new Exception("Fallo la compra");
 
             }
             catch (Exception exc)
             {
-                MessageBox.Show("Fallo la compra", "Aviso", MessageBoxButtons.OK);
+                MessageBox.Show(exc.Message, "Aviso", MessageBoxButtons.OK);
             }
         }
 

@@ -29,6 +29,8 @@ namespace ClinicaFrba.Registro_Llegada
         List<Profesional> profesionales;
         List<string> profesionales_na;
 
+        int afil_id;
+
         public RegistrarLlegada(Sesion sesion)
         {
             InitializeComponent();
@@ -55,40 +57,59 @@ namespace ClinicaFrba.Registro_Llegada
 
         private void buttonAceptar_Click(object sender, EventArgs e)
         {
-            validarBono();
-            validarNroAfiliado();
-            llenarTurnosSegunNroAfiliado();
+            try
+            {
+                if (validarBono())
+                    llenarTurnosSegunNroAfiliado();
+            }
+            catch (Exception exc)
+            {
+                MessageBox.Show(exc.Message, "Aviso", MessageBoxButtons.OK);
+            }
         }
 
-        private void validarNroAfiliado()
+        private bool validarBono()
         {
-            ////////////a
-            ////////////a
-            ////////////a
-            ////////////a
-            ////////////a
-        }
 
-        private void validarBono()
-        {
-            ////////////a
-            ////////////a
-            ////////////a
-            ////////////a
-            ////////////a
+            if (string.IsNullOrEmpty(this.textBoxBono.Text) || string.IsNullOrEmpty(this.textBoxNroAfiliado.Text))
+                throw new Exception("El numero de afiliado y el numero de bono no pueden estar vacios");
+
+                string nroAfiliado = this.textBoxNroAfiliado.Text;
+                string grupoFamiliar = (nroAfiliado).Substring(0, nroAfiliado.Length - 3) + "___";
+
+
+                SqlParameter result = DAL.Classes.DBHelper.MakeParamOutput("@result", SqlDbType.Decimal, 10);
+                SqlParameter[] dbParams = new SqlParameter[]
+            {
+                DAL.Classes.DBHelper.MakeParam("@bono_id", SqlDbType.Decimal, 250, Decimal.Parse(this.textBoxBono.Text)),
+                DAL.Classes.DBHelper.MakeParam("@nroAfiliado", SqlDbType.VarChar, 250, grupoFamiliar),
+                result,
+            };
+
+                DataTable bono = DAL.Classes.DBHelper.ExecuteDataSet("NUL.sp_validar_bono", dbParams).Tables[0];
+
+                if (bono.Rows.Count == 0)
+                {
+                    throw new Exception("Bono no valido");
+                }
+                else
+                    return true;
+
         }
 
         private void llenarTurnosSegunNroAfiliado()
         {
-            try
-            {
                 DateTime hoy = DateTime.Parse(ConfigurationManager.AppSettings.Get("FechaSistema"));
+                DateTime fin_hoy = DateTime.Parse(ConfigurationManager.AppSettings.Get("FechaSistema")).
+                                    AddDays(1).AddHours(-hoy.Hour).AddMinutes(-hoy.Minute).AddMilliseconds(-hoy.Millisecond);
+
+                obtenerUserId();
 
                 SqlParameter[] dbParams = new SqlParameter[]
             {
-                DAL.Classes.DBHelper.MakeParam("@user_id", SqlDbType.Decimal, 250, obtenerUserId()),
-                DAL.Classes.DBHelper.MakeParam("@desde", SqlDbType.DateTime, 250, DateTime.Parse(ConfigurationManager.AppSettings.Get("FechaSistema"))),
-                DAL.Classes.DBHelper.MakeParam("@hasta", SqlDbType.DateTime, 250, DateTime.Parse(ConfigurationManager.AppSettings.Get("FechaSistema"))),
+                DAL.Classes.DBHelper.MakeParam("@user_id", SqlDbType.Decimal, 250, this.afil_id),
+                DAL.Classes.DBHelper.MakeParam("@desde", SqlDbType.DateTime, 250, hoy),
+                DAL.Classes.DBHelper.MakeParam("@hasta", SqlDbType.DateTime, 250, fin_hoy),
                 DAL.Classes.DBHelper.MakeParam("@prof_id", SqlDbType.VarChar, 250, obtenerProfesionalId()),
                 DAL.Classes.DBHelper.MakeParam("@esp_id", SqlDbType.VarChar, 250, this.especialidades_id[this.comboBoxEsp.Text]),
             };
@@ -102,11 +123,7 @@ namespace ClinicaFrba.Registro_Llegada
                 this.dataGridView1.Columns[4].Visible = false;
                 this.dataGridView1.Columns[5].HeaderText = "Fecha y Hora";
                 this.dataGridView1.Columns[6].HeaderText = "Hora del turno";
-            }
-            catch (Exception exc)
-            {
-                MessageBox.Show(exc.Message, "Aviso", MessageBoxButtons.OK);
-            }
+
         }
 
         private object obtenerProfesionalId()
@@ -114,9 +131,32 @@ namespace ClinicaFrba.Registro_Llegada
             return this.profesionales[this.comboBoxProfesional.SelectedIndex].id;
         }
 
-        private int obtenerUserId()
+        public void obtenerUserId()
         {
-            return this.sesion.user_id;
+            try
+            {
+                this.afil_id = 0;
+
+                string expresion = "SELECT afil_id FROM NUL.Afiliado A JOIN NUL.Usuario U ON A.afil_id = U.user_id ";
+                string where     = "WHERE U.user_habilitado = 1 AND afil_nro_afiliado = " + this.textBoxNroAfiliado.Text;
+
+
+                SqlDataReader lector = DAL.Classes.DBHelper.ExecuteQuery_DR(expresion + where);
+
+                if (lector == null)
+                {
+                    throw new Exception("fallo obteniendo al afiliado segun numero");
+                }
+
+                this.afil_id = int.Parse(lector["afil_id"].ToString());
+
+            }
+
+            catch (Exception exc)
+            {
+                MessageBox.Show("Numero de afiliado no valido", "Aviso", MessageBoxButtons.OK);
+            }
+
         }
 
 

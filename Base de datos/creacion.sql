@@ -1089,6 +1089,7 @@ BEGIN
 	  AND T.turno_profesional = @prof_id
 	  AND T.turno_especialidad = @esp_id
 	  AND T.turno_id NOT IN  (SELECT cancel_turno_id FROM NUL.Cancelacion)
+	  AND T.turno_id NOT IN (SELECT cons_turno_id FROM NUL.Consulta)
 END
 GO
 
@@ -1167,7 +1168,7 @@ SELECT * FROM NUL.Bono B JOIN NUL.Bono_compra BC ON BC.bonoc_id = B.bono_compra
 END
 GO
 
-CREATE PROCEDURE NUL.sp_set_llegada(@id_cons numeric(18,0), @id_turno numeric(18,0), @hora_llegada time, @bono_id numeric(18,0), @result int output)--falta setear el nro consulta
+CREATE PROCEDURE NUL.sp_set_llegada(@id_turno numeric(18,0), @fecha datetime, @hora_llegada time, @bono_id numeric(18,0), @result int output)
 AS
 BEGIN
 	UPDATE NUL.Turno SET turno_llegada = @hora_llegada
@@ -1178,9 +1179,9 @@ BEGIN
 	if @result = 0
 		begin
 
-		UPDATE NUL.Consulta SET cons_bono_usado = @bono_id
-		WHERE cons_id = @id_cons
-
+		INSERT INTO NUL.Consulta (cons_turno_id, cons_bono_usado, cons_fecha_hora, cons_sintomas, cons_enfermedades)
+		VALUES (@id_turno, @bono_id, @fecha, ' ', '  ' );
+		
 		set @result = @@ERROR
 
 		if @result = 0
@@ -1194,7 +1195,6 @@ BEGIN
 
 		end
 END
-GO
 
 
 CREATE PROCEDURE NUL.sp_new_bono(@id_user numeric(18,0), @fecha datetime, @cantidad numeric(18,0), @monto numeric(16,2), @plan numeric(18,0), @result int output)

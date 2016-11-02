@@ -33,6 +33,8 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.textBoxBono = new System.Windows.Forms.TextBox();
+            this.label5 = new System.Windows.Forms.Label();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.Registrar = new System.Windows.Forms.DataGridViewButtonColumn();
             this.buttonAceptar = new System.Windows.Forms.Button();
@@ -43,8 +45,6 @@
             this.buttonVolver = new System.Windows.Forms.Button();
             this.labelFechaActual = new System.Windows.Forms.Label();
             this.labelFecha = new System.Windows.Forms.Label();
-            this.textBoxBono = new System.Windows.Forms.TextBox();
-            this.label5 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
@@ -105,6 +105,22 @@
             this.groupBox1.TabIndex = 5;
             this.groupBox1.TabStop = false;
             // 
+            // textBoxBono
+            // 
+            this.textBoxBono.Location = new System.Drawing.Point(139, 136);
+            this.textBoxBono.Name = "textBoxBono";
+            this.textBoxBono.Size = new System.Drawing.Size(196, 20);
+            this.textBoxBono.TabIndex = 12;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(25, 139);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(73, 13);
+            this.label5.TabIndex = 11;
+            this.label5.Text = "Bono numero:";
+            // 
             // dataGridView1
             // 
             this.dataGridView1.AllowUserToAddRows = false;
@@ -112,6 +128,7 @@
             this.dataGridView1.AllowUserToOrderColumns = true;
             this.dataGridView1.AllowUserToResizeColumns = false;
             this.dataGridView1.AllowUserToResizeRows = false;
+            this.dataGridView1.BackgroundColor = System.Drawing.SystemColors.ButtonHighlight;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Registrar});
@@ -201,22 +218,6 @@
             this.labelFecha.Size = new System.Drawing.Size(40, 13);
             this.labelFecha.TabIndex = 22;
             this.labelFecha.Text = "Fecha:";
-            // 
-            // textBoxBono
-            // 
-            this.textBoxBono.Location = new System.Drawing.Point(139, 136);
-            this.textBoxBono.Name = "textBoxBono";
-            this.textBoxBono.Size = new System.Drawing.Size(196, 20);
-            this.textBoxBono.TabIndex = 12;
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(25, 139);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(73, 13);
-            this.label5.TabIndex = 11;
-            this.label5.Text = "Bono numero:";
             // 
             // RegistrarLlegada
             // 
