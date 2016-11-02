@@ -1279,5 +1279,6 @@ BEGIN
 SELECT * FROM NUL.Turno t 
 WHERE t.turno_profesional = @prof AND t.turno_fecha_hora between @fecha_desde AND @fecha_hasta
 		AND T.turno_id NOT IN  (SELECT cancel_turno_id FROM NUL.Cancelacion)
+		AND T.turno_id NOT IN (SELECT cons_turno_id FROM NUL.Consulta)
 END
 GO

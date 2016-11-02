@@ -73,3 +73,4 @@ C:\Users\Lucas2\workspace-gdd\TP-Datos\Aplicacion Desktop\ClinicaFrba\ClinicaFrb
 C:\Users\Lucas2\workspace-gdd\TP-Datos\Aplicacion Desktop\ClinicaFrba\ClinicaFrba\obj\Debug\ClinicaFrba.exe
 C:\Users\Lucas2\workspace-gdd\TP-Datos\Aplicacion Desktop\ClinicaFrba\ClinicaFrba\obj\Debug\ClinicaFrba.pdb
 C:\Users\Lucas2\workspace-gdd\TP-Datos\Aplicacion Desktop\ClinicaFrba\ClinicaFrba\obj\Debug\ClinicaFrba.Registro_Llegada.RegistrarLlegada.resources
+C:\Users\Lucas2\workspace-gdd\TP-Datos\Aplicacion Desktop\ClinicaFrba\ClinicaFrba\obj\Debug\ClinicaFrba.csprojResolveAssemblyReference.cache
