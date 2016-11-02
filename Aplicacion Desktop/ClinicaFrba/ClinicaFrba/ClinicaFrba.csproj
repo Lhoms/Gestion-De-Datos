@@ -194,6 +194,9 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Registro Llegada\RegistrarLlegada.resx">
+      <DependentUpon>RegistrarLlegada.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Registro Resultado\RegistrarResultado.resx">
       <DependentUpon>RegistrarResultado.cs</DependentUpon>
     </EmbeddedResource>

@@ -288,7 +288,7 @@ namespace ClinicaFrba
 
         private void buttonRegistrarLlegada_Click(object sender, EventArgs e)
         {
-            Registro_Llegada.RegistrarLlegada form = new Registro_Llegada.RegistrarLlegada();
+            Registro_Llegada.RegistrarLlegada form = new Registro_Llegada.RegistrarLlegada(this.sesion);
 
             form.Show();
 

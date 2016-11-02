@@ -93,7 +93,7 @@
             this.MaximizeBox = false;
             this.Name = "MatriculaFaltante";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Ingresar Matricula";
+            this.Text = "Matricula Incorrecta";
             this.TopMost = true;
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();

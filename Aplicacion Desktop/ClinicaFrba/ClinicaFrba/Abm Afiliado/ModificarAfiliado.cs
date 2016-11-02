@@ -7,6 +7,7 @@ using System.Data.SqlClient;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -17,6 +18,7 @@ namespace ClinicaFrba.Abm_Afiliado
         public Sesion sesion;
         public DataGridViewRow afiliado;
         public Afiliado afiliadoDatos;
+        public Afiliado afiliadoDatosNuevos;
 
         public Dictionary<string, int> estado_civil;   //para manejar los ids y datasource
         public Dictionary<int, string> id_estado_descrip;
@@ -49,12 +51,13 @@ namespace ClinicaFrba.Abm_Afiliado
             this.comboBoxPlan.DataSource = this.plan_descrip;
 
             afiliadoDatos = new Afiliado();
+            afiliadoDatosNuevos = new Afiliado();
             rellenarAfiliado();
 
-            this.labelUsuario.Text = this.afiliado.Cells[2].Value.ToString() + " - " +
-                                     this.afiliado.Cells[4].Value.ToString() + " " +
-                                     this.afiliado.Cells[5].Value.ToString(); ;
-            this.labelNroAfil.Text = this.afiliado.Cells[13].Value.ToString();
+            this.labelUsuario.Text = this.afiliado.Cells[2].Value.ToString() + " - " +  //username
+                                     this.afiliado.Cells[4].Value.ToString() + " " +    //nombre
+                                     this.afiliado.Cells[5].Value.ToString(); ;         //apellido
+            this.labelNroAfil.Text = this.afiliado.Cells[13].Value.ToString();          //nro afiliado
 
             modificacionHabilitada();
             rellenarBoxes();
@@ -247,8 +250,64 @@ namespace ClinicaFrba.Abm_Afiliado
                 MessageBox.Show("cambiar el plan medico");
             }
 
-            
+            if (this.textBoxGrupoFamiliar.Text != (this.afiliadoDatos.numeroAfiliado / 100).ToString())
+            {
+                //llamar al stored de cambiar grupo familiar
+                MessageBox.Show("stored de cambiar grupo familiar");
+                //avisarle nuevo numero de afiliado
+            }
+   
+        }
 
+        private void obtenerUsuario()
+        {
+ 
+            if (string.IsNullOrWhiteSpace(comboBoxSexo.Text))
+                throw new Exception("El campo sexo no puede estar vacio");
+            else this.afiliadoDatosNuevos.sexo = comboBoxSexo.Text;
+
+            if (string.IsNullOrWhiteSpace(textBoxDireccion.Text))
+                throw new Exception("El campo direccion no puede estar vacio");
+            else this.afiliadoDatosNuevos.direccion = textBoxDireccion.Text;
+
+            if (string.IsNullOrWhiteSpace(textBoxTelefono.Text))
+                throw new Exception("El campo telefono no puede estar vacio");
+            else this.afiliadoDatosNuevos.telefono = long.Parse(textBoxTelefono.Text);
+
+            if (string.IsNullOrWhiteSpace(textBoxMail.Text))
+            {
+                throw new Exception("El campo mail no puede estar vacio");
+            }
+            else if (Regex.IsMatch(textBoxMail.Text,
+                @"^(?("")("".+?(?<!\\)""@)|(([0-9a-z]((\.(?!\.))|[-!#\$%&'\*\+/=\?\^`\{\}\|~\w])*)(?<=[0-9a-z])@))" +
+                @"(?(\[)(\[(\d{1,3}\.){3}\d{1,3}\])|(([0-9a-z][-\w]*[0-9a-z]*\.)+[a-z0-9][\-a-z0-9]{0,22}[a-z0-9]))$",
+                RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(250)))
+            {
+                this.afiliadoDatosNuevos.mail = textBoxMail.Text;
+            }
+            else
+            {
+                throw new Exception("El formato del mail no es valido");
+            }
+
+            if (string.IsNullOrWhiteSpace(comboBoxEstadoCivil.Text))
+                throw new Exception("El campo estado civil no puede estar vacio");
+            else
+            {
+                this.afiliadoDatosNuevos.estadoCivil = comboBoxEstadoCivil.Text;
+                this.afiliadoDatosNuevos.estadoCivil_id = this.estado_civil[comboBoxEstadoCivil.Text];
+            }
+
+            if (string.IsNullOrWhiteSpace(comboBoxPlan.Text))
+                throw new Exception("El campo plan medico no puede estar vacio");
+            else
+            {
+                this.afiliadoDatosNuevos.planMedico = comboBoxPlan.Text;
+                this.afiliadoDatosNuevos.planMedico_id = this.planes[comboBoxPlan.Text];
+            }
+
+            if (string.IsNullOrWhiteSpace(this.textBoxGrupoFamiliar.Text))
+                throw new Exception("El campo grupo familiar no puede estar vacio");
 
         }
 

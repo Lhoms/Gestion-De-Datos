@@ -58,9 +58,8 @@ namespace ClinicaFrba.Compra_Bono
 
         private void comprarBono()
         {
-            //NUL.sp_new_bono(@id_user numeric(18,0), @fecha datetime, @cantidad numeric(18,0), @monto numeric(16,2), @plan numeric(18,0), @result int output)
-            //try
-            //{
+            try
+            {
 
                 SqlParameter result = DAL.Classes.DBHelper.MakeParamOutput("@result", SqlDbType.Decimal, 0);
                 SqlParameter[] dbParams = new SqlParameter[]
@@ -80,11 +79,11 @@ namespace ClinicaFrba.Compra_Bono
                 else
                     throw new Exception("");
 
-            //}
-            //catch (Exception exc)
-            //{
-            //    MessageBox.Show("Fallo la compra", "Aviso", MessageBoxButtons.OK);
-            //}
+            }
+            catch (Exception exc)
+            {
+                MessageBox.Show("Fallo la compra", "Aviso", MessageBoxButtons.OK);
+            }
         }
 
         private void obtenerDatosDesdeNroAfiliado(string nroAfiliado)
@@ -102,7 +101,7 @@ namespace ClinicaFrba.Compra_Bono
             }
             else
             {
-                MessageBox.Show("Numero de afiliado no valido", "Aviso", MessageBoxButtons.OK);
+                throw new Exception("Numero de afiliado no valido");
             }
 
         }
@@ -121,7 +120,7 @@ namespace ClinicaFrba.Compra_Bono
             }
             else
             {
-                //MessageBox.Show("Numero de afiliado no valido", "Aviso", MessageBoxButtons.OK);
+                throw new Exception("Numero de afiliado no valido");
             }
             
         }
