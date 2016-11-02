@@ -1201,6 +1201,7 @@ BEGIN
 
 		end
 END
+GO
 
 
 CREATE PROCEDURE NUL.sp_new_bono(@id_user numeric(18,0), @fecha datetime, @cantidad numeric(18,0), @monto numeric(16,2), @plan numeric(18,0), @result int output)
