@@ -1162,13 +1162,13 @@ SELECT * FROM NUL.Bono B JOIN NUL.Bono_compra BC ON BC.bonoc_id = B.bono_compra
 								    JOIN NUL.Afiliado A ON BC.bonoc_id_usuario = A.afil_id
 	WHERE B.bono_id = @bono_id
 	  AND A.afil_nro_afiliado LIKE @nroAfiliado  --nroAfiliado llega con 'raiz _ _ _' 
-	  AND B.bono_usado = 0 
+	  AND B.bono_usado = 0
 
 	set @result = @@ERROR
 END
 GO
 
-CREATE PROCEDURE NUL.sp_set_llegada(@id_turno numeric(18,0), @fecha datetime, @hora_llegada time, @bono_id numeric(18,0), @result int output)
+CREATE PROCEDURE NUL.sp_set_llegada(@user_id numeric(18,0), @id_turno numeric(18,0), @fecha datetime, @hora_llegada time, @bono_id numeric(18,0), @result int output)
 AS
 BEGIN
 	UPDATE NUL.Turno SET turno_llegada = @hora_llegada
@@ -1186,8 +1186,14 @@ BEGIN
 
 		if @result = 0
 		   begin
-			UPDATE NUL.Bono SET bono_usado = 1
+ 			
+ 			DECLARE @nro_cons numeric(18,0) = (SELECT afil_nro_consulta FROM NUL.Afiliado WHERE afil_id = @user_id);
+
+			UPDATE NUL.Bono SET bono_usado = 1, bono_nro_consulta = @nro_cons,
+							    bono_plan = (SELECT afil_plan_med FROM NUL.Afiliado WHERE afil_id = @user_id)
 			WHERE bono_id = @bono_id
+
+			UPDATE NUL.Afiliado SET afil_nro_consulta = @nro_cons + 1
 
 			set @result = @@ERROR
 
