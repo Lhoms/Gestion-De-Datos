@@ -192,8 +192,8 @@ CREATE TABLE NUL.Historial_plan_med
 
 CREATE TABLE NUL.Bono
 (
-		bono_id 				numeric(18,0) PRIMARY KEY,
-		bono_compra 			numeric(18,0),
+		bono_id 				numeric(18,0) PRIMARY KEY,	--no es identity porque ya vienen valores y no desde 1,
+		bono_compra 			numeric(18,0),				--asique se va a manejar con un max(bono_id) + 1;
 		bono_plan				numeric(18,0),
 		bono_nro_consulta	    numeric(18,0),
 		bono_usado			    bit,
@@ -422,10 +422,10 @@ INSERT INTO NUL.Afiliado(afil_id, afil_estado, afil_plan_med, afil_nro_afiliado,
 (
 	SELECT DISTINCT U.user_id, '1', M.Plan_Med_Codigo, (M.Paciente_Dni*10+1)*100+1, '0', ISNULL((SELECT COUNT(M2.Bono_Consulta_Numero)
 																							FROM gd_esquema.Maestra M2
-																							WHERE M2.Paciente_Mail = M.Paciente_Mail
+																							WHERE M2.Paciente_Dni = M.Paciente_Dni
 																							  AND M2.Bono_Consulta_Numero IS NOT NULL 
 																							  AND M2.Turno_Numero IS NULL
-																							GROUP BY M2.Paciente_Mail),0)
+																							GROUP BY M2.Paciente_Dni),0)
 	FROM gd_esquema.Maestra M JOIN  NUL.Usuario U ON CAST(M.Paciente_Dni AS CHAR) = U.user_username
 												 AND U.user_tipodoc  = 1
 );
@@ -438,7 +438,6 @@ INSERT INTO NUL.Bono_compra(bonoc_id_usuario, bonoc_fecha, bonoc_fecha_impresion
 											     AND U.user_tipodoc = 1
 	WHERE M.Bono_Consulta_Numero IS NOT NULL AND M.Turno_Numero IS NULL
 	GROUP BY U.user_id, M.Compra_Bono_Fecha, M.Bono_Consulta_Fecha_Impresion, M.Plan_Med_Precio_Bono_Consulta
-	--HAVING M.Compra_Bono_Fecha IS NOT NULL
 );
 
 INSERT INTO NUL.Historial_plan_med(histo_plan_id, histo_afil_id, histo_fecha_id, histo_descrip)
@@ -1155,19 +1154,20 @@ BEGIN
 END
 GO
 
-CREATE PROCEDURE NUL.sp_validar_bono(@id_user numeric(18,0), @bono_id numeric(18,0), @result int output)
+CREATE PROCEDURE NUL.sp_validar_bono(@bono_id numeric(18,0), @result int output, @nroAfiliado varchar(255))
 AS
 BEGIN
-	SELECT COUNT(*) FROM NUL.Bono B JOIN NUL.Bono_compra BC ON BC.bonoc_id = B.bono_id
-								    JOIN NUL.Afiliado A ON BC.bonoc_id_usuario LIKE A.afil_nro_afiliado
+SELECT COUNT(*) FROM NUL.Bono B JOIN NUL.Bono_compra BC ON BC.bonoc_id = B.bono_compra
+								    JOIN NUL.Afiliado A ON BC.bonoc_id_usuario LIKE A.afil_id
 	WHERE B.bono_id = @bono_id
 	  AND A.afil_id = @id_user
+	  AND A.afil_nro_afiliado LIKE @nroAfiliado 
 
 	set @result = @@ERROR
 END
 GO
 
-CREATE PROCEDURE NUL.sp_set_llegada(@id_cons numeric(18,0), @id_turno numeric(18,0), @hora_llegada time, @bono_id numeric(18,0), @result int output)
+CREATE PROCEDURE NUL.sp_set_llegada(@id_cons numeric(18,0), @id_turno numeric(18,0), @hora_llegada time, @bono_id numeric(18,0), @result int output)--falta setear el nro consulta
 AS
 BEGIN
 	UPDATE NUL.Turno SET turno_llegada = @hora_llegada
@@ -1196,20 +1196,33 @@ BEGIN
 END
 GO
 
+
 CREATE PROCEDURE NUL.sp_new_bono(@id_user numeric(18,0), @fecha datetime, @cantidad numeric(18,0), @monto numeric(16,2), @plan numeric(18,0), @result int output)
 AS
 BEGIN
 	INSERT INTO NUL.Bono_compra(bonoc_id_usuario, bonoc_fecha, bonoc_cantidad, bonoc_monto_total)
 	VALUES(@id_user, @fecha, @cantidad, @monto)
 
+	DECLARE @cant int = 0
+	DECLARE @new_id int = (SELECT MAX(bono_id)+1 FROM NUL.Bono) --no tiene identity
+
 	if @@ERROR = 0
+
+	WHILE @cant < @cantidad 	--va a agregar bono por bono segun @cantidad
+	BEGIN
 		INSERT INTO NUL.Bono(bono_compra, bono_plan, bono_nro_consulta, bono_usado)
-		VALUES(@@IDENTITY, @plan, 0, 0)
+		VALUES(@new_id, @plan, 0, 0)
+		
+
+		set @cant = @cant + 1	--avanzo
+		set @new_id = (SELECT MAX(bono_id)+1 FROM NUL.Bono)
+	END
 
 	set @result = @@ERROR
 
 END
 GO
+
 
 CREATE PROCEDURE NUL.sp_get_disp_profesional(@id_prof numeric(18,0), @esp_id numeric(18,0), @fec_inicio datetime, @fec_fin datetime)
 AS
@@ -1264,6 +1277,6 @@ BEGIN
 
 SELECT * FROM NUL.Turno t 
 WHERE t.turno_profesional = @prof AND t.turno_fecha_hora between @fecha_desde AND @fecha_hasta
-
+		AND T.turno_id NOT IN  (SELECT cancel_turno_id FROM NUL.Cancelacion)
 END
 GO
