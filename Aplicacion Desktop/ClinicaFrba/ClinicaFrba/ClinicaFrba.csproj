@@ -176,6 +176,9 @@
     <EmbeddedResource Include="Compra Bono\CompraBono.resx">
       <DependentUpon>CompraBono.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Crear Agenda\CrearAgenda.resx">
+      <DependentUpon>CrearAgenda.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
