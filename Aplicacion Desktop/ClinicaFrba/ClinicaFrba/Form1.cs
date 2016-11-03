@@ -315,7 +315,9 @@ namespace ClinicaFrba
 
         private void buttonCrearAgenda_Click(object sender, EventArgs e)
         {
-            Crear_Agenda.CrearAgenda form = new Crear_Agenda.CrearAgenda();
+            this.sesion.rol_actual_id = get_rol_id(this.comboBoxRol.Text);
+
+            Crear_Agenda.CrearAgenda form = new Crear_Agenda.CrearAgenda(this.sesion);
 
             form.Show();
 

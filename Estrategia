@@ -23,7 +23,7 @@ Estrategia
 -Cancelacion de turno solo esta disponible para afiliados para cancelar sus turnos de a uno, o para profesionales para cancelar un rango de turnos, para los otros roles no hay acciones disponibles en esta funcionalidad.
 -Ya que se considera que el afiliado nunca llega tarde y no hay ninguna utilidad en marcar una llegada anticipada, si se registra la llegada de un afiliado se marca como hora de llegada la hora del turno.
 -Mediante el boton "Bonos disponibles" en "compra de bonos" el afiliado puede ver el numero de bonos que puede usar, tanto de el como de su grupo familiar.
--
+-Las agendas deben crearse en orden, no se puede crear la agenda para julio y luego la agenda para enero
 -
 -
 -
