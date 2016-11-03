@@ -1231,52 +1231,39 @@ BEGIN
 END
 GO
 
-
 CREATE PROCEDURE NUL.sp_get_disp_profesional(@id_prof numeric(18,0), @esp_id numeric(18,0), @fec_inicio datetime, @fec_fin datetime)
 AS
 BEGIN
 
-select @fec_inicio, @fec_fin
 --Construcción de un registro cada 30 minutos
-;with FECHAS(fecha) AS (
+with FECHAS(fecha) AS (
 	SELECT cast(@fec_inicio as datetime) fecha
 	UNION ALL
 	SELECT DATEADD(mi, 30, fecha) fecha
 	FROM FECHAS
-	WHERE fecha < @fec_fin
-)
-,Agenda_filtrada as (--Rango de horas en función de la Agenda
-	 select AD.agenda_id, AD.dia_id, A.agenda_prof_id, A.agenda_prof_esp_id, F.Fecha,
-	 HORA_DESDE = AD.dia_hora_inicio, 
-	 HORA_HASTA = AD.dia_hora_fin
-	 from NUL.Agenda_dia AD, NUL.Agenda A, FECHAS F
-	 where
-	  AD.dia_id = DATEPART(dw, F.Fecha)
-	 --@fec_inicio > GETDATE() --> Sólo se muestran los registros que aún no han empezado
-	 and F.fecha between A.agenda_disp_desde and A.agenda_disp_hasta--cast(@fec_inicio as datetime) and cast(@fec_fin as datetime) --> Sólo las horas que estén agendadas
-	 and CAST(F.fecha as time) >= AD.dia_hora_inicio and CAST(F.fecha as time) <= dateadd(MI, -30, AD.dia_hora_fin) --> El último turno no es el de la hora final, sino 15 minutos antes de la hora final
-	 and A.agenda_id = AD.agenda_id
-	 and A.agenda_prof_esp_id = @esp_id
-	 and A.agenda_prof_id = @id_prof
-)
--- Muestro profesional y especialidad para facilitar la asignación posterior, realmente el combo no lo mostraría
+	WHERE fecha < @fec_fin 
+),
+--Seleccion de los turnos que tiene el medico actualmente disponibles
+TURNOS AS (SELECT * FROM NUL.Turno 
+WHERE turno_profesional = @id_prof AND turno_fecha_hora BETWEEN @fec_inicio AND @fec_fin
+AND turno_id NOT IN 
+	(SELECT cancel_turno_id FROM NUL.Cancelacion C JOIN NUL.Tipo_cancelacion TC ON C.cancel_tipo = TC.tipo_cancel_id 
+		WHERE TC.tipo_cancel_id != 'Cancelada por el médico' ))
+
+
 select distinct 
- Profesional = AF.agenda_prof_id, Especialidad = AF.agenda_prof_esp_id, FECHA = AF.fecha, 
- Dato_Combo = dateadd(MI, 30, AF.fecha)
-from Agenda_filtrada AF
- left join NUL.Turno T on T.turno_fecha_hora = CAST(AF.fecha as datetime)--CAST(dateadd(MI, 30, AF.fecha) as datetime)
- AND T.turno_especialidad = @esp_id AND
- T.turno_profesional = @id_prof
-where 
- T.turno_id is null --> Las horas con turno asignado no se muestran
---group by --> Se agrupa para no mostrar duplicados, hay turnos que se solapan
-	--AF.FECHA, dateadd(MI, 30, AF.fecha)
-order by 1, Fecha, Dato_Combo
+ F.fecha
+from FECHAS F JOIN NUL.Agenda A ON F.fecha BETWEEN A.agenda_disp_desde AND A.agenda_disp_hasta
+	JOIN NUL.Agenda_dia AD ON DATEPART(DW,F.fecha) = AD.dia_id AND AD.agenda_id = A.agenda_id 
+		AND CONVERT(time,F.fecha) BETWEEN AD.dia_hora_inicio AND DATEADD(mi,-30,AD.dia_hora_fin)
+	JOIN TURNOS T ON F.fecha != T.turno_fecha_hora
+WHERE A.agenda_prof_esp_id = @esp_id AND A.agenda_prof_id = @id_prof
+
+order by 1
 OPTION (MaxRecursion 0);
 
 END
 GO
-
 
 
 CREATE PROCEDURE NUL.sp_turnos_profesional(@prof NUMERIC(18,0), @fecha_desde DATETIME, @fecha_hasta DATETIME)
