@@ -1235,9 +1235,8 @@ CREATE PROCEDURE NUL.sp_get_disp_profesional(@id_prof numeric(18,0), @esp_id num
 AS
 BEGIN
 
---Construcción de un registro cada 30 minutos
 with FECHAS(fecha) AS (
-	SELECT cast(@fec_inicio as datetime) fecha
+	SELECT CAST(@fec_inicio as datetime) fecha
 	UNION ALL
 	SELECT DATEADD(mi, 30, fecha) fecha
 	FROM FECHAS
@@ -1248,19 +1247,18 @@ TURNOS AS (SELECT * FROM NUL.Turno
 WHERE turno_profesional = @id_prof AND turno_fecha_hora BETWEEN @fec_inicio AND @fec_fin
 AND turno_id NOT IN 
 	(SELECT cancel_turno_id FROM NUL.Cancelacion C JOIN NUL.Tipo_cancelacion TC ON C.cancel_tipo = TC.tipo_cancel_id 
-		WHERE TC.tipo_cancel_id != 'Cancelada por el médico' ))
+		WHERE TC.tipo_cancel_detalle != 'Cancelada por el médico' ))
 
 
-select distinct 
+SELECT * FROM (select distinct 
  F.fecha
-from FECHAS F JOIN NUL.Agenda A ON F.fecha BETWEEN A.agenda_disp_desde AND A.agenda_disp_hasta
+from FECHAS F JOIN NUL.Agenda A ON DATEFROMPARTS(YEAR(F.fecha),MONTH(F.fecha),DAY(F.fecha)) BETWEEN A.agenda_disp_desde AND A.agenda_disp_hasta
 	JOIN NUL.Agenda_dia AD ON DATEPART(DW,F.fecha) = AD.dia_id AND AD.agenda_id = A.agenda_id 
-		AND CONVERT(time,F.fecha) BETWEEN AD.dia_hora_inicio AND DATEADD(mi,-30,AD.dia_hora_fin)
+		AND CONVERT(time,F.fecha) >= AD.dia_hora_inicio AND CONVERT(time,F.fecha)< AD.dia_hora_fin
 	JOIN TURNOS T ON F.fecha != T.turno_fecha_hora
-WHERE A.agenda_prof_esp_id = @esp_id AND A.agenda_prof_id = @id_prof
-
+WHERE A.agenda_prof_esp_id = @esp_id AND A.agenda_prof_id = @id_prof) as temp
+WHERE fecha NOT IN (SELECT turno_fecha_hora FROM TURNOS)
 order by 1
-OPTION (MaxRecursion 0);
 
 END
 GO
