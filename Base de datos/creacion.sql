@@ -589,9 +589,10 @@ GO
 IF OBJECT_ID ('NUL.v_prof_horas', 'V') IS NOT NULL  
 	DROP VIEW NUL.v_prof_horas ; 
 GO
-CREATE VIEW NUL.v_prof_horas(prof_id, pers_nombre, pers_apellido, pers_tipo_doc, pers_doc, esp_id, esp_descrip, tipo_esp_id, tipo_esp_descrip, plan_id, plan_descrip, cant)
+CREATE VIEW NUL.v_prof_horas(anio,mes, prof_id, pers_nombre, pers_apellido, pers_tipo_doc, pers_doc, esp_id, esp_descrip, tipo_esp_id, tipo_esp_descrip, plan_id, plan_descrip, cant)
 AS
-	SELECT P.prof_id, PER.pers_nombre, PER.pers_apellido, PER.pers_tipo_doc, PER.pers_doc, E.esp_id, E.esp_descrip, TE.tipo_esp_id, TE.tipo_esp_descrip, PM.plan_id, PM.plan_descrip, COUNT(T.turno_id)*0.5 AS cant 
+	SELECT YEAR(T.turno_fecha_hora),MONTH(T.turno_fecha_hora),P.prof_id, PER.pers_nombre, PER.pers_apellido, PER.pers_tipo_doc, PER.pers_doc, E.esp_id, E.esp_descrip, TE.tipo_esp_id, TE.tipo_esp_descrip, PM.plan_id, 
+		PM.plan_descrip,  COUNT(T.turno_id)*0.5 AS cant 
 	  FROM NUL.Profesional P JOIN NUL.Profesional_especialidad PE ON PE.prof_id = P.prof_id
 							 JOIN NUL.Persona PER ON PER.pers_id = P.prof_id
 							 JOIN NUL.Especialidad E ON E.esp_id = PE.esp_id
@@ -601,7 +602,7 @@ AS
 							 JOIN NUL.Consulta C ON C.cons_turno_id = T.turno_id
 							 JOIN NUL.Bono     B ON B.bono_id = C.cons_bono_usado
 							 JOIN NUL.Plan_medico PM ON PM.plan_id = B.bono_plan
-	GROUP BY P.prof_id, PER.pers_nombre, PER.pers_apellido, PER.pers_tipo_doc, PER.pers_doc, E.esp_id, E.esp_descrip, TE.tipo_esp_id, TE.tipo_esp_descrip, PM.plan_id, PM.plan_descrip
+	GROUP BY  YEAR(T.turno_fecha_hora),MONTH(T.turno_fecha_hora), P.prof_id, PER.pers_nombre, PER.pers_apellido, PER.pers_tipo_doc, PER.pers_doc, E.esp_id, E.esp_descrip, TE.tipo_esp_id, TE.tipo_esp_descrip, PM.plan_id, PM.plan_descrip
 GO
 ------------------------------------------------
 IF OBJECT_ID ('NUL.v_afil_bonos', 'V') IS NOT NULL  
@@ -842,11 +843,11 @@ CREATE PROCEDURE NUL.sp_get_top5_prof_horas(@plan_id numeric(18,0), @esp_id nume
 AS
 BEGIN
 		
-	SELECT TOP 5 * FROM NUL.v_prof_horas V
-	WHERE V.plan_id = @plan_id
-	  AND V.esp_id = @esp_id
+	SELECT TOP 5 * FROM NUL.v_prof_horas 
+	WHERE plan_id = @plan_id
+	  AND esp_id = @esp_id AND mes/2 = @semestre-1 AND anio = @anio AND mes = @mes
 	ORDER BY cant ASC
-
+	
 END
 GO
 
