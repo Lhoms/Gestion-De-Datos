@@ -55,11 +55,15 @@ namespace ClinicaFrba.Registro_Resultado
 
                 this.groupBox2.Enabled = false;
 
+
                 llenarTipoEsp();
                 llenarEspecialidades();
 
                 this.dateFecha.Value = DateTime.Parse(ConfigurationManager.AppSettings.Get("FechaSistema"))
                                         .Add(-DateTime.Parse(ConfigurationManager.AppSettings.Get("FechaSistema")).TimeOfDay);
+                this.dateFecha.MaxDate = this.dateFecha.Value = DateTime.Parse(ConfigurationManager.AppSettings.Get("FechaSistema"))
+                                        .Add(-DateTime.Parse(ConfigurationManager.AppSettings.Get("FechaSistema")).TimeOfDay);
+
             }
             catch (Exception exc)
             {
@@ -69,10 +73,23 @@ namespace ClinicaFrba.Registro_Resultado
 
         private void comprobarSiEsProfesional()
         {
-            if (this.sesion.rol_actual_id != 3)
+            if (this.sesion.rol_actual_id != 3 || !(existeProfesional()))
             {
                 this.groupBox1.Enabled = false;
+                this.groupBox2.Enabled = false;
+                this.buttonRegistrar.Enabled = false;
+
+                throw new Exception("No posee acciones disponibles en esta ventana");
             }
+        }
+
+        private bool existeProfesional()
+        {
+            string select = "SELECT * FROM NUL.Profesional WHERE prof_id = " + this.sesion.user_id;
+
+            SqlDataReader lector = DAL.Classes.DBHelper.ExecuteQuery_DR(select);
+
+            return (lector != null);
         }
 
         private void llenarTipoEsp()
@@ -147,7 +164,7 @@ namespace ClinicaFrba.Registro_Resultado
         {
             try
             {
-                DateTime fecha = this.dateFecha.Value;
+                DateTime fecha = this.dateFecha.Value.Add(dateFecha.Value.TimeOfDay);
 
                 int hora = int.Parse(this.numericHora.Text);
                 int minutos = int.Parse(this.numericMinutos.Text);
@@ -157,7 +174,6 @@ namespace ClinicaFrba.Registro_Resultado
                 fecha = fecha.AddMinutes(minutos/60);
                 this.fecha_hora_minutos = fecha;
 
-                MessageBox.Show(fecha_hora_minutos.ToString());
 
                 if (this.fecha_hora_minutos > DateTime.Parse(ConfigurationManager.AppSettings.Get("FechaSistema")))
                     throw new Exception("La fecha y hora no puede ser siguiente a la actual");

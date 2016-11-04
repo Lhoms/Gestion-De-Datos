@@ -21,9 +21,12 @@ Estrategia
 -El campo nro_afiliado va a estar determinado en la forma: (Doc*10+1)*100 en donde Doc es el nro de documento del afiliado; 1 es el tipo de documento DNI(como dijimos anteriormente, se presume que todos son DNI) y se multiplica por 100 con el objetivo de que los siguientes afiliados pertenecientes al mismo grupo familiar tengan su correlativo a partir de éste número. Por Ejemplo: DNI: 28758698 - Nro afiliado: 287586980101 - Siguiente del grupo familiar: 287586980102
 -Se construyó la agenda del año 2015 basándose en los turnos que tuvo cada profesional, poniendo como vigencia de la agenda la primer y la última fecha de turnos que atendió. Asimismo, los horarios de cada día, se los determinó por los turnos mínimos y máximos que tuvo el profesional en esos días. 
 -Cancelacion de turno solo esta disponible para afiliados para cancelar sus turnos de a uno, o para profesionales para cancelar un rango de turnos, para los otros roles no hay acciones disponibles en esta funcionalidad.
--Ya que se considera que el afiliado nunca llega tarde y no hay ninguna utilidad en marcar una llegada anticipada, si se registra la llegada de un afiliado se marca como hora de llegada la hora del turno.
--Mediante el boton "Bonos disponibles" en "compra de bonos" el afiliado puede ver el numero de bonos que puede usar, tanto de el como de su grupo familiar.
+-Ya que se considera que el afiliado nunca llega tarde y no hay ninguna utilidad en marcar una llegada anticipada, cuando el medico va a registrar el diagnostico debera ingresar el horario de turno, ya que si va a hacerlo es porque el afiliado fue al turno y puntual (o antes).
+-Mediante el boton "Bonos disponibles" en "compra de bonos" y en "registrar llegada" se puede ver el numero delos bonos que puede usar el afiliado
 -Las agendas deben crearse en orden, no se puede crear la agenda para julio y luego la agenda para enero
+-Las busquedas de fechas de turno tendran un rango de no mas de 7 dias.
+-Al darse de baja un afiliado se conseva su grupo familiar, sus turnos, bonos, etc.. Se considera esto porque si una persona ingresa mal 3 veces su contraseña perderia todo en el sistema.
+-Lo que no pueden es comprar bonos o pedir turnos por medio de su cuenta (por no podes loguearse) ni por medio de un administrativo porque se valida que este habilitado, primero debera ser habilitado y luego podran realizar acciones por el.
 -
 -
 -

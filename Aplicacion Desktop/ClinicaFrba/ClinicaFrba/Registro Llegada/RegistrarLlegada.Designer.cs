@@ -45,6 +45,7 @@
             this.buttonVolver = new System.Windows.Forms.Button();
             this.labelFechaActual = new System.Windows.Forms.Label();
             this.labelFecha = new System.Windows.Forms.Label();
+            this.buttonBonosDisp = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
@@ -61,7 +62,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(25, 50);
+            this.label2.Location = new System.Drawing.Point(25, 79);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(31, 13);
             this.label2.TabIndex = 1;
@@ -70,7 +71,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(25, 77);
+            this.label3.Location = new System.Drawing.Point(25, 106);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(70, 13);
             this.label3.TabIndex = 2;
@@ -79,7 +80,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(25, 104);
+            this.label4.Location = new System.Drawing.Point(25, 133);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(62, 13);
             this.label4.TabIndex = 3;
@@ -87,6 +88,7 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.buttonBonosDisp);
             this.groupBox1.Controls.Add(this.textBoxBono);
             this.groupBox1.Controls.Add(this.label5);
             this.groupBox1.Controls.Add(this.dataGridView1);
@@ -107,7 +109,7 @@
             // 
             // textBoxBono
             // 
-            this.textBoxBono.Location = new System.Drawing.Point(139, 136);
+            this.textBoxBono.Location = new System.Drawing.Point(139, 165);
             this.textBoxBono.Name = "textBoxBono";
             this.textBoxBono.Size = new System.Drawing.Size(196, 20);
             this.textBoxBono.TabIndex = 12;
@@ -115,7 +117,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(25, 139);
+            this.label5.Location = new System.Drawing.Point(25, 168);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(73, 13);
             this.label5.TabIndex = 11;
@@ -146,7 +148,7 @@
             // 
             // buttonAceptar
             // 
-            this.buttonAceptar.Location = new System.Drawing.Point(260, 181);
+            this.buttonAceptar.Location = new System.Drawing.Point(293, 212);
             this.buttonAceptar.Name = "buttonAceptar";
             this.buttonAceptar.Size = new System.Drawing.Size(75, 23);
             this.buttonAceptar.TabIndex = 9;
@@ -158,7 +160,7 @@
             // 
             this.comboBoxTipoEsp.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxTipoEsp.FormattingEnabled = true;
-            this.comboBoxTipoEsp.Location = new System.Drawing.Point(139, 47);
+            this.comboBoxTipoEsp.Location = new System.Drawing.Point(139, 76);
             this.comboBoxTipoEsp.Name = "comboBoxTipoEsp";
             this.comboBoxTipoEsp.Size = new System.Drawing.Size(196, 21);
             this.comboBoxTipoEsp.TabIndex = 6;
@@ -168,7 +170,7 @@
             // 
             this.comboBoxEsp.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxEsp.FormattingEnabled = true;
-            this.comboBoxEsp.Location = new System.Drawing.Point(139, 74);
+            this.comboBoxEsp.Location = new System.Drawing.Point(139, 103);
             this.comboBoxEsp.Name = "comboBoxEsp";
             this.comboBoxEsp.Size = new System.Drawing.Size(196, 21);
             this.comboBoxEsp.TabIndex = 7;
@@ -178,7 +180,7 @@
             // 
             this.comboBoxProfesional.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxProfesional.FormattingEnabled = true;
-            this.comboBoxProfesional.Location = new System.Drawing.Point(139, 101);
+            this.comboBoxProfesional.Location = new System.Drawing.Point(139, 130);
             this.comboBoxProfesional.Name = "comboBoxProfesional";
             this.comboBoxProfesional.Size = new System.Drawing.Size(196, 21);
             this.comboBoxProfesional.TabIndex = 8;
@@ -187,7 +189,7 @@
             // 
             this.textBoxNroAfiliado.Location = new System.Drawing.Point(139, 21);
             this.textBoxNroAfiliado.Name = "textBoxNroAfiliado";
-            this.textBoxNroAfiliado.Size = new System.Drawing.Size(196, 20);
+            this.textBoxNroAfiliado.Size = new System.Drawing.Size(117, 20);
             this.textBoxNroAfiliado.TabIndex = 5;
             // 
             // buttonVolver
@@ -218,6 +220,16 @@
             this.labelFecha.Size = new System.Drawing.Size(40, 13);
             this.labelFecha.TabIndex = 22;
             this.labelFecha.Text = "Fecha:";
+            // 
+            // buttonBonosDisp
+            // 
+            this.buttonBonosDisp.Location = new System.Drawing.Point(262, 19);
+            this.buttonBonosDisp.Name = "buttonBonosDisp";
+            this.buttonBonosDisp.Size = new System.Drawing.Size(103, 23);
+            this.buttonBonosDisp.TabIndex = 13;
+            this.buttonBonosDisp.Text = "Bonos Disponibles";
+            this.buttonBonosDisp.UseVisualStyleBackColor = true;
+            this.buttonBonosDisp.Click += new System.EventHandler(this.buttonBonosDisp_Click);
             // 
             // RegistrarLlegada
             // 
@@ -259,5 +271,6 @@
         private System.Windows.Forms.Label labelFecha;
         private System.Windows.Forms.TextBox textBoxBono;
         private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Button buttonBonosDisp;
     }
 }

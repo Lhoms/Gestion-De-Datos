@@ -68,39 +68,49 @@ namespace ClinicaFrba.Cancelar_Atencion
 
         private void llenarCalendarios()
         {
+            //setea todo lo respecto a fechas;
+            //pone los calendarios desde en el dia de mañana a las 12:00am y el calendario hasta
+            //en el dia de mañana a las 11:59 pm
+
             this.labelFechaActual.Text = ConfigurationManager.AppSettings.Get("FechaSistema").ToString();
 
-            this.dateTimePicker1.Value = DateTime.Parse(ConfigurationManager.AppSettings.Get("FechaSistema"));
-            this.dateTimePicker2.Value = DateTime.Parse(ConfigurationManager.AppSettings.Get("FechaSistema"));
+            this.dateTimePicker2.Value = (DateTime.Parse(ConfigurationManager.AppSettings.Get("FechaSistema"))
+                .Add(-DateTime.Parse(ConfigurationManager.AppSettings.Get("FechaSistema")).TimeOfDay).AddDays(1));
+            this.dateTimePicker1.Value = (DateTime.Parse(ConfigurationManager.AppSettings.Get("FechaSistema"))
+                .Add(-DateTime.Parse(ConfigurationManager.AppSettings.Get("FechaSistema")).TimeOfDay)
+                .Add(TimeSpan.Parse("23:59")).AddDays(1));
 
             fechaActual = DateTime.Parse(ConfigurationManager.AppSettings.Get("FechaSistema"));
 
-            this.dateTimePicker2.MinDate = fechaActual.AddDays(1);
-            this.dateTimePicker1.MinDate = fechaActual.AddDays(1);
+            this.dateTimePicker2.MinDate = (DateTime.Parse(ConfigurationManager.AppSettings.Get("FechaSistema"))
+                .Add(-DateTime.Parse(ConfigurationManager.AppSettings.Get("FechaSistema")).TimeOfDay).AddDays(1));
+
+            this.dateTimePicker1.MinDate = (DateTime.Parse(ConfigurationManager.AppSettings.Get("FechaSistema"))
+                .Add(-DateTime.Parse(ConfigurationManager.AppSettings.Get("FechaSistema")).TimeOfDay)
+                .Add(TimeSpan.Parse("23:59")).AddDays(1));
         }
 
         private void comprobarSiEsProfesional()
         {
-            if (existeProfesionalOAfiliado())
+            if (this.sesion.rol_actual_id == 3 && existeProfesional())
             {
-                if (this.sesion.rol_actual_id == 3)
-                {
-                    this.comboBoxProfesional.Visible = false;
-                    this.label4.Visible = false;
-                    this.label5.Visible = false;
-                    this.label6.Visible = false;
-                    this.dataGridView1.Enabled = false;
-                    this.comboBoxTipoEsp.Visible = false;
-                    this.comboBoxEsp.Visible = false;
-                }
-                else if (this.sesion.rol_actual_id == 2)
-                {
-                    //es afiliado
-                }
+                //es profesional, cancela por dias y no por turno
+                this.comboBoxProfesional.Visible = false;
+                this.label4.Visible = false;
+                this.label5.Visible = false;
+                this.label6.Visible = false;
+                this.dataGridView1.Enabled = false;
+                this.comboBoxTipoEsp.Visible = false;
+                this.comboBoxEsp.Visible = false;
             }
+            else if (this.sesion.rol_actual_id == 2 && existeAfiliado())
+            {
+                //es afiliado, cancela por turno
+            }
+            
             else
             {
-                //no es afiliado ni profesional, no tiene acciones
+                //no es afiliado ni profesional o le faltan tablas con sus atributos, no tiene acciones
                 this.groupBox1.Enabled = false;
                 this.buttonVolver.Enabled = true;
                 throw new Exception("No tiene acciones disponibles en esta ventana");
@@ -108,10 +118,20 @@ namespace ClinicaFrba.Cancelar_Atencion
 
         }
 
-        private bool existeProfesionalOAfiliado()
+        private bool existeAfiliado()
         {
-            string select = "SELECT * FROM NUL.Usuario ";
-            string where = "WHERE user_id = "+this.sesion.user_id+" AND (user_id IN (SELECT afil_id FROM NUL.Afiliado ) OR user_id IN (SELECT prof_id FROM NUL.Profesional ))";
+            string select = "SELECT * FROM NUL.Afiliado ";
+            string where = "WHERE afil_id = " + this.sesion.user_id;
+
+            SqlDataReader lector = DAL.Classes.DBHelper.ExecuteQuery_DR(select + where);
+
+            return (lector != null);
+        }
+
+        private bool existeProfesional()
+        {
+            string select = "SELECT * FROM NUL.Profesional ";
+            string where = "WHERE prof_id = " + this.sesion.user_id;
 
             SqlDataReader lector = DAL.Classes.DBHelper.ExecuteQuery_DR(select + where);
 
@@ -271,6 +291,9 @@ namespace ClinicaFrba.Cancelar_Atencion
         {
             try
             {
+                if (dateTimePicker2.Value > dateTimePicker1.Value)
+                    throw new Exception("La fecha 'Desde' no puede ser mayor a la fecha 'Hasta'");
+
                 if (this.sesion.rol_actual_id == 3)
                 {
                     obtenerTurnosEnRango();

@@ -34,6 +34,8 @@ namespace ClinicaFrba.Compra_Bono
             this.labelPrecioUnit.Text = "$0";
             this.labelMontoTot.Text = "$0";
 
+            this.buttonComprar.Enabled = false;
+
             
         }
 
@@ -88,7 +90,7 @@ namespace ClinicaFrba.Compra_Bono
 
         private void obtenerDatosDesdeNroAfiliado(string nroAfiliado)
         {
-            string expresion = "SELECT * FROM NUL.Afiliado WHERE afil_nro_afiliado = '" + nroAfiliado + "'";
+            string expresion = "SELECT * FROM NUL.Afiliado A JOIN NUL.Usuario U ON A.afil_id = U.user_id WHERE U.user_habilitado = 1 AND afil_nro_afiliado = '" + nroAfiliado + "'";
 
             SqlDataReader lector = DAL.Classes.DBHelper.ExecuteQuery_DR(expresion);
 
@@ -138,11 +140,12 @@ namespace ClinicaFrba.Compra_Bono
         {
             this.textBoxNroAfiliado.Text = "";
             this.numericCantidad.Value = 1;
-            this.labelFecha.Text = ""; 
+            this.labelFecha.Text = ConfigurationManager.AppSettings.Get("FechaSistema");; 
             this.labelGrupo.Text = "";
             this.labelPlan.Text = "";
-            this.labelPrecioUnit.Text = "";
-            this.labelMontoTot.Text = "";
+            this.labelPrecioUnit.Text = "$0";
+            this.labelMontoTot.Text = "$0";
+
         }
 
         private void buttonAceptar_Click(object sender, EventArgs e)
@@ -160,6 +163,8 @@ namespace ClinicaFrba.Compra_Bono
                 this.monto_total = this.precio_unitario * this.numericCantidad.Value;
                 this.labelMontoTot.Text = this.monto_total.ToString();
                 this.labelGrupo.Text = (this.afiliado.numeroAfiliado / 100).ToString();
+
+                this.buttonComprar.Enabled = true;
             }
 
             catch (Exception exc)

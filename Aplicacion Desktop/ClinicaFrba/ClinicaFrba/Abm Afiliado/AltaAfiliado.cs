@@ -31,7 +31,8 @@ namespace ClinicaFrba.Abm_Afiliado
            
             this.afiliado = new Afiliado();
 
-            this.sesion = sesion;    
+            this.sesion = sesion;
+
             this.familiares = new ArrayList();
             
             llenarComboBoxes();

@@ -370,9 +370,9 @@ INSERT INTO NUL.Funcionalidad (func_descrip) VALUES
 			('Crear agenda');				--9
 
 INSERT INTO NUL.Rol (rol_descrip) VALUES
-			('Administrativo'),
-			('Afiliado'),
-			('Profesional');
+			('Administrativo'),		--1
+			('Afiliado'),			--2
+			('Profesional');		--3
 
 
 

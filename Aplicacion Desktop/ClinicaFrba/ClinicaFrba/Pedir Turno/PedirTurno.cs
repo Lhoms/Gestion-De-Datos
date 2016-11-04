@@ -31,31 +31,38 @@ namespace ClinicaFrba.Pedir_Turno
 
         public PedirTurno(Sesion sesion)
         {
-            InitializeComponent();
+            try
+            {
+                InitializeComponent();
 
-            this.sesion = sesion;
+                this.sesion = sesion;
+                setearFechas();
 
-            esAfiliado();
+                comprobarAfiliado();
 
-            tipos_esp = new List<string>();
-            tipos_esp_id = new Dictionary<string, int>();
+                tipos_esp = new List<string>();
+                tipos_esp_id = new Dictionary<string, int>();
 
-            especialidades = new List<string>();
-            especialidades_id = new Dictionary<string, int>();
+                especialidades = new List<string>();
+                especialidades_id = new Dictionary<string, int>();
 
-            vacia = new List<string>();
+                vacia = new List<string>();
 
-            profesionales = new List<Profesional>();
-            profesionales_na = new List<string>();
+                profesionales = new List<Profesional>();
+                profesionales_na = new List<string>();
 
-            llenarTipoEsp();
-            llenarEspecialidades();
-            cargarProfesionales();
+                llenarTipoEsp();
+                llenarEspecialidades();
+                cargarProfesionales();
 
-            rellenarComboBoxes();
+                rellenarComboBoxes();
 
-            setearFechas();
- 
+
+            }
+            catch (Exception exc)
+            {
+                MessageBox.Show(exc.Message, "Aviso", MessageBoxButtons.OK);
+            }
 
         }
 
@@ -73,24 +80,38 @@ namespace ClinicaFrba.Pedir_Turno
         }
 
 
-        private void esAfiliado()
+        private void comprobarAfiliado()
         {
-            if (this.sesion.rol_actual_id == 2) //si es afiliado no necesita poner su nro afiliado
+            if (this.sesion.rol_actual_id == 2 && esAfiliado()) //si es afiliado no necesita poner su nro afiliado
             {
                 this.textBoxNroAfiliado.Visible = false;
                 this.label1.Visible = false;
             }
             else
-                if (this.sesion.rol_actual_id == 1) //si es administrativo puede pedirle a un afiliado
+                if (this.sesion.rol_actual_id == 1 ) //si es administrativo puede pedirle a un afiliado
                 {
                     this.textBoxNroAfiliado.Visible = true;
                     this.label1.Visible = true;
                 }
             else
-                if (this.sesion.rol_actual_id == 3) //si es medico no hace nada
+                //Es profesional o un rol sin atributos de afiliado ni permisos de administrativo
                 {
                     this.groupBox1.Enabled = false;
+                    this.buttonLimpiar.Enabled = false;
+                    throw new Exception("No posee acciones disponibles en esta ventana");
                 }
+        }
+
+        private bool esAfiliado()
+        {
+            {
+                string select = "SELECT * FROM NUL.Afiliado WHERE afil_id = " + this.sesion.user_id;
+
+                SqlDataReader lector = DAL.Classes.DBHelper.ExecuteQuery_DR(select);
+
+                return (lector != null);
+
+            }
         }
 
         
@@ -398,17 +419,18 @@ namespace ClinicaFrba.Pedir_Turno
 
         private void validarHoras()
         {
-            if (this.dateTimePicker1.Value == this.dateTimePicker2.Value)
+            if (this.dateTimePicker1.Value == this.dateTimePicker2.Value) 
                 if (!(this.comboBox1.SelectedIndex < this.comboBox2.SelectedIndex))
-                    throw new Exception("Horario invalido");
+                    throw new Exception("Horario invalido");    //el horario hasta no puede ser menor al desde
 
             if(this.dateTimePicker1.Value > this.dateTimePicker2.Value)
-                throw new Exception("Rango de fechas invalido");
+                throw new Exception("Rango de fechas invalido");    //la fecha desde no puede ser mayor al hasta
 
             if (DateTime.Parse(ConfigurationManager.AppSettings.Get("FechaSistema")).Date == this.dateTimePicker1.Value.Date)
                 if (TimeSpan.Parse(this.comboBox1.Text) < DateTime.Parse(ConfigurationManager.AppSettings.Get("FechaSistema")).TimeOfDay)
                     throw new Exception("Hora no valida, no se puede ingresar un tiempo anterior");
-
+                        //Si se va a pedir un turno en el dia actual, debe ser en las horas siguientes a la actual
+            
         }
 
         private void buttonLimpiar_Click(object sender, EventArgs e)
@@ -416,6 +438,11 @@ namespace ClinicaFrba.Pedir_Turno
             rellenarComboBoxes();
             setearFechas();
             this.textBoxNroAfiliado.Text = "";
+        }
+
+        private void dateTimePicker1_ValueChanged(object sender, EventArgs e)
+        {
+            this.dateTimePicker2.MaxDate = (this.dateTimePicker1.Value.AddDays(6));
         }
     }
 }
