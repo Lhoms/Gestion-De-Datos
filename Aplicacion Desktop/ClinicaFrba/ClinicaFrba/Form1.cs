@@ -268,7 +268,9 @@ namespace ClinicaFrba
 
         private void buttonPedirTurno_Click(object sender, EventArgs e)
         {
-            Pedir_Turno.PedirTurno form = new Pedir_Turno.PedirTurno();
+            this.sesion.rol_actual_id = get_rol_id(this.comboBoxRol.Text);
+
+            Pedir_Turno.PedirTurno form = new Pedir_Turno.PedirTurno(this.sesion);
 
             form.Show();
 

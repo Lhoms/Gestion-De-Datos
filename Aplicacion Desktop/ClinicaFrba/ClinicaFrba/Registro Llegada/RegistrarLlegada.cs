@@ -154,6 +154,7 @@ namespace ClinicaFrba.Registro_Llegada
 
             catch (Exception exc)
             {
+                exc.ToString();
                 MessageBox.Show("Numero de afiliado no valido", "Aviso", MessageBoxButtons.OK);
             }
 

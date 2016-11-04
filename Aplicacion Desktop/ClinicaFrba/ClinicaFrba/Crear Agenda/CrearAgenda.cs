@@ -301,6 +301,7 @@ namespace ClinicaFrba.Crear_Agenda
             }
             catch (Exception exc)
             {
+                exc.ToString();
                 //MessageBox.Show(exc.Message, "Aviso", MessageBoxButtons.OK);
             }
 

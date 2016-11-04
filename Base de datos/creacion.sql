@@ -1107,8 +1107,10 @@ GO
 CREATE PROCEDURE NUL.sp_set_pedir_turno(@afil_id numeric(18,0), @prof_id numeric(18,0), @esp_id numeric(18,0), @fecha datetime, @result int output)
 AS 
 BEGIN
-	INSERT INTO NUL.Turno(turno_afiliado, turno_profesional, turno_especialidad, turno_fecha_hora)
-	VALUES(@afil_id,@prof_id,@esp_id,@fecha)
+	DECLARE @id numeric(18,0) = (SELECT MAX(turno_id)+1 FROM NUL.Turno)
+
+	INSERT INTO NUL.Turno(turno_id, turno_afiliado, turno_profesional, turno_especialidad, turno_fecha_hora)
+	VALUES(@id, @afil_id,@prof_id,@esp_id,@fecha)
 
 	set @result = @@ERROR
 END

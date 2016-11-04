@@ -75,8 +75,8 @@ namespace ClinicaFrba.Cancelar_Atencion
 
             fechaActual = DateTime.Parse(ConfigurationManager.AppSettings.Get("FechaSistema"));
 
-            this.dateTimePicker2.MaxDate = fechaActual.AddDays(-1);
-            this.dateTimePicker1.MaxDate = fechaActual.AddDays(-1);
+            this.dateTimePicker2.MinDate = fechaActual.AddDays(1);
+            this.dateTimePicker1.MinDate = fechaActual.AddDays(1);
         }
 
         private void comprobarSiEsProfesional()
