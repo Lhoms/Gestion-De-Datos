@@ -610,10 +610,10 @@ IF OBJECT_ID ('NUL.v_afil_bonos', 'V') IS NOT NULL
 GO
 CREATE VIEW NUL.v_afil_bonos(afil_id, pers_nombre, pers_apellido, pers_tipo_doc, pers_doc, cant, grupo)
 AS 
-	SELECT A.afil_id, P.pers_nombre, P.pers_apellido, P.pers_tipo_doc, P.pers_doc, SUM(BC.bonoc_cantidad) AS cant, (CASE WHEN A.afil_familiares > 1 THEN 'SI' ELSE 'NO' END) AS grupo
+SELECT YEAR(BC.bonoc_fecha), MONTH(BC.bonoc_fecha), A.afil_id, P.pers_nombre, P.pers_apellido, P.pers_tipo_doc, P.pers_doc, SUM(BC.bonoc_cantidad) AS cant, (CASE WHEN A.afil_familiares > 1 OR RIGHT(CAST(A.afil_nro_afiliado as VARCHAR(18)),1) != 1 THEN 'SI' ELSE 'NO' END) AS grupo
 	  FROM NUL.Afiliado A JOIN NUL.Persona P ON P.pers_id = A.afil_id
 						  JOIN NUL.Bono_compra BC ON BC.bonoc_id_usuario = P.pers_id
-	  GROUP BY A.afil_id, P.pers_nombre, P.pers_apellido, P.pers_tipo_doc, P.pers_doc, (CASE WHEN A.afil_familiares > 1 THEN 'SI' ELSE 'NO' END)
+	  GROUP BY YEAR(BC.bonoc_fecha), MONTH(BC.bonoc_fecha),A.afil_id, P.pers_nombre, P.pers_apellido, P.pers_tipo_doc, P.pers_doc, (CASE WHEN A.afil_familiares > 1 OR RIGHT(CAST(A.afil_nro_afiliado as VARCHAR(18)),1) != 1 THEN 'SI' ELSE 'NO' END)
 GO
 ------------------------------------------------
 IF OBJECT_ID ('NUL.v_esp_bonos', 'V') IS NOT NULL  
@@ -856,6 +856,7 @@ AS
 BEGIN
 		
 	SELECT TOP 5 * FROM NUL.v_afil_bonos V
+	WHERE  mes/2 = @semestre-1 AND anio = @anio AND mes = @mes
 	ORDER BY cant DESC
 
 END
