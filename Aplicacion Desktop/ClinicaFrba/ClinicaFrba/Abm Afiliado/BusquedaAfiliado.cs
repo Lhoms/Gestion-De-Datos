@@ -65,7 +65,6 @@ namespace ClinicaFrba.Abm_Afiliado
             afiliado.telefono_s = this.textBoxTelefono.Text;
             afiliado.mail = this.textBoxMail.Text;
             afiliado.sexo = this.comboBoxSexo.Text;
-            afiliado.nacimiento = this.dateTimePicker1.Value;
             afiliado.planMedico = this.comboBoxPlan.Text;
             afiliado.numeroAfiliado_s = this.textBoxNroAfiliado.Text;
         }

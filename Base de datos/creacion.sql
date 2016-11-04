@@ -157,10 +157,12 @@ CREATE TABLE NUL.Afiliado
 		afil_id 				numeric(18,0) PRIMARY KEY,
 		afil_estado 			numeric(18,0),
 		afil_plan_med 			numeric(18,0),
-		afil_nro_afiliado		numeric(18,0),
+		afil_nro_afiliado		numeric(18,0) UNIQUE,
 		afil_familiares 		tinyint,
 		afil_nro_consulta 		numeric(18,0),
+		afil_titular			numeric(18,0) DEFAULT NULL,
 
+		CONSTRAINT FK_afiliado_raiz FOREIGN KEY (afil_titular) REFERENCES NUL.Afiliado (afil_id),
 		CONSTRAINT FK_afiliado_estado FOREIGN KEY (afil_estado) REFERENCES NUL.Estado (estado_id),
 		CONSTRAINT FK_afiliado_plan_med FOREIGN KEY (afil_plan_med) REFERENCES NUL.Plan_medico (plan_id)
 	);
@@ -608,7 +610,7 @@ GO
 IF OBJECT_ID ('NUL.v_afil_bonos', 'V') IS NOT NULL  
 	DROP VIEW NUL.v_afil_bonos ; 
 GO
-CREATE VIEW NUL.v_afil_bonos(afil_id, pers_nombre, pers_apellido, pers_tipo_doc, pers_doc, cant, grupo)
+CREATE VIEW NUL.v_afil_bonos(anio, mes, afil_id, pers_nombre, pers_apellido, pers_tipo_doc, pers_doc, cant, grupo)
 AS 
 SELECT YEAR(BC.bonoc_fecha), MONTH(BC.bonoc_fecha), A.afil_id, P.pers_nombre, P.pers_apellido, P.pers_tipo_doc, P.pers_doc, SUM(BC.bonoc_cantidad) AS cant, (CASE WHEN A.afil_familiares > 1 OR RIGHT(CAST(A.afil_nro_afiliado as VARCHAR(18)),1) != 1 THEN 'SI' ELSE 'NO' END) AS grupo
 	  FROM NUL.Afiliado A JOIN NUL.Persona P ON P.pers_id = A.afil_id
@@ -806,6 +808,20 @@ GO
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID('NUL.sp_turnos_profesional'))
 BEGIN
     DROP PROCEDURE NUL.sp_turnos_profesional
+END
+
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID('NUL.sp_cambiar_plan'))
+BEGIN
+    DROP PROCEDURE NUL.sp_cambiar_plan
+END
+
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID('NUL.sp_agregar_a_grupo_familiar'))
+BEGIN
+    DROP PROCEDURE NUL.sp_agregar_a_grupo_familiar
 END
 
 GO
@@ -1278,5 +1294,42 @@ SELECT * FROM NUL.Turno t
 WHERE t.turno_profesional = @prof AND t.turno_fecha_hora between @fecha_desde AND @fecha_hasta
 		AND T.turno_id NOT IN  (SELECT cancel_turno_id FROM NUL.Cancelacion)
 		AND T.turno_id NOT IN (SELECT cons_turno_id FROM NUL.Consulta)
+END
+GO
+
+CREATE PROCEDURE NUL.sp_cambiar_plan(@user_id numeric(18,0), @plan_id numeric(18,0), @fecha DateTime, @motivo varchar(250), @result int output)
+AS
+BEGIN
+
+	DECLARE @plan_viejo numeric(18,0) = (SELECT afil_plan_med FROM NUL.Afiliado WHERE afil_id = @user_id)
+
+	UPDATE NUL.Afiliado SET afil_plan_med = @plan_id
+	WHERE afil_id = @user_id
+
+	INSERT INTO NUL.Historial_plan_med (histo_plan_id, histo_afil_id, histo_fecha_id, histo_descrip)
+							VALUES(@plan_id, @user_id, @fecha, @motivo);
+
+	set @result = @@ERROR
+
+END
+GO
+
+CREATE PROCEDURE NUL.sp_agregar_a_grupo_familiar(@titular numeric(18,0), @nro_familiar int)
+AS
+BEGIN
+	DECLARE @ult_afil numeric(18,0);
+	
+	IF @nro_familiar = 0
+		SET @ult_afil = @titular;
+	ELSE 
+		SELECT @ult_afil = CASE MAX(afil_nro_afiliado) WHEN NULL THEN @titular+1
+										   ELSE MAX(afil_nro_afiliado) 
+				END
+			FROM NUL.Afiliado 
+			WHERE afil_titular = @titular;
+	
+	UPDATE NUL.Afiliado SET afil_nro_afiliado = @ult_afil+1;
+	UPDATE NUL.Afiliado SET afil_titular = @titular;
+
 END
 GO

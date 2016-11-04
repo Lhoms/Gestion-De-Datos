@@ -53,7 +53,6 @@
             this.label2 = new System.Windows.Forms.Label();
             this.labelFechaActual = new System.Windows.Forms.Label();
             this.labelFecha = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBoxAtencionMedica.SuspendLayout();
             this.groupBoxTurno.SuspendLayout();
@@ -325,22 +324,12 @@
             this.labelFecha.TabIndex = 6;
             this.labelFecha.Text = "Fecha:";
             // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(336, 19);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(35, 13);
-            this.label3.TabIndex = 8;
-            this.label3.Text = "label3";
-            // 
             // Form1
             // 
             this.AllowDrop = true;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(449, 502);
-            this.Controls.Add(this.label3);
             this.Controls.Add(this.labelFechaActual);
             this.Controls.Add(this.labelFecha);
             this.Controls.Add(this.label2);
@@ -390,7 +379,6 @@
         private System.Windows.Forms.Button buttonCrearAgenda;
         private System.Windows.Forms.Label labelFechaActual;
         private System.Windows.Forms.Label labelFecha;
-        private System.Windows.Forms.Label label3;
     }
 }
 

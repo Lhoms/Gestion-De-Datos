@@ -31,10 +31,8 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.textBoxNroAfiliado = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
-            this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
             this.comboBoxSexo = new System.Windows.Forms.ComboBox();
             this.label5 = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
             this.textBoxMail = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.textBoxDireccion = new System.Windows.Forms.TextBox();
@@ -56,8 +54,8 @@
             this.labelApellido = new System.Windows.Forms.Label();
             this.labelNombre = new System.Windows.Forms.Label();
             this.dataGridViewAfiliados = new System.Windows.Forms.DataGridView();
-            this.buttonVolver = new System.Windows.Forms.Button();
             this.Modificar = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.buttonVolver = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewAfiliados)).BeginInit();
             this.SuspendLayout();
@@ -66,10 +64,8 @@
             // 
             this.groupBox1.Controls.Add(this.textBoxNroAfiliado);
             this.groupBox1.Controls.Add(this.label7);
-            this.groupBox1.Controls.Add(this.dateTimePicker1);
             this.groupBox1.Controls.Add(this.comboBoxSexo);
             this.groupBox1.Controls.Add(this.label5);
-            this.groupBox1.Controls.Add(this.label6);
             this.groupBox1.Controls.Add(this.textBoxMail);
             this.groupBox1.Controls.Add(this.label4);
             this.groupBox1.Controls.Add(this.textBoxDireccion);
@@ -99,7 +95,7 @@
             // 
             // textBoxNroAfiliado
             // 
-            this.textBoxNroAfiliado.Location = new System.Drawing.Point(98, 159);
+            this.textBoxNroAfiliado.Location = new System.Drawing.Point(96, 135);
             this.textBoxNroAfiliado.Name = "textBoxNroAfiliado";
             this.textBoxNroAfiliado.Size = new System.Drawing.Size(168, 20);
             this.textBoxNroAfiliado.TabIndex = 22;
@@ -107,18 +103,11 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(8, 162);
+            this.label7.Location = new System.Drawing.Point(6, 138);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(79, 13);
             this.label7.TabIndex = 21;
             this.label7.Text = "Nro de Afiliado:";
-            // 
-            // dateTimePicker1
-            // 
-            this.dateTimePicker1.Location = new System.Drawing.Point(98, 133);
-            this.dateTimePicker1.Name = "dateTimePicker1";
-            this.dateTimePicker1.Size = new System.Drawing.Size(200, 20);
-            this.dateTimePicker1.TabIndex = 20;
             // 
             // comboBoxSexo
             // 
@@ -140,15 +129,6 @@
             this.label5.Size = new System.Drawing.Size(34, 13);
             this.label5.TabIndex = 19;
             this.label5.Text = "Sexo:";
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(6, 136);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(61, 13);
-            this.label6.TabIndex = 18;
-            this.label6.Text = "Fecha nac:";
             // 
             // textBoxMail
             // 
@@ -228,7 +208,7 @@
             // 
             this.comboBoxPlan.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxPlan.FormattingEnabled = true;
-            this.comboBoxPlan.Location = new System.Drawing.Point(97, 185);
+            this.comboBoxPlan.Location = new System.Drawing.Point(95, 161);
             this.comboBoxPlan.Name = "comboBoxPlan";
             this.comboBoxPlan.Size = new System.Drawing.Size(169, 21);
             this.comboBoxPlan.TabIndex = 7;
@@ -246,7 +226,7 @@
             // labelPlan
             // 
             this.labelPlan.AutoSize = true;
-            this.labelPlan.Location = new System.Drawing.Point(10, 188);
+            this.labelPlan.Location = new System.Drawing.Point(8, 164);
             this.labelPlan.Name = "labelPlan";
             this.labelPlan.Size = new System.Drawing.Size(31, 13);
             this.labelPlan.TabIndex = 8;
@@ -332,21 +312,21 @@
             this.dataGridViewAfiliados.TabIndex = 1;
             this.dataGridViewAfiliados.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewAfiliados_CellContentClick);
             // 
+            // Modificar
+            // 
+            this.Modificar.HeaderText = "";
+            this.Modificar.Name = "Modificar";
+            this.Modificar.Text = "";
+            // 
             // buttonVolver
             // 
-            this.buttonVolver.Location = new System.Drawing.Point(535, 525);
+            this.buttonVolver.Location = new System.Drawing.Point(776, 525);
             this.buttonVolver.Name = "buttonVolver";
             this.buttonVolver.Size = new System.Drawing.Size(75, 23);
             this.buttonVolver.TabIndex = 2;
             this.buttonVolver.Text = "Volver";
             this.buttonVolver.UseVisualStyleBackColor = true;
             this.buttonVolver.Click += new System.EventHandler(this.buttonVolver_Click);
-            // 
-            // Modificar
-            // 
-            this.Modificar.HeaderText = "";
-            this.Modificar.Name = "Modificar";
-            this.Modificar.Text = "";
             // 
             // BusquedaAfiliado
             // 
@@ -384,10 +364,8 @@
         private System.Windows.Forms.DataGridView dataGridViewAfiliados;
         private System.Windows.Forms.TextBox textBoxNroAfiliado;
         private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.DateTimePicker dateTimePicker1;
         private System.Windows.Forms.ComboBox comboBoxSexo;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Label label6;
         private System.Windows.Forms.TextBox textBoxMail;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TextBox textBoxDireccion;

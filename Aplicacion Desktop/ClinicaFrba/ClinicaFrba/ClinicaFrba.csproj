@@ -57,6 +57,12 @@
     <Compile Include="Abm Afiliado\AltaFamiliar.Designer.cs">
       <DependentUpon>AltaFamiliar.cs</DependentUpon>
     </Compile>
+    <Compile Include="Abm Afiliado\GrupoFamiliar.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Abm Afiliado\GrupoFamiliar.Designer.cs">
+      <DependentUpon>GrupoFamiliar.cs</DependentUpon>
+    </Compile>
     <Compile Include="Abm Afiliado\MatriculaFaltante.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -157,6 +163,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Abm Afiliado\AltaFamiliar.resx">
       <DependentUpon>AltaFamiliar.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Abm Afiliado\GrupoFamiliar.resx">
+      <DependentUpon>GrupoFamiliar.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Abm Afiliado\MatriculaFaltante.resx">
       <DependentUpon>MatriculaFaltante.cs</DependentUpon>

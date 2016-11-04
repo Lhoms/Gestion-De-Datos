@@ -42,7 +42,6 @@
             this.buttonBaja = new System.Windows.Forms.Button();
             this.groupBoxBaja = new System.Windows.Forms.GroupBox();
             this.groupBoxDatosAfiliado = new System.Windows.Forms.GroupBox();
-            this.textBoxGrupoFamiliar = new System.Windows.Forms.TextBox();
             this.comboBoxPlan = new System.Windows.Forms.ComboBox();
             this.label9 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
@@ -53,6 +52,9 @@
             this.labelNroAfil = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
             this.buttonReset = new System.Windows.Forms.Button();
+            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.buttonGrupo = new System.Windows.Forms.Button();
             this.groupBoxDatosPersonales.SuspendLayout();
             this.groupBoxBaja.SuspendLayout();
             this.groupBoxDatosAfiliado.SuspendLayout();
@@ -185,23 +187,18 @@
             // 
             // groupBoxDatosAfiliado
             // 
-            this.groupBoxDatosAfiliado.Controls.Add(this.textBoxGrupoFamiliar);
+            this.groupBoxDatosAfiliado.Controls.Add(this.buttonGrupo);
+            this.groupBoxDatosAfiliado.Controls.Add(this.label2);
+            this.groupBoxDatosAfiliado.Controls.Add(this.richTextBox1);
             this.groupBoxDatosAfiliado.Controls.Add(this.comboBoxPlan);
             this.groupBoxDatosAfiliado.Controls.Add(this.label9);
             this.groupBoxDatosAfiliado.Controls.Add(this.label10);
             this.groupBoxDatosAfiliado.Location = new System.Drawing.Point(15, 310);
             this.groupBoxDatosAfiliado.Name = "groupBoxDatosAfiliado";
-            this.groupBoxDatosAfiliado.Size = new System.Drawing.Size(354, 85);
+            this.groupBoxDatosAfiliado.Size = new System.Drawing.Size(354, 182);
             this.groupBoxDatosAfiliado.TabIndex = 2;
             this.groupBoxDatosAfiliado.TabStop = false;
             this.groupBoxDatosAfiliado.Text = "Datos como afiliado";
-            // 
-            // textBoxGrupoFamiliar
-            // 
-            this.textBoxGrupoFamiliar.Location = new System.Drawing.Point(107, 27);
-            this.textBoxGrupoFamiliar.Name = "textBoxGrupoFamiliar";
-            this.textBoxGrupoFamiliar.Size = new System.Drawing.Size(244, 20);
-            this.textBoxGrupoFamiliar.TabIndex = 21;
             // 
             // comboBoxPlan
             // 
@@ -211,6 +208,7 @@
             this.comboBoxPlan.Name = "comboBoxPlan";
             this.comboBoxPlan.Size = new System.Drawing.Size(244, 21);
             this.comboBoxPlan.TabIndex = 20;
+            this.comboBoxPlan.SelectionChangeCommitted += new System.EventHandler(this.comboBoxPlan_SelectionChangeCommitted);
             // 
             // label9
             // 
@@ -251,7 +249,7 @@
             // 
             // buttonCancelar
             // 
-            this.buttonCancelar.Location = new System.Drawing.Point(213, 400);
+            this.buttonCancelar.Location = new System.Drawing.Point(213, 496);
             this.buttonCancelar.Name = "buttonCancelar";
             this.buttonCancelar.Size = new System.Drawing.Size(75, 23);
             this.buttonCancelar.TabIndex = 1;
@@ -261,7 +259,7 @@
             // 
             // buttonModificar
             // 
-            this.buttonModificar.Location = new System.Drawing.Point(294, 401);
+            this.buttonModificar.Location = new System.Drawing.Point(294, 497);
             this.buttonModificar.Name = "buttonModificar";
             this.buttonModificar.Size = new System.Drawing.Size(75, 23);
             this.buttonModificar.TabIndex = 2;
@@ -290,7 +288,7 @@
             // 
             // buttonReset
             // 
-            this.buttonReset.Location = new System.Drawing.Point(15, 402);
+            this.buttonReset.Location = new System.Drawing.Point(15, 498);
             this.buttonReset.Name = "buttonReset";
             this.buttonReset.Size = new System.Drawing.Size(75, 23);
             this.buttonReset.TabIndex = 10;
@@ -298,11 +296,39 @@
             this.buttonReset.UseVisualStyleBackColor = true;
             this.buttonReset.Click += new System.EventHandler(this.buttonReset_Click);
             // 
+            // richTextBox1
+            // 
+            this.richTextBox1.Location = new System.Drawing.Point(9, 117);
+            this.richTextBox1.Name = "richTextBox1";
+            this.richTextBox1.Size = new System.Drawing.Size(339, 48);
+            this.richTextBox1.TabIndex = 22;
+            this.richTextBox1.Text = "";
+            this.richTextBox1.Click += new System.EventHandler(this.richTextBox1_Click);
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(6, 101);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(132, 13);
+            this.label2.TabIndex = 23;
+            this.label2.Text = "Motivo de cambio de plan:";
+            // 
+            // buttonGrupo
+            // 
+            this.buttonGrupo.Location = new System.Drawing.Point(150, 24);
+            this.buttonGrupo.Name = "buttonGrupo";
+            this.buttonGrupo.Size = new System.Drawing.Size(152, 23);
+            this.buttonGrupo.TabIndex = 24;
+            this.buttonGrupo.Text = "Ingresar a grupo familiar";
+            this.buttonGrupo.UseVisualStyleBackColor = true;
+            this.buttonGrupo.Click += new System.EventHandler(this.buttonGrupo_Click);
+            // 
             // ModificarAfiliado
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(381, 437);
+            this.ClientSize = new System.Drawing.Size(381, 524);
             this.Controls.Add(this.buttonReset);
             this.Controls.Add(this.labelNroAfil);
             this.Controls.Add(this.label11);
@@ -345,7 +371,6 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.TextBox textBoxGrupoFamiliar;
         private System.Windows.Forms.ComboBox comboBoxPlan;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label label10;
@@ -354,5 +379,8 @@
         private System.Windows.Forms.Label labelNroAfil;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Button buttonReset;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.RichTextBox richTextBox1;
+        private System.Windows.Forms.Button buttonGrupo;
     }
 }

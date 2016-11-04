@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.Drawing;
@@ -54,6 +55,8 @@ namespace ClinicaFrba.Abm_Afiliado
             afiliadoDatosNuevos = new Afiliado();
             rellenarAfiliado();
 
+            this.richTextBox1.Enabled = false;
+
             this.labelUsuario.Text = this.afiliado.Cells[2].Value.ToString() + " - " +  //username
                                      this.afiliado.Cells[4].Value.ToString() + " " +    //nombre
                                      this.afiliado.Cells[5].Value.ToString(); ;         //apellido
@@ -69,11 +72,11 @@ namespace ClinicaFrba.Abm_Afiliado
             this.textBoxDireccion.Text = this.afiliadoDatos.direccion;
             this.textBoxTelefono.Text = this.afiliadoDatos.telefono_s;
             this.textBoxMail.Text = this.afiliadoDatos.mail;
-            this.textBoxGrupoFamiliar.Text = (this.afiliadoDatos.numeroAfiliado / 100).ToString();
 
             this.comboBoxSexo.Text = this.afiliadoDatos.sexo;
             this.comboBoxPlan.Text = this.id_planes_descrip[this.afiliadoDatos.planMedico_id];
             this.comboBoxEstadoCivil.Text = id_estado_descrip[this.afiliadoDatos.estadoCivil_id];
+            this.richTextBox1.Text = "Sin descripcion";
         }
 
         private void rellenarAfiliado()
@@ -114,8 +117,8 @@ namespace ClinicaFrba.Abm_Afiliado
 
         private void buttonBaja_Click(object sender, EventArgs e)
         {
-            //try
-            //{
+            try
+            {
                 if (this.buttonBaja.Text == "Dar de alta")
                 {
                     habilitarUsuario(this.afiliadoDatos);
@@ -130,11 +133,11 @@ namespace ClinicaFrba.Abm_Afiliado
                     this.buttonBaja.Text = "Dar de alta";
                 }
                 modificacionHabilitada();
-            //}
-            //catch (Exception exc)
-            //{
-            //    MessageBox.Show(exc.Message, "Aviso", MessageBoxButtons.OK);
-            //}
+            }
+            catch (Exception exc)
+            {
+                MessageBox.Show(exc.Message, "Aviso", MessageBoxButtons.OK);
+            }
         }
 
         private void desabilitarUsuario(Afiliado afiliado)
@@ -240,23 +243,54 @@ namespace ClinicaFrba.Abm_Afiliado
 
         private void buttonModificar_Click(object sender, EventArgs e)
         {
+            try
+            {
                 //llamar al stored que modifica afiliados
                 MessageBox.Show("modificar afiliado");
 
 
-            if (this.afiliadoDatos.planMedico_id != this.planes[this.comboBoxPlan.Text])
-            {
-                //llamar al stored de modificar plan medico
-                MessageBox.Show("cambiar el plan medico");
-            }
+                if (this.afiliadoDatos.planMedico_id != this.planes[this.comboBoxPlan.Text])
+                {
+                    //llamar al stored de modificar plan medico
+                    MessageBox.Show("cambiar el plan medico");
+                    cambiarPlan();
+                }
 
-            if (this.textBoxGrupoFamiliar.Text != (this.afiliadoDatos.numeroAfiliado / 100).ToString())
+
+                MessageBox.Show("Se modifico correctamente al afiliado", "Aviso", MessageBoxButtons.OK);
+
+                Form1 form = new Form1(this.sesion);
+                form.Show();
+                this.Close();
+
+            }
+            catch (Exception exc)
             {
-                //llamar al stored de cambiar grupo familiar
-                MessageBox.Show("stored de cambiar grupo familiar");
-                //avisarle nuevo numero de afiliado
+                MessageBox.Show(exc.Message, "Aviso", MessageBoxButtons.OK);
             }
    
+        }
+
+        private void cambiarPlan()
+        {
+            int nuevoPlan = this.planes[this.comboBoxPlan.Text];
+            DateTime fechaHoy = DateTime.Parse(ConfigurationManager.AppSettings.Get("FechaSistema")) ;
+            
+            SqlParameter result = DAL.Classes.DBHelper.MakeParamOutput("@result", SqlDbType.Int, 100);
+
+            SqlParameter[] dbParams = new SqlParameter[]
+            {
+                DAL.Classes.DBHelper.MakeParam("@user_id", SqlDbType.Decimal, 0, afiliadoDatos.id),
+                DAL.Classes.DBHelper.MakeParam("@plan_id", SqlDbType.Decimal, 0, nuevoPlan),
+                DAL.Classes.DBHelper.MakeParam("@fecha", SqlDbType.DateTime, 0, fechaHoy),
+                DAL.Classes.DBHelper.MakeParam("@motivo", SqlDbType.VarChar, 0, this.richTextBox1.Text),
+                result,
+            };
+
+            DAL.Classes.DBHelper.ExecuteDataSet("NUL.sp_cambiar_plan", dbParams);
+
+            if ((int)result.Value != 0)
+                throw new Exception("Error modificando el rol");
         }
 
         private void obtenerUsuario()
@@ -306,9 +340,28 @@ namespace ClinicaFrba.Abm_Afiliado
                 this.afiliadoDatosNuevos.planMedico_id = this.planes[comboBoxPlan.Text];
             }
 
-            if (string.IsNullOrWhiteSpace(this.textBoxGrupoFamiliar.Text))
-                throw new Exception("El campo grupo familiar no puede estar vacio");
+        }
 
+        private void comboBoxPlan_SelectionChangeCommitted(object sender, EventArgs e)
+        {
+            if (this.afiliadoDatos.planMedico_id != this.planes[this.comboBoxPlan.Text])
+            {
+                this.richTextBox1.Enabled = true;
+            }
+            else
+                this.richTextBox1.Enabled = false;
+        }
+
+        private void richTextBox1_Click(object sender, EventArgs e)
+        {
+            this.richTextBox1.Text = "";
+        }
+
+        private void buttonGrupo_Click(object sender, EventArgs e)
+        {
+            GrupoFamiliar form = new GrupoFamiliar(this.sesion, this.afiliado);
+            form.Show();
+            this.Hide();
         }
 
     }
