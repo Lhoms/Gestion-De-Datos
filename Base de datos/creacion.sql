@@ -1264,6 +1264,8 @@ WHERE A.agenda_prof_esp_id = @esp_id AND A.agenda_prof_id = @id_prof) as temp
 WHERE fecha NOT IN (SELECT turno_fecha_hora FROM TURNOS)
 order by 1
 
+OPTION  ( MAXRECURSION 500 );
+
 END
 GO
 
