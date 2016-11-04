@@ -39,6 +39,10 @@ namespace ClinicaFrba.Registro_Resultado
 
                 this.sesion = sesion;
 
+                comprobarSiEsProfesional();
+
+                this.buttonRegistrar.Enabled = false;
+
                 tipos_esp = new List<string>();
                 tipos_esp_id = new Dictionary<string, int>();
 
@@ -54,11 +58,20 @@ namespace ClinicaFrba.Registro_Resultado
                 llenarTipoEsp();
                 llenarEspecialidades();
 
-                this.dateFecha.Value = DateTime.Parse(ConfigurationManager.AppSettings.Get("FechaSistema"));
+                this.dateFecha.Value = DateTime.Parse(ConfigurationManager.AppSettings.Get("FechaSistema"))
+                                        .Add(-DateTime.Parse(ConfigurationManager.AppSettings.Get("FechaSistema")).TimeOfDay);
             }
             catch (Exception exc)
             {
                 MessageBox.Show(exc.Message, "Aviso", MessageBoxButtons.OK);
+            }
+        }
+
+        private void comprobarSiEsProfesional()
+        {
+            if (this.sesion.rol_actual_id != 3)
+            {
+                this.groupBox1.Enabled = false;
             }
         }
 
@@ -141,12 +154,15 @@ namespace ClinicaFrba.Registro_Resultado
 
 
                 fecha = fecha.AddHours(hora);
-                fecha = fecha.AddMinutes(minutos);
+                fecha = fecha.AddMinutes(minutos/60);
                 this.fecha_hora_minutos = fecha;
+
+                MessageBox.Show(fecha_hora_minutos.ToString());
 
                 if (this.fecha_hora_minutos > DateTime.Parse(ConfigurationManager.AppSettings.Get("FechaSistema")))
                     throw new Exception("La fecha y hora no puede ser siguiente a la actual");
 
+                this.buttonRegistrar.Enabled = true;
                 buscarConsulta();
             }
             catch (Exception exc)

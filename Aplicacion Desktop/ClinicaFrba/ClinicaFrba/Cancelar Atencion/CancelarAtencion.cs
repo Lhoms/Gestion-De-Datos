@@ -50,14 +50,14 @@ namespace ClinicaFrba.Cancelar_Atencion
                 profesionales = new List<Profesional>();
                 profesionales_na = new List<string>();
 
+                comprobarSiEsProfesional();
+
                 llenarTipoEsp();
                 llenarEspecialidades();
 
                 llenarCalendarios();
 
                 cargarProfesionales();
-                comprobarSiEsProfesional();
-
 
             }
             catch (Exception exc)
@@ -81,27 +81,41 @@ namespace ClinicaFrba.Cancelar_Atencion
 
         private void comprobarSiEsProfesional()
         {
-            if (this.sesion.rol_actual_id == 3)
+            if (existeProfesionalOAfiliado())
             {
-                this.comboBoxProfesional.Visible = false;
-                this.label4.Visible = false;
-                this.label5.Visible = false;
-                this.label6.Visible = false;
-                this.dataGridView1.Enabled = false;
-                this.comboBoxTipoEsp.Visible = false;
-                this.comboBoxEsp.Visible = false;
-            }
-            else if (this.sesion.rol_actual_id == 2)
-            {
-                //es afiliado
+                if (this.sesion.rol_actual_id == 3)
+                {
+                    this.comboBoxProfesional.Visible = false;
+                    this.label4.Visible = false;
+                    this.label5.Visible = false;
+                    this.label6.Visible = false;
+                    this.dataGridView1.Enabled = false;
+                    this.comboBoxTipoEsp.Visible = false;
+                    this.comboBoxEsp.Visible = false;
+                }
+                else if (this.sesion.rol_actual_id == 2)
+                {
+                    //es afiliado
+                }
             }
             else
             {
                 //no es afiliado ni profesional, no tiene acciones
                 this.groupBox1.Enabled = false;
                 this.buttonVolver.Enabled = true;
+                throw new Exception("No tiene acciones disponibles en esta ventana");
             }
 
+        }
+
+        private bool existeProfesionalOAfiliado()
+        {
+            string select = "SELECT * FROM NUL.Usuario ";
+            string where = "WHERE user_id = "+this.sesion.user_id+" AND (user_id IN (SELECT afil_id FROM NUL.Afiliado ) OR user_id IN (SELECT prof_id FROM NUL.Profesional ))";
+
+            SqlDataReader lector = DAL.Classes.DBHelper.ExecuteQuery_DR(select + where);
+
+            return (lector != null);
         }
 
         private void llenarTurnosSegunNroAfiliado()

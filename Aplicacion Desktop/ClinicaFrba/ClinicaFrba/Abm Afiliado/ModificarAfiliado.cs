@@ -187,7 +187,7 @@ namespace ClinicaFrba.Abm_Afiliado
 
             SqlDataReader lector = DAL.Classes.DBHelper.ExecuteQuery_DR(expresion);
 
-            if (lector.HasRows)
+            if (lector != null)
             {
                 estado_civil.Add((string)lector["estado_descrip"].ToString(), int.Parse(lector["estado_id"].ToString()));
                 id_estado_descrip.Add(int.Parse(lector["estado_id"].ToString()), (string)lector["estado_descrip"].ToString());
@@ -210,7 +210,7 @@ namespace ClinicaFrba.Abm_Afiliado
 
             SqlDataReader lector = DAL.Classes.DBHelper.ExecuteQuery_DR(expresion);
 
-            if (lector.HasRows)
+            if (lector != null)
             {
                 planes.Add((string)lector["plan_descrip"].ToString(), int.Parse(lector["plan_id"].ToString()));
                 id_planes_descrip.Add(int.Parse(lector["plan_id"].ToString()), (string)lector["plan_descrip"].ToString());

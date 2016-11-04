@@ -311,8 +311,8 @@ namespace ClinicaFrba.Pedir_Turno
 
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {   
-            //try
-            //{
+            try
+            {
                 if (this.dataGridViewT.Columns[e.ColumnIndex].Name.Equals("Pedir"))
                 {
 
@@ -346,11 +346,11 @@ namespace ClinicaFrba.Pedir_Turno
 
                 }
 
-            //}
-            //catch (Exception exc)
-            //{
-            //    MessageBox.Show(exc.Message, "Aviso", MessageBoxButtons.OK);
-            //}
+            }
+            catch (Exception exc)
+            {
+                MessageBox.Show(exc.Message, "Aviso", MessageBoxButtons.OK);
+            }
         }
 
         private void buttonVolver_Click_1(object sender, EventArgs e)

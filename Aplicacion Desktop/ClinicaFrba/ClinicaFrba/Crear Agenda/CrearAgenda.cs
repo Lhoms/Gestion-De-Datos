@@ -35,30 +35,38 @@ namespace ClinicaFrba.Crear_Agenda
 
         public CrearAgenda(Sesion sesion)
         {
-            InitializeComponent();
+            try
+            {
+                InitializeComponent();
 
-            this.sesion = sesion;
+                this.sesion = sesion;
 
-            tipos_esp = new List<string>();
-            tipos_esp_id = new Dictionary<string, int>();
+                tipos_esp = new List<string>();
+                tipos_esp_id = new Dictionary<string, int>();
 
-            especialidades = new List<string>();
-            especialidades_id = new Dictionary<string, int>();
+                especialidades = new List<string>();
+                especialidades_id = new Dictionary<string, int>();
 
-            vacia = new List<string>();
+                vacia = new List<string>();
 
-            profesionales = new List<Profesional>();
-            profesionales_na = new List<string>();
+                profesionales = new List<Profesional>();
+                profesionales_na = new List<string>();
 
-            comprobarSiEsProfesional();
+                comprobarSiEsProfesional();
 
-            llenarTipoEsp();
-            llenarEspecialidades();
+                llenarTipoEsp();
+                llenarEspecialidades();
 
-            rellenarComboHora();
-            
-            restringirSegunUltimaAgenda();
-            destildar();
+                rellenarComboHora();
+
+                restringirSegunUltimaAgenda();
+                destildar();
+            }
+            catch (Exception exc)
+            {
+                MessageBox.Show(exc.Message, "Aviso", MessageBoxButtons.OK);
+            }
+
         }
 
         private void destildar()
@@ -145,12 +153,23 @@ namespace ClinicaFrba.Crear_Agenda
 
         private void comprobarSiEsProfesional()
         {
-            if (this.sesion.rol_actual_id != 3)
+            if (this.sesion.rol_actual_id != 3 || !existeProfesional())
             {
                 this.groupBox1.Enabled = false;
                 this.groupBox2.Enabled = false;
                 this.groupBox3.Enabled = false;
+                throw new Exception("No posee acciones disponibles en esta ventana");
             }
+        }
+
+        private bool existeProfesional()
+        {
+            string select = "SELECT * FROM NUL.Profesional WHERE prof_id = " + this.sesion.user_id;
+
+                SqlDataReader lector = DAL.Classes.DBHelper.ExecuteQuery_DR(select);
+
+                return (lector != null);
+
         }
 
         private void checkLunes_Click(object sender, EventArgs e)

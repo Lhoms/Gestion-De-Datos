@@ -98,7 +98,7 @@
             this.dataGridViewT.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridViewT.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Pedir});
-            this.dataGridViewT.Location = new System.Drawing.Point(9, 286);
+            this.dataGridViewT.Location = new System.Drawing.Point(46, 286);
             this.dataGridViewT.Name = "dataGridViewT";
             this.dataGridViewT.Size = new System.Drawing.Size(429, 171);
             this.dataGridViewT.TabIndex = 10;

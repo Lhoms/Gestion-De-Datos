@@ -236,7 +236,7 @@ namespace ClinicaFrba.Listados
 
             SqlDataReader lector = DAL.Classes.DBHelper.ExecuteQuery_DR(expresion);
 
-            if (lector.HasRows)
+            if (lector != null)
             {
                 planes.Add((string)lector["plan_descrip"].ToString(), int.Parse(lector["plan_id"].ToString()));
                 plan_descrip.Add((string)lector["plan_descrip"].ToString());

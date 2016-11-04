@@ -196,7 +196,7 @@ namespace ClinicaFrba.AbmRol
 
             SqlDataReader lector = DAL.Classes.DBHelper.ExecuteQuery_DR(expresion);
 
-            if (lector.HasRows)
+            if (lector != null)
             {
                 rol = new Rol();    //instancio la clase y seteo sus datos por fila
 

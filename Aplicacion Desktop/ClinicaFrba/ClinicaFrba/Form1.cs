@@ -17,28 +17,42 @@ namespace ClinicaFrba
     {
         Sesion sesion;
 
-        DataTable dtRoles;
         Dictionary<string, int> rolesId;
+
+        Dictionary<string, int> rol_ids;
+        List<string> rol_descrip;
 
 
         public Form1(Sesion sesion)
         {
-            InitializeComponent();
+            try
+            {
+                InitializeComponent();
 
-            this.sesion = sesion;
+                this.sesion = sesion;
 
-            siEsProfesionalComprobarSuMatricula();
+                siEsProfesionalComprobarSuMatricula();
 
-            comboBoxRol.ValueMember = "rol_descrip";
-            this.dtRoles = rolesDelUsuario();
-            comboBoxRol.DataSource = this.dtRoles;
+                rol_ids = new Dictionary<string, int>();
+                rol_descrip = new List<string>();
 
-            rolesId = new Dictionary<string,int>();
+                rolesDelUsuario();
 
-            this.labelFechaActual.Text = ConfigurationManager.AppSettings.Get("FechaSistema");
-            ID_Usuario.Text = sesion.tipo_doc_id + " - " + sesion.username;
+                comboBoxRol.DataSource = this.rol_descrip;
 
-            ObtenerFuncionalidadesPorRolPorUsuario();
+                rolesId = new Dictionary<string, int>();
+
+                this.labelFechaActual.Text = ConfigurationManager.AppSettings.Get("FechaSistema");
+                ID_Usuario.Text = sesion.tipo_doc_id + " - " + sesion.username;
+
+                ObtenerFuncionalidadesPorRolPorUsuario();
+
+                this.label3.Text = this.sesion.rol_actual_id.ToString();/***********/
+            }
+            catch (Exception exc)
+            {
+                MessageBox.Show(exc.Message, "Aviso", MessageBoxButtons.OK);
+            }
         }
 
         private void siEsProfesionalComprobarSuMatricula()
@@ -49,7 +63,7 @@ namespace ClinicaFrba
 
             if (lector != null)
             {
-                if (lector.HasRows)
+                if (lector != null)
                 {
                     Abm_Afiliado.MatriculaFaltante form = new Abm_Afiliado.MatriculaFaltante(this.sesion);
                     if( int.Parse(lector["prof_matric"].ToString()) == 0)
@@ -71,7 +85,7 @@ namespace ClinicaFrba
 
             SqlParameter[] dbParams = new SqlParameter[]
                     {
-                         DAL.Classes.DBHelper.MakeParam("@id", SqlDbType.Int, 0, get_rol_id(this.comboBoxRol.Text)),
+                         DAL.Classes.DBHelper.MakeParam("@id", SqlDbType.Int, 0, get_rol_id()),
                     };
 
             ds = DAL.Classes.DBHelper.ExecuteDataSet("NUL.sp_get_funciones_por_rol", dbParams);
@@ -153,34 +167,37 @@ namespace ClinicaFrba
 
         }
 
-        private int get_rol_id(string rol)
+        private int get_rol_id()
         {
-            string expresion = "rol_descrip = '" + rol + "'";
-            int rol_id = 0;
-
-            if (this.dtRoles.Rows.Count == 0)
-            {
-                MessageBox.Show("No posee roles disponibles\nContacte un administrador para asignarle uno.", "aviso", MessageBoxButtons.OK);
-            }
-            else
-            {
-                rol_id = int.Parse(this.dtRoles.Rows[0][0].ToString());
-            }
-
-            return rol_id;
+            return this.rol_ids[this.comboBoxRol.Text];
         }
 
-        private DataTable rolesDelUsuario()
+        private void rolesDelUsuario()
         {
-            SqlParameter[] dbParams = new SqlParameter[]
-                    {
-                         DAL.Classes.DBHelper.MakeParam("@id", SqlDbType.Int, 0, sesion.user_id),
-                    };
+            string expresion = "SELECT R.rol_id, R.rol_descrip FROM NUL.Rol R JOIN NUL.User_rol UR ON R.rol_id = UR.rol_id WHERE rol_habilitado = 1 AND UR.user_id = "
+                                + this.sesion.user_id;
 
-            DataTable d = DAL.Classes.DBHelper.ExecuteDataSet("NUL.sp_get_roles_disponibles_por_usuario", dbParams).Tables[0];
+            SqlDataReader lector = DAL.Classes.DBHelper.ExecuteQuery_DR(expresion);
 
-            return d;
+            if (lector != null)
+            {
+                rol_ids.Add((string)lector["rol_descrip"].ToString(), int.Parse(lector["rol_id"].ToString()));
+                rol_descrip.Add((string)lector["rol_descrip"].ToString());
+
+                while (lector.Read())
+                {
+                    rol_ids.Add((string)lector["rol_descrip"].ToString(), int.Parse(lector["rol_id"].ToString()));
+                    rol_descrip.Add((string)lector["rol_descrip"].ToString());
+                }
+            }
+
+           else
+           {
+               throw new Exception("No hay roles disponibles");
+           }
+
         }
+        
 
         private void groupBox1_Enter(object sender, EventArgs e)
         {
@@ -205,6 +222,8 @@ namespace ClinicaFrba
 
         private void buttonAltaRol_Click(object sender, EventArgs e)
         {
+            this.sesion.rol_actual_id = get_rol_id();
+
             AbmRol.AltaRol form = new AbmRol.AltaRol(this.sesion);
 
             form.Show();
@@ -214,6 +233,8 @@ namespace ClinicaFrba
 
         private void buttonBajaRol_Click(object sender, EventArgs e)
         {
+            this.sesion.rol_actual_id = get_rol_id();
+
             AbmRol.ModificarRol form = new AbmRol.ModificarRol(this.sesion);
 
             form.Show();
@@ -223,6 +244,8 @@ namespace ClinicaFrba
 
         private void buttonModificarRol_Click(object sender, EventArgs e)
         {
+            this.sesion.rol_actual_id = get_rol_id();
+
             AbmRol.ModificarRol form = new AbmRol.ModificarRol(this.sesion);
 
             form.Show();
@@ -232,6 +255,8 @@ namespace ClinicaFrba
 
         private void buttonAltaAfiliado_Click(object sender, EventArgs e)
         {
+            this.sesion.rol_actual_id = get_rol_id();
+
             Abm_Afiliado.AltaAfiliado form = new Abm_Afiliado.AltaAfiliado(this.sesion);
 
             form.Show();
@@ -241,6 +266,8 @@ namespace ClinicaFrba
 
         private void buttonBajaAfiliado_Click(object sender, EventArgs e)
         {
+            this.sesion.rol_actual_id = get_rol_id();
+
             Abm_Afiliado.BusquedaAfiliado form = new Abm_Afiliado.BusquedaAfiliado(this.sesion);
 
             form.Show();
@@ -250,6 +277,8 @@ namespace ClinicaFrba
 
         private void buttonModificarAfiliado_Click(object sender, EventArgs e)
         {
+            this.sesion.rol_actual_id = get_rol_id();
+
             Abm_Afiliado.BusquedaAfiliado form = new Abm_Afiliado.BusquedaAfiliado(this.sesion);
 
             form.Show();
@@ -259,6 +288,8 @@ namespace ClinicaFrba
 
         private void buttonCompraBono_Click(object sender, EventArgs e)
         {
+            this.sesion.rol_actual_id = get_rol_id();
+
             Compra_Bono.CompraBono form = new Compra_Bono.CompraBono(sesion);
 
             form.Show();
@@ -268,7 +299,7 @@ namespace ClinicaFrba
 
         private void buttonPedirTurno_Click(object sender, EventArgs e)
         {
-            this.sesion.rol_actual_id = get_rol_id(this.comboBoxRol.Text);
+            this.sesion.rol_actual_id = get_rol_id();
 
             Pedir_Turno.PedirTurno form = new Pedir_Turno.PedirTurno(this.sesion);
 
@@ -279,7 +310,7 @@ namespace ClinicaFrba
 
         private void buttonCancelarTurno_Click(object sender, EventArgs e)
         {
-            this.sesion.rol_actual_id = get_rol_id(this.comboBoxRol.Text);
+            this.sesion.rol_actual_id = get_rol_id();
 
             Cancelar_Atencion.CancelarAtencion form = new Cancelar_Atencion.CancelarAtencion(this.sesion);
 
@@ -290,6 +321,8 @@ namespace ClinicaFrba
 
         private void buttonRegistrarLlegada_Click(object sender, EventArgs e)
         {
+            this.sesion.rol_actual_id = get_rol_id();
+
             Registro_Llegada.RegistrarLlegada form = new Registro_Llegada.RegistrarLlegada(this.sesion);
 
             form.Show();
@@ -299,6 +332,8 @@ namespace ClinicaFrba
 
         private void buttonRegistrarResultado_Click(object sender, EventArgs e)
         {
+            this.sesion.rol_actual_id = get_rol_id();
+
             Registro_Resultado.RegistrarResultado form = new Registro_Resultado.RegistrarResultado(this.sesion);
 
             form.Show();
@@ -308,6 +343,8 @@ namespace ClinicaFrba
 
         private void buttonListadoEstadistico_Click(object sender, EventArgs e)
         {
+            this.sesion.rol_actual_id = get_rol_id();
+
             Listados.Listados form = new Listados.Listados(this.sesion);
 
             form.Show();
@@ -317,7 +354,7 @@ namespace ClinicaFrba
 
         private void buttonCrearAgenda_Click(object sender, EventArgs e)
         {
-            this.sesion.rol_actual_id = get_rol_id(this.comboBoxRol.Text);
+            this.sesion.rol_actual_id = get_rol_id();
 
             Crear_Agenda.CrearAgenda form = new Crear_Agenda.CrearAgenda(this.sesion);
 
