@@ -47,7 +47,6 @@ namespace ClinicaFrba
 
                 ObtenerFuncionalidadesPorRolPorUsuario();
 
-                this.label3.Text = this.sesion.rol_actual_id.ToString();/***********/
             }
             catch (Exception exc)
             {
