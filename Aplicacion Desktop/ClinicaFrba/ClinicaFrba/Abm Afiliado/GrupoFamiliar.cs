@@ -13,18 +13,14 @@ namespace ClinicaFrba.Abm_Afiliado
     public partial class GrupoFamiliar : Form
     {
         private extras.Sesion sesion;
-        private DataGridViewRow dataGridViewRow;
-
-        public GrupoFamiliar()
-        {
-            InitializeComponent();
-        }
+        private DataGridViewRow afiliado;
+ 
 
         public GrupoFamiliar(extras.Sesion sesion, DataGridViewRow dataGridViewRow)
         {
-            // TODO: Complete member initialization
+            
             this.sesion = sesion;
-            this.dataGridViewRow = dataGridViewRow;
+            this.afiliado = dataGridViewRow;
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -34,7 +30,14 @@ namespace ClinicaFrba.Abm_Afiliado
 
         private void buttonAgregar_Click(object sender, EventArgs e)
         {
+            salir(e);
+        }
 
+        private void salir(EventArgs e)
+        {
+            ModificarAfiliado form = new ModificarAfiliado(this.sesion, this.afiliado);
+            form.Show();
+            this.Hide();
         }
     }
 }
