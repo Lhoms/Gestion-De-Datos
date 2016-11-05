@@ -618,17 +618,19 @@ SELECT YEAR(BC.bonoc_fecha), MONTH(BC.bonoc_fecha), A.afil_id, P.pers_nombre, P.
 	  GROUP BY YEAR(BC.bonoc_fecha), MONTH(BC.bonoc_fecha),A.afil_id, P.pers_nombre, P.pers_apellido, P.pers_tipo_doc, P.pers_doc, (CASE WHEN A.afil_familiares > 1 OR RIGHT(CAST(A.afil_nro_afiliado as VARCHAR(18)),1) != 1 THEN 'SI' ELSE 'NO' END)
 GO
 ------------------------------------------------
+
 IF OBJECT_ID ('NUL.v_esp_bonos', 'V') IS NOT NULL  
 	DROP VIEW NUL.v_esp_bonos ; 
 GO
-CREATE VIEW NUL.v_esp_bonos(esp_id, esp_descrip, tipo_esp_id, tipo_esp_descrip, cant)
+CREATE VIEW NUL.v_esp_bonos(anio,mes,esp_id, esp_descrip, tipo_esp_id, tipo_esp_descrip, cant)
 AS 
-	SELECT E.esp_id, E.esp_descrip, TE.tipo_esp_id, TE.tipo_esp_descrip, COUNT(DISTINCT C.cons_id) AS cant
+	SELECT YEAR(T.turno_fecha_hora), MONTH(T.turno_fecha_hora), E.esp_id, E.esp_descrip, TE.tipo_esp_id, TE.tipo_esp_descrip, COUNT(DISTINCT C.cons_id) AS cant
 	  FROM NUL.Especialidad E JOIN NUL.Tipo_esp TE ON TE.tipo_esp_id = E.esp_tipo
 							  JOIN NUL.Turno	T  ON T.turno_especialidad = E.esp_id
 							  JOIN NUL.Consulta C  ON C.cons_turno_id = T.turno_id
-	GROUP BY E.esp_id, E.esp_descrip, TE.tipo_esp_id, TE.tipo_esp_descrip
+	GROUP BY YEAR(T.turno_fecha_hora), MONTH(T.turno_fecha_hora),E.esp_id, E.esp_descrip, TE.tipo_esp_id, TE.tipo_esp_descrip
 GO
+
 
 --stored procedures
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID('NUL.sp_get_top5_esp_cancel'))
@@ -859,30 +861,33 @@ CREATE PROCEDURE NUL.sp_get_top5_prof_horas(@plan_id numeric(18,0), @esp_id nume
 AS
 BEGIN
 		
-	SELECT TOP 5 * FROM NUL.v_prof_horas 
+	SELECT TOP 5 * FROM NUL.v_prof_horas V
 	WHERE plan_id = @plan_id
-	  AND esp_id = @esp_id AND mes/2 = @semestre-1 AND anio = @anio AND mes = @mes
+	  AND esp_id = @esp_id AND V.anio = @anio AND V.mes = (@semestre-1)*6+@mes
 	ORDER BY cant ASC
 	
 END
 GO
+
 
 CREATE PROCEDURE NUL.sp_get_top5_afil_bonos(@anio numeric(18,0), @semestre numeric(18,0),@mes numeric(18,0))
 AS
 BEGIN
 		
 	SELECT TOP 5 * FROM NUL.v_afil_bonos V
-	WHERE  mes/2 = @semestre-1 AND anio = @anio AND mes = @mes
+	WHERE  V.anio = @anio AND V.mes = (@semestre-1)*6+@mes
 	ORDER BY cant DESC
 
 END
 GO
+
 
 CREATE PROCEDURE NUL.sp_get_top5_esp_bonos(@anio numeric(18,0), @semestre numeric(18,0),@mes numeric(18,0))
 AS
 BEGIN
 		
 	SELECT TOP 5 * FROM NUL.v_esp_bonos V
+	WHERE V.anio = @anio AND V.mes = (@semestre-1)*6+@mes
 	ORDER BY cant DESC
 
 END
