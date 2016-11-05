@@ -311,8 +311,69 @@ CREATE TABLE NUL.Agenda_dia
 
 GO
 
+----TRIGGER
+/*
+IF OBJECT_ID ('NUL.v_afil_bonos', 'V') IS NOT NULL  
+	DROP VIEW NUL.v_afil_bonos ; 
+GO
+
+CREATE TRIGGER insert_bono ON NUL.Bono_compra
+AFTER INSERT 
+AS
+BEGIN 
+	DECLARE @bono_id numeric(18,0)
+	DECLARE @bono_compra numeric(18,0)
+	DECLARE @bono_plan numeric(18,0)
+	DECLARE @bono_nro_consulta numeric(18,0)
+	DECLARE @bono_usado bit
+	DECLARE @afil varchar(255)
+
+	DECLARE afil CURSOR FOR SELECT DISTINCT bonoc_id_usuario FROM inserted
+
+	OPEN afil
+
+	FETCH NEXT FROM afil
+	INTO @afil
+
+	WHILE @@FETCH_STATUS =0
+	BEGIN
+		
+		
+		CREATE TABLE #BONOS
+		(
+				bono_id 				numeric(18,0),	
+				bono_compra 			numeric(18,0),				
+				bono_plan				numeric(18,0),
+				bono_nro_consulta	    numeric(18,0) IDENTITY(1,1),
+				bono_usado			    bit,
+			);
 
 
+
+			INSERT INTO #BONOS(bono_id, bono_compra, bono_plan,  bono_usado)
+			(
+				SELECT DISTINCT M.Bono_Consulta_Numero, BC.bonoc_id, M.Plan_Med_Codigo,  1
+				FROM gd_esquema.Maestra M JOIN  NUL.Usuario U ON CAST(M.Paciente_Dni AS CHAR) = U.user_username
+															 AND U.user_tipodoc  = 1
+										  JOIN  NUL.Bono_compra BC ON U.user_id = BC.Bonoc_id_usuario
+																  AND BC.bonoc_fecha = M.Compra_Bono_Fecha
+				WHERE M.Bono_Consulta_Numero IS NOT NULL AND M.Turno_Numero IS NULL AND BC.bonoc_id_usuario = @afil
+				GROUP BY M.Bono_Consulta_Numero, BC.bonoc_id, M.Plan_Med_Codigo
+			)
+
+			INSERT INTO NUL.Bono SELECT * FROM #BONOS
+			DROP TABLE #BONOS
+
+		FETCH NEXT FROM bonos_insertados
+		INTO @bono_id, @bono_compra, @bono_plan, @bono_usado
+		
+	END
+
+	CLOSE bonos_insertados
+	DEALLOCATE bonos_insertados
+END
+GO
+*/
 
 --Migración de datos
 BEGIN TRANSACTION	
@@ -455,7 +516,7 @@ INSERT INTO NUL.Bono(bono_id, bono_compra, bono_plan, bono_nro_consulta, bono_us
 	SELECT DISTINCT M.Bono_Consulta_Numero, BC.bonoc_id, M.Plan_Med_Codigo, COUNT(BC.bonoc_id) + 1, 1
 	FROM gd_esquema.Maestra M JOIN  NUL.Usuario U ON CAST(M.Paciente_Dni AS CHAR) = U.user_username
 												 AND U.user_tipodoc  = 1
-	                          JOIN  NUL.Bono_compra BC ON U.user_id = BC.Bonoc_id_usuario
+	                         JOIN  NUL.Bono_compra BC ON U.user_id = BC.Bonoc_id_usuario
 													  AND BC.bonoc_fecha = M.Compra_Bono_Fecha
 	WHERE M.Bono_Consulta_Numero IS NOT NULL AND M.Turno_Numero IS NULL
 	GROUP BY M.Bono_Consulta_Numero, BC.bonoc_id, M.Plan_Med_Codigo
@@ -1188,10 +1249,12 @@ SELECT * FROM NUL.Bono B JOIN NUL.Bono_compra BC ON BC.bonoc_id = B.bono_compra
 	WHERE B.bono_id = @bono_id
 	  AND A.afil_nro_afiliado LIKE @nroAfiliado  --nroAfiliado llega con 'raiz _ _ _' 
 	  AND B.bono_usado = 0
+	  AND B.bono_plan = A.afil_plan_med
 
 	set @result = @@ERROR
 END
 GO
+
 
 CREATE PROCEDURE NUL.sp_set_llegada(@user_id numeric(18,0), @id_turno numeric(18,0), @fecha datetime, @hora_llegada time, @bono_id numeric(18,0), @result int output)
 AS
@@ -1212,7 +1275,7 @@ BEGIN
 		if @result = 0
 		   begin
  			
- 			DECLARE @nro_cons numeric(18,0) = (SELECT afil_nro_consulta FROM NUL.Afiliado WHERE afil_id = @user_id);
+ 			DECLARE @nro_cons numeric(18,0) = (SELECT afil_nro_consulta + 1 FROM NUL.Afiliado WHERE afil_id = @user_id);
 
 			UPDATE NUL.Bono SET bono_usado = 1, bono_nro_consulta = @nro_cons,
 							    bono_plan = (SELECT afil_plan_med FROM NUL.Afiliado WHERE afil_id = @user_id)
@@ -1319,11 +1382,14 @@ BEGIN
 END
 GO
 
-CREATE PROCEDURE NUL.sp_agregar_a_grupo_familiar(@titular numeric(18,0), @nro_familiar int)
+
+CREATE PROCEDURE NUL.sp_agregar_a_grupo_familiar(@user_id numeric(18,0), @titular numeric(18,0), @nro_familiar int)
 AS
 BEGIN
 	DECLARE @ult_afil numeric(18,0);
-	
+	DECLARE @nuevo_titular numeric(18,0) = (SELECT afil_id FROM NUL.Afiliado WHERE afil_nro_afiliado = @titular)
+	DECLARE @cantidad_fam tinyint = (SELECT afil_familiares FROM NUL.Afiliado WHERE afil_nro_afiliado = @titular)
+
 	IF @nro_familiar = 0
 		SET @ult_afil = @titular;
 	ELSE 
@@ -1333,8 +1399,10 @@ BEGIN
 			FROM NUL.Afiliado 
 			WHERE afil_titular = @titular;
 	
-	UPDATE NUL.Afiliado SET afil_nro_afiliado = @ult_afil+1;
-	UPDATE NUL.Afiliado SET afil_titular = @titular;
+	UPDATE NUL.Afiliado SET afil_nro_afiliado = @ult_afil+1 WHERE afil_id = @user_id;
+	UPDATE NUL.Afiliado SET afil_titular = @titular WHERE afil_id = @user_id;
+
+	UPDATE NUL.Afiliado SET afil_familiares = @cantidad_fam + 1 WHERE afil_id = @nuevo_titular;
 
 END
 GO
