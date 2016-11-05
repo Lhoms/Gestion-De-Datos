@@ -151,8 +151,8 @@ CREATE TABLE NUL.Afiliado
 		afil_estado 			numeric(18,0),
 		afil_plan_med 			numeric(18,0),
 		afil_nro_afiliado		numeric(18,0) UNIQUE,
-		afil_familiares 		tinyint,
-		afil_nro_consulta 		numeric(18,0),
+		afil_familiares 		tinyint DEFAULT 0,
+		afil_nro_consulta 		numeric(18,0) DEFAULT 1,
 		afil_titular			numeric(18,0) DEFAULT NULL,
 
 		CONSTRAINT FK_afiliado_raiz FOREIGN KEY (afil_titular) REFERENCES NUL.Afiliado (afil_id),
@@ -844,6 +844,13 @@ BEGIN
     DROP PROCEDURE NUL.sp_new_dia_agenda_profesional
 END
 
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID('NUL.agregar_persona'))
+BEGIN
+    DROP PROCEDURE NUL.agregar_persona
+END
+
+
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID('NUL.sp_set_matricula_profesional'))
 BEGIN
     DROP PROCEDURE NUL.sp_set_matricula_profesional
@@ -878,6 +885,15 @@ END
 
 GO
 
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID('NUL.agregar_afiliado'))
+BEGIN
+    DROP PROCEDURE NUL.agregar_afiliado
+END
+
+GO
+
+
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID('NUL.sp_cambiar_plan'))
 BEGIN
     DROP PROCEDURE NUL.sp_cambiar_plan
@@ -888,6 +904,13 @@ GO
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID('NUL.sp_agregar_a_grupo_familiar'))
 BEGIN
     DROP PROCEDURE NUL.sp_agregar_a_grupo_familiar
+END
+
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID('NUL.agregar_usuario'))
+BEGIN
+    DROP PROCEDURE NUL.agregar_usuario
 END
 
 GO
@@ -1213,6 +1236,17 @@ BEGIN
 END
 GO
 
+CREATE PROCEDURE agregar_usuario(@user_username varchar(255), @user_tipodoc numeric(18,0),@user_pass varchar(255),@id numeric(18,0) output)
+AS
+BEGIN
+	
+	INSERT INTO NUL.Usuario(user_username,user_tipodoc, user_pass) values (@user_username,@user_tipodoc, @user_pass)
+	SET @id = @@IDENTITY
+
+END
+GO
+
+
 CREATE PROCEDURE NUL.sp_new_agenda_profesional(@prof_id numeric(18,0), @esp_id numeric(18,0), @desde datetime, @hasta datetime, @id_new numeric(18,0) output)
 AS
 BEGIN
@@ -1366,11 +1400,10 @@ WHERE t.turno_profesional = @prof AND t.turno_fecha_hora between @fecha_desde AN
 END
 GO
 
+
 CREATE PROCEDURE NUL.sp_cambiar_plan(@user_id numeric(18,0), @plan_id numeric(18,0), @fecha DateTime, @motivo varchar(250), @result int output)
 AS
 BEGIN
-
-	DECLARE @plan_viejo numeric(18,0) = (SELECT afil_plan_med FROM NUL.Afiliado WHERE afil_id = @user_id)
 
 	UPDATE NUL.Afiliado SET afil_plan_med = @plan_id
 	WHERE afil_id = @user_id
@@ -1383,25 +1416,56 @@ BEGIN
 END
 GO
 
-CREATE PROCEDURE NUL.sp_agregar_a_grupo_familiar(@user_id numeric(18,0), @titular numeric(18,0), @nro_familiar int)
+CREATE PROCEDURE NUL.sp_agregar_a_grupo_familiar(@user_id numeric(18,0), @titular numeric(18,0), @nro_familiar int, @fecha DateTime)
 AS
 BEGIN
 	DECLARE @ult_afil numeric(18,0);
 	DECLARE @nuevo_titular numeric(18,0) = (SELECT afil_id FROM NUL.Afiliado WHERE afil_nro_afiliado = @titular)
 	DECLARE @cantidad_fam tinyint = (SELECT afil_familiares FROM NUL.Afiliado WHERE afil_nro_afiliado = @titular)
+	DECLARE @plan_nuevo numeric(18,0) = (SELECT afil_plan_med FROM NUL.Afiliado WHERE afil_nro_afiliado = @titular)
 
 	IF @nro_familiar = 0
 		SET @ult_afil = @titular;
 	ELSE 
 
-		SELECT @ult_afil = ISNULL(MAX(afil_nro_afiliado), @titular)
+		SELECT @ult_afil = ISNULL(MAX(afil_nro_afiliado), @titular)+1
 		FROM NUL.Afiliado 
 		WHERE afil_titular = @nuevo_titular;
 	
 	UPDATE NUL.Afiliado SET afil_nro_afiliado = @ult_afil+1 WHERE afil_id = @user_id;
 	UPDATE NUL.Afiliado SET afil_titular = @nuevo_titular WHERE afil_id = @user_id;
 
+	UPDATE NUL.Afiliado SET afil_plan_med = @plan_nuevo WHERE afil_id = @user_id;
+
+	INSERT INTO NUL.Historial_plan_med (histo_plan_id, histo_afil_id, histo_fecha_id, histo_descrip)
+						VALUES(@plan_nuevo, @user_id, @fecha, 'Por cambio de grupo familiar');
+
 	UPDATE NUL.Afiliado SET afil_familiares = @cantidad_fam + 1 WHERE afil_id = @nuevo_titular;
+
+END
+GO
+
+
+
+CREATE PROCEDURE agregar_persona(@pers_nombre varchar(255), @pers_apellido varchar(255),@pers_doc varchar(255),
+		@pers_dire varchar(255), @pers_tel numeric(18,2),@pers_mail varchar(255), @pers_fecha_nac datetime,@pers_sexo char)
+
+AS
+BEGIN
+
+ INSERT INTO NUL.Persona (pers_nombre, pers_apellido, pers_doc, pers_dire, pers_tel, pers_mail, pers_fecha_nac,pers_sexo)
+	values(@pers_nombre, @pers_apellido, @pers_doc, @pers_dire, @pers_tel, @pers_mail, @pers_fecha_nac,@pers_sexo)
+
+END
+GO
+
+
+CREATE PROCEDURE agregar_afiliado(@afil_id numeric(18,0),@afil_estado numeric(18,0),@afil_plan_med numeric(18,0),@afil_nro_afiliado numeric(18,0))
+AS
+BEGIN
+
+INSERT INTO NUL.Afiliado(afil_id,afil_estado,afil_plan_med,afil_nro_afiliado) values 
+	(@afil_id,@afil_estado,@afil_plan_med,@afil_nro_afiliado)
 
 END
 GO
