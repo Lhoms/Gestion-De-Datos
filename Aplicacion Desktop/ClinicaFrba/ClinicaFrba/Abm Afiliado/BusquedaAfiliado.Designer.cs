@@ -56,12 +56,18 @@
             this.dataGridViewAfiliados = new System.Windows.Forms.DataGridView();
             this.Modificar = new System.Windows.Forms.DataGridViewButtonColumn();
             this.buttonVolver = new System.Windows.Forms.Button();
+            this.checkBoxPlan = new System.Windows.Forms.CheckBox();
+            this.checkBoxTipo = new System.Windows.Forms.CheckBox();
+            this.checkBoxSexo = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewAfiliados)).BeginInit();
             this.SuspendLayout();
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.checkBoxSexo);
+            this.groupBox1.Controls.Add(this.checkBoxTipo);
+            this.groupBox1.Controls.Add(this.checkBoxPlan);
             this.groupBox1.Controls.Add(this.textBoxNroAfiliado);
             this.groupBox1.Controls.Add(this.label7);
             this.groupBox1.Controls.Add(this.comboBoxSexo);
@@ -328,6 +334,36 @@
             this.buttonVolver.UseVisualStyleBackColor = true;
             this.buttonVolver.Click += new System.EventHandler(this.buttonVolver_Click);
             // 
+            // checkBoxPlan
+            // 
+            this.checkBoxPlan.AutoSize = true;
+            this.checkBoxPlan.Location = new System.Drawing.Point(74, 164);
+            this.checkBoxPlan.Name = "checkBoxPlan";
+            this.checkBoxPlan.Size = new System.Drawing.Size(15, 14);
+            this.checkBoxPlan.TabIndex = 23;
+            this.checkBoxPlan.UseVisualStyleBackColor = true;
+            this.checkBoxPlan.CheckedChanged += new System.EventHandler(this.checkBoxPlan_CheckedChanged);
+            // 
+            // checkBoxTipo
+            // 
+            this.checkBoxTipo.AutoSize = true;
+            this.checkBoxTipo.Location = new System.Drawing.Point(494, 84);
+            this.checkBoxTipo.Name = "checkBoxTipo";
+            this.checkBoxTipo.Size = new System.Drawing.Size(15, 14);
+            this.checkBoxTipo.TabIndex = 24;
+            this.checkBoxTipo.UseVisualStyleBackColor = true;
+            this.checkBoxTipo.CheckedChanged += new System.EventHandler(this.checkBoxTipo_CheckedChanged);
+            // 
+            // checkBoxSexo
+            // 
+            this.checkBoxSexo.AutoSize = true;
+            this.checkBoxSexo.Location = new System.Drawing.Point(494, 135);
+            this.checkBoxSexo.Name = "checkBoxSexo";
+            this.checkBoxSexo.Size = new System.Drawing.Size(15, 14);
+            this.checkBoxSexo.TabIndex = 25;
+            this.checkBoxSexo.UseVisualStyleBackColor = true;
+            this.checkBoxSexo.CheckedChanged += new System.EventHandler(this.checkBoxSexo_CheckedChanged);
+            // 
             // BusquedaAfiliado
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -376,5 +412,8 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button buttonVolver;
         private System.Windows.Forms.DataGridViewButtonColumn Modificar;
+        private System.Windows.Forms.CheckBox checkBoxPlan;
+        private System.Windows.Forms.CheckBox checkBoxSexo;
+        private System.Windows.Forms.CheckBox checkBoxTipo;
     }
 }

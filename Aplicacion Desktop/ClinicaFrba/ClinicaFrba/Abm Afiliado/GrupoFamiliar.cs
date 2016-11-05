@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.Drawing;
@@ -21,13 +22,77 @@ namespace ClinicaFrba.Abm_Afiliado
 
         public GrupoFamiliar(extras.Sesion sesion, DataGridViewRow dataGridViewRow)
         {
-            InitializeComponent();
+            try
+            {
+                InitializeComponent();
 
-            this.sesion = sesion;
-            this.afiliado = dataGridViewRow;
-            this.afiliadoDatos = new Afiliado();
+                this.sesion = sesion;
+                this.afiliado = dataGridViewRow;
+                this.afiliadoDatos = new Afiliado();
+
+                this.groupBox1.Enabled = false;
+
+                comprobarSiPuedeCambiarGrupo();
+            }
+            catch (Exception exc)
+            {
+                MessageBox.Show(exc.Message, "Aviso", MessageBoxButtons.OK);
+            }
+
         }
 
+        private void comprobarSiPuedeCambiarGrupo()
+        {
+            if (tieneFamiliaresEnSuGrupo() && esRaiz()) //si es el afiliado creador del grupo no se puede salir
+            {
+                this.groupBox1.Enabled = false;
+
+                MessageBox.Show("No puede cambiarse de grupo ya que esta asociado a uno con integrantes");
+            }
+
+            else if (!esRaiz())      //si no es raiz no puede cambiarse, ya esta asociado
+            {
+                this.groupBox1.Enabled = false;
+
+                MessageBox.Show("No puede cambiarse de grupo ya que esta asociado a uno");
+            }
+
+            else if ((!tieneFamiliaresEnSuGrupo()) && esRaiz())      //es un afiliado unico en su grupo y puede agregarse a otros
+            {
+                this.groupBox1.Enabled = true;
+            }
+
+
+        }
+
+        private bool esRaiz()
+        {
+            string nroAfiliado = this.afiliado.Cells[13].Value.ToString();
+            nroAfiliado = nroAfiliado.Substring((nroAfiliado.Length - 2), 2);
+            int numero = int.Parse(nroAfiliado);
+
+            return (numero == 01);
+
+        }
+
+        private bool tieneFamiliaresEnSuGrupo()
+        {
+            string nroAfiliado = this.afiliado.Cells[13].Value.ToString();
+            nroAfiliado = nroAfiliado.Substring(0, nroAfiliado.Length - 2) + "__";
+
+            
+
+            string expresion = "SELECT * FROM NUL.Afiliado WHERE afil_nro_afiliado LIKE '" + nroAfiliado + "'";
+
+            DataTable ds = DAL.Classes.DBHelper.ExecuteQuery_DS(expresion).Tables[0];
+
+
+            if (ds.Rows.Count > 1)
+                return true;
+            else
+                return false;
+        
+        }
 
         private void buttonAgregar_Click(object sender, EventArgs e)
         {
@@ -39,9 +104,11 @@ namespace ClinicaFrba.Abm_Afiliado
 
         private void agregarAlGrupo()
         {
-            //try
-            //{
+            try
+            {
                 comprobarSiExisteElGrupo();
+
+                comprobarQueNoSeaElMismo();
 
                 int nroFamiliar = comprobarTipoFamiliar();
                 
@@ -53,22 +120,33 @@ namespace ClinicaFrba.Abm_Afiliado
                         DAL.Classes.DBHelper.MakeParam("@user_id", SqlDbType.Decimal, 100, this.afiliadoDatos.id),
                         DAL.Classes.DBHelper.MakeParam("@titular", SqlDbType.Decimal, 100, Decimal.Parse(this.textBox1.Text)),
                         DAL.Classes.DBHelper.MakeParam("@nro_familiar", SqlDbType.Decimal, 100, nroFamiliar),
+                        DAL.Classes.DBHelper.MakeParam("@fecha", SqlDbType.DateTime, 100, DateTime.Parse(ConfigurationManager.AppSettings.Get("FechaSistema"))),
 
                     };
 
 
                 DAL.Classes.DBHelper.ExecuteDataSet("NUL.sp_agregar_a_grupo_familiar", dbParams);
 
-            //}
-            //catch (Exception exc)
-            //{
-            //    MessageBox.Show(exc.Message, "Aviso", MessageBoxButtons.OK);
-            //}
+                MessageBox.Show("Se agrego correctamente al grupo", "Aviso", MessageBoxButtons.OK);
+
+            }
+            catch (Exception exc)
+            {
+                MessageBox.Show(exc.Message, "Aviso", MessageBoxButtons.OK);
+            }
+        }
+
+        private void comprobarQueNoSeaElMismo()
+        {
+            string afiliadoNro = this.afiliado.Cells[13].Value.ToString();
+
+            if (textBox1.Text.Substring(0, textBox1.Text.Length - 2) == afiliadoNro.Substring(0, afiliadoNro.Length-2))
+                throw new Exception("No puede agregarse a su mismo grupo familiar");
         }
 
         private int comprobarTipoFamiliar()
         {
-            if (this.comboBox1.SelectedIndex == 1)
+            if (this.comboBox1.SelectedIndex == 0)
             {
                 comprobarSiHayConyuge();
                 return 0;
@@ -81,7 +159,7 @@ namespace ClinicaFrba.Abm_Afiliado
 
         private void comprobarSiHayConyuge()
         {
-            string conyuge = (int.Parse(this.textBox1.Text) + 1).ToString();
+            string conyuge = (long.Parse(this.textBox1.Text) + 1).ToString();
 
             MessageBox.Show(conyuge);
 
@@ -114,9 +192,9 @@ namespace ClinicaFrba.Abm_Afiliado
 
         private void salir()
         {
-            ModificarAfiliado form = new ModificarAfiliado(this.sesion, this.afiliado);
+            Form1 form = new Form1(this.sesion);   
             form.Show();
-            this.Hide();
+            this.Close();
         }
 
 

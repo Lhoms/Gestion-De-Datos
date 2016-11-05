@@ -44,6 +44,10 @@ namespace ClinicaFrba.Abm_Afiliado
                 plan_descrip = new List<string>();
 
                 llenarComboBoxes();
+
+                this.comboBoxPlan.Enabled = false;
+                this.comboBoxTipo.Enabled = false;
+                this.comboBoxSexo.Enabled = false;
                 
 
             }
@@ -75,20 +79,33 @@ namespace ClinicaFrba.Abm_Afiliado
             string izq = "%";
             string der = "%";
 
+            string plan = "";
+            string tipoDoc = "";
+            string sexo = "";
+
+            if (checkBoxPlan.Checked)
+                plan = planes[afiliado.planMedico].ToString();
+
+            if (checkBoxTipo.Checked)
+                tipoDoc = tipo_doc[afiliado.tipo_doc].ToString();
+
+            if (checkBoxSexo.Checked)
+                sexo = afiliado.sexo;
+
             
             SqlParameter[] dbParams = new SqlParameter[]
                     {
                         DAL.Classes.DBHelper.MakeParam("@username", SqlDbType.VarChar, 100, izq+ afiliado.username +der),
-                        DAL.Classes.DBHelper.MakeParam("@tipo_doc", SqlDbType.VarChar, 100, izq+ tipo_doc[afiliado.tipo_doc].ToString() +der),
+                        DAL.Classes.DBHelper.MakeParam("@tipo_doc", SqlDbType.VarChar, 100, izq+ tipoDoc +der),
                         DAL.Classes.DBHelper.MakeParam("@nombre", SqlDbType.VarChar, 100, izq+ afiliado.nombre +der),
                         DAL.Classes.DBHelper.MakeParam("@apellido", SqlDbType.VarChar, 100, izq+ afiliado.apellido +der),
                         DAL.Classes.DBHelper.MakeParam("@documento", SqlDbType.VarChar, 100, izq+ afiliado.documento_s+der),
                         DAL.Classes.DBHelper.MakeParam("@direccion", SqlDbType.VarChar, 100, izq+ afiliado.direccion +der),
                         DAL.Classes.DBHelper.MakeParam("@telefono", SqlDbType.VarChar, 100, izq+ afiliado.telefono_s +der),
                         DAL.Classes.DBHelper.MakeParam("@mail", SqlDbType.VarChar, 100, izq+ afiliado.mail +der),
-                        DAL.Classes.DBHelper.MakeParam("@sexo", SqlDbType.VarChar, 100, izq+ afiliado.sexo +der),
+                        DAL.Classes.DBHelper.MakeParam("@sexo", SqlDbType.VarChar, 100, izq+ sexo +der),
                         DAL.Classes.DBHelper.MakeParam("@fechaNac", SqlDbType.VarChar, 100, izq+der),
-                        DAL.Classes.DBHelper.MakeParam("@plan", SqlDbType.VarChar, 100, izq+ planes[afiliado.planMedico].ToString() +der),
+                        DAL.Classes.DBHelper.MakeParam("@plan", SqlDbType.VarChar, 100, izq+ plan +der),
                         DAL.Classes.DBHelper.MakeParam("@nroAfiliado", SqlDbType.VarChar, 100, izq+ afiliado.numeroAfiliado_s +der),
                     };
 
@@ -117,6 +134,23 @@ namespace ClinicaFrba.Abm_Afiliado
 
             result = getAfiliadosSegunDatos(this.afiliado);
             this.dataGridViewAfiliados.DataSource = result;
+
+            this.dataGridViewAfiliados.Columns[0].HeaderText = "Modificar"; 
+            this.dataGridViewAfiliados.Columns[1].Visible = false;
+            this.dataGridViewAfiliados.Columns[2].HeaderText = "Cancelaciones"; 
+            this.dataGridViewAfiliados.Columns[3].Visible = false;
+            this.dataGridViewAfiliados.Columns[4].HeaderText = "Nombre";
+            this.dataGridViewAfiliados.Columns[5].HeaderText = "Apellido";
+            this.dataGridViewAfiliados.Columns[6].HeaderText = "Documento";
+            this.dataGridViewAfiliados.Columns[7].HeaderText = "Direccion";
+            this.dataGridViewAfiliados.Columns[8].HeaderText = "Telefono";
+            this.dataGridViewAfiliados.Columns[9].HeaderText = "Mail";
+            this.dataGridViewAfiliados.Columns[10].HeaderText = "Sexo"; this.dataGridViewAfiliados.Columns[10].Width = 40;
+            this.dataGridViewAfiliados.Columns[11].HeaderText = "Nacimiento"; 
+            this.dataGridViewAfiliados.Columns[12].Visible = false;
+            this.dataGridViewAfiliados.Columns[13].HeaderText = "Afiliado"; 
+            this.dataGridViewAfiliados.Columns[14].Visible = false;
+            this.dataGridViewAfiliados.Columns[15].Visible = false;
         }
 
         private void cmdLimpiar_Click(object sender, EventArgs e)
@@ -188,6 +222,21 @@ namespace ClinicaFrba.Abm_Afiliado
                 }
             }
 
+        }
+
+        private void checkBoxPlan_CheckedChanged(object sender, EventArgs e)
+        {
+            this.comboBoxPlan.Enabled = checkBoxPlan.Checked;
+        }
+
+        private void checkBoxTipo_CheckedChanged(object sender, EventArgs e)
+        {
+            this.comboBoxTipo.Enabled = checkBoxTipo.Checked;
+        }
+
+        private void checkBoxSexo_CheckedChanged(object sender, EventArgs e)
+        {
+            this.comboBoxSexo.Enabled = checkBoxSexo.Checked;
         }
 
 
