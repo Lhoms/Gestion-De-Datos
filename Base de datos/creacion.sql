@@ -506,16 +506,24 @@ INSERT INTO NUL.Historial_plan_med(histo_plan_id, histo_afil_id, histo_fecha_id,
 	GROUP BY M.Plan_Med_Codigo, U.user_id );
 
 /*  */
-INSERT INTO NUL.Bono(bono_id, bono_compra, bono_plan, bono_nro_consulta, bono_usado)
+INSERT INTO NUL.Bono(bono_id, bono_compra, bono_plan, bono_nro_consulta, bono_usado, bono_comprador)
 (
-	SELECT DISTINCT M.Bono_Consulta_Numero, BC.bonoc_id, M.Plan_Med_Codigo, COUNT(BC.bonoc_id) + 1, 1
+	SELECT DISTINCT M.Bono_Consulta_Numero, BC.bonoc_id, M.Plan_Med_Codigo, 0, 1, U.user_id
 	FROM gd_esquema.Maestra M JOIN  NUL.Usuario U ON CAST(M.Paciente_Dni AS CHAR) = U.user_username
 												 AND U.user_tipodoc  = 1
 	                         JOIN  NUL.Bono_compra BC ON U.user_id = BC.Bonoc_id_usuario
 													  AND BC.bonoc_fecha = M.Compra_Bono_Fecha
 	WHERE M.Bono_Consulta_Numero IS NOT NULL AND M.Turno_Numero IS NULL
-	GROUP BY M.Bono_Consulta_Numero, BC.bonoc_id, M.Plan_Med_Codigo
+	GROUP BY M.Bono_Consulta_Numero, BC.bonoc_id, M.Plan_Med_Codigo, U.user_id
 );
+
+--Seteo el numero de bono correlativamente por afiliado
+
+UPDATE B1
+SET bono_nro_consulta = (SELECT COUNT(*) FROM NUL.Bono B2
+						 WHERE B1.bono_comprador = B2.bono_comprador
+									  AND B1.bono_id <= B2.bono_id)
+FROM NUL.Bono B1
 
 INSERT INTO NUL.Tipo_cancelacion(tipo_cancel_detalle) VALUES
 ('Cancelada por el afiliado'),

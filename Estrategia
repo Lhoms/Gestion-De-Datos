@@ -29,5 +29,5 @@ Estrategia
 -Al darse de baja un afiliado se conseva su grupo familiar, sus turnos, bonos, etc.. Se considera esto porque si una persona ingresa mal 3 veces su contraseña perderia todo en el sistema.
 -Lo que no pueden es comprar bonos o pedir turnos por medio de su cuenta (por no podes loguearse) ni por medio de un administrativo porque se valida que este habilitado, primero debera ser habilitado y luego podran realizar acciones por el.
 -Si una persona se cambia de plan y tenia bonos del anterior, estos bonos no sirven para el plan nuevo, pero si vuelve a ese plan anterior en algun momento esos bonos si volveran a servir ya que pago por ellos.
--
+-Como comprobamos que la tabla maestra registra turnos donde varias personas se presentaron al mismo tiempo a distintos turnos con distintos bonos no pudimos darle un valor al campo bono numero de consulta con ese criterio, por lo que le dimos valores secuenciales en funcion del orden en como se compraron esos bonos (considerando tambien que se pueden comprar mas de uno por vez) y luego en nuestra implementacion del sistema si se comienza a numerar los bonos cuando el paciente se presenta con su bono al turno.
 -
