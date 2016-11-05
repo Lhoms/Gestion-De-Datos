@@ -18,7 +18,8 @@ Estrategia
 -En la busqueda de afiliados, al contrario que en el alta, no se validan los datos (por ejemplo si el mail esta escrito completamente), habilitando asi que si recuerda una parte del mail se pueda buscar asi.
 -El campo familiares afil_familiares de afiliado se refiere al numero de personas que se encuentran en su grupo familiar y no a su numero de familiares real.
 -Un profesional podra editar los sintomas y enfermedades de una consulta por haberse equivocado o aberle faltado agregar alguna descripcion.
--El campo nro_afiliado va a estar determinado en la forma: (Doc*10+1)*100 en donde Doc es el nro de documento del afiliado; 1 es el tipo de documento DNI(como dijimos anteriormente, se presume que todos son DNI) y se multiplica por 100 con el objetivo de que los siguientes afiliados pertenecientes al mismo grupo familiar tengan su correlativo a partir de éste número. Por Ejemplo: DNI: 28758698 - Nro afiliado: 287586980101 - Siguiente del grupo familiar: 287586980102
+-El campo nro_afiliado va a estar determinado en la forma: (Doc*10+1)*100 en donde Doc es el nro de documento del afiliado; 1 es el tipo de documento DNI(como dijimos anteriormente, se presume que todos son DNI) y se multiplica por 100 con el objetivo de que los siguientes afiliados pertenecientes al mismo grupo familiar tengan su correlativo a partir de éste número. Por Ejemplo: DNI: 28758698 - Nro afiliado: 28758698101 - Siguiente del grupo familiar: 28758698102
+-Una persona que crea un grupo familiar (registrandose solo) puede tener a cargo a su conyuge y a sus hijos, eso interpretamos como familiares.
 -Se construyó la agenda del año 2015 basándose en los turnos que tuvo cada profesional, poniendo como vigencia de la agenda la primer y la última fecha de turnos que atendió. Asimismo, los horarios de cada día, se los determinó por los turnos mínimos y máximos que tuvo el profesional en esos días. 
 -Cancelacion de turno solo esta disponible para afiliados para cancelar sus turnos de a uno, o para profesionales para cancelar un rango de turnos, para los otros roles no hay acciones disponibles en esta funcionalidad.
 -Ya que se considera que el afiliado nunca llega tarde y no hay ninguna utilidad en marcar una llegada anticipada, cuando el medico va a registrar el diagnostico debera ingresar el horario de turno, ya que si va a hacerlo es porque el afiliado fue al turno y puntual (o antes).
@@ -27,6 +28,6 @@ Estrategia
 -Las busquedas de fechas de turno tendran un rango de no mas de 7 dias.
 -Al darse de baja un afiliado se conseva su grupo familiar, sus turnos, bonos, etc.. Se considera esto porque si una persona ingresa mal 3 veces su contraseña perderia todo en el sistema.
 -Lo que no pueden es comprar bonos o pedir turnos por medio de su cuenta (por no podes loguearse) ni por medio de un administrativo porque se valida que este habilitado, primero debera ser habilitado y luego podran realizar acciones por el.
--
+-Si una persona se cambia de plan y tenia bonos del anterior, estos bonos no sirven para el plan nuevo, pero si vuelve a ese plan anterior en algun momento esos bonos si volveran a servir ya que pago por ellos.
 -
 -

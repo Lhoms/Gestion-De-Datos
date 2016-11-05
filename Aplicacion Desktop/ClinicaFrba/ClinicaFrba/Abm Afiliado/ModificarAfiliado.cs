@@ -18,8 +18,8 @@ namespace ClinicaFrba.Abm_Afiliado
     {
         public Sesion sesion;
         public DataGridViewRow afiliado;
-        public Afiliado afiliadoDatos;
-        public Afiliado afiliadoDatosNuevos;
+        public Afiliado afiliadoDatos;              //mantengo los viejos
+        public Afiliado afiliadoDatosNuevos;        //agarro los nuevos
 
         public Dictionary<string, int> estado_civil;   //para manejar los ids y datasource
         public Dictionary<int, string> id_estado_descrip;
@@ -359,6 +359,7 @@ namespace ClinicaFrba.Abm_Afiliado
 
         private void buttonGrupo_Click(object sender, EventArgs e)
         {
+            //le paso el row asi saca los datos utiles
             GrupoFamiliar form = new GrupoFamiliar(this.sesion, this.afiliado);
             form.Show();
             this.Hide();

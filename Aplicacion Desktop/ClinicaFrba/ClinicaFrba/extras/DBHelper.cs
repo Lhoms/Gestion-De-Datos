@@ -299,20 +299,17 @@ namespace DAL.Classes
         }
 
 
-
-
-
-        #region Example
+        /* ejemplo de llamada a stored procedure*/
         //public static DataSet Get(CGasto gasto)
         //{
         //    SqlParameter[] dbParams = new SqlParameter[]
         //        {
-        //            DBHelper.MakeParam("@Id", SqlDbType.Int, 0, gasto.Id),
+        //            DBHelper.MakeParam("@Id", SqlDbType.Int, 0, afil.Id),
         //        };
-        //    return DBHelper.ExecuteDataSet("usp_CListGasto_Get", dbParams);
+        //    return DBHelper.ExecuteDataSet("get_afiliado", dbParams);
 
         //} 
-        #endregion
+
 
     }
 }

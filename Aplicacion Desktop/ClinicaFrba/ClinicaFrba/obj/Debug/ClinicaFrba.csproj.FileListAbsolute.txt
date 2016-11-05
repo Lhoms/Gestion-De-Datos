@@ -85,3 +85,4 @@ C:\Users\user1\workspace\TP-Datos\Aplicacion Desktop\ClinicaFrba\ClinicaFrba\obj
 C:\Users\user1\workspace\TP-Datos\Aplicacion Desktop\ClinicaFrba\ClinicaFrba\obj\Debug\ClinicaFrba.Registro_Llegada.RegistrarLlegada.resources
 C:\Users\user1\workspace\TP-Datos\Aplicacion Desktop\ClinicaFrba\ClinicaFrba\obj\Debug\ClinicaFrba.Registro_Resultado.RegistrarResultado.resources
 C:\Users\user1\workspace\TP-Datos\Aplicacion Desktop\ClinicaFrba\ClinicaFrba\obj\Debug\ClinicaFrba.Abm_Afiliado.GrupoFamiliar.resources
+C:\Users\Lucas2\workspace-gdd\TP-Datos\Aplicacion Desktop\ClinicaFrba\ClinicaFrba\obj\Debug\ClinicaFrba.Abm_Afiliado.GrupoFamiliar.resources

@@ -190,7 +190,7 @@ namespace ClinicaFrba.Compra_Bono
                 string grupoFamiliar = (nroAfiliado).Substring(0, nroAfiliado.Length - 3) + "___";
 
                 string select = "SELECT * FROM NUL.Bono B JOIN NUL.Bono_compra BC ON B.bono_compra = BC.bonoc_id JOIN NUL.Afiliado A ON BC.bonoc_id_usuario = A.afil_id ";
-                string where = "WHERE B.bono_usado = 0 AND A.afil_nro_afiliado LIKE '" + grupoFamiliar + "'";
+                string where = "WHERE B.bono_usado = 0 AND A.afil_nro_afiliado LIKE '" + grupoFamiliar + "' AND B.bono_plan = A.afil_plan_med";
 
                 SqlDataReader lector = DAL.Classes.DBHelper.ExecuteQuery_DR(select + where);
 

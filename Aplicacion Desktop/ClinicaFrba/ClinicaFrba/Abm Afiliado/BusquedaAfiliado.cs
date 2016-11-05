@@ -102,6 +102,8 @@ namespace ClinicaFrba.Abm_Afiliado
         {
             if (this.dataGridViewAfiliados.Columns[e.ColumnIndex].Name.Equals("Modificar"))
             {
+                //le paso la fila entera, que despues tome los datos
+
                 ModificarAfiliado form = new ModificarAfiliado(this.sesion, this.dataGridViewAfiliados.Rows[e.RowIndex]);
                 form.Show();
                 this.Hide();
