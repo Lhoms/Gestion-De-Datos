@@ -199,9 +199,536 @@ CREATE TABLE NUL.Bono
 		bono_plan				numeric(18,0),
 		bono_nro_consulta	    numeric(18,0),
 		bono_usado			    bit,
+		bono_comprador			numeric(18,0),
 
 		CONSTRAINT FK_bono_bono_compra FOREIGN KEY (bono_compra) REFERENCES NUL.Bono_compra (bonoc_id),
-		CONSTRAINT FK_bono_plan FOREIGN KEY (bono_plan) REFERENCES NUL.Plan_medico (plan_id)
+		CONSTRAINT FK_bono_plan FOREIGN KEY (bono_plan) REFERENCES NUL.Plan_medico (plan_id),
+		CONSTRAINT FK_bono_comprador  FOREIGN KEY (bono_comprador) REFERENCES NUL.Afiliado (afil_id)
+	);
+
+CREATE TABLE NUL.Tipo_cancelacion
+(
+		tipo_cancel_id 				numeric(18,0) IDENTITY(1,1) PRIMARY KEY,
+		tipo_cancel_detalle 		varchar(255)
+	);
+
+CREATE TABLE NUL.Cancelacion
+(
+		cancel_turno_id 			numeric(18,0) PRIMARY KEY,
+		cancel_tipo					numeric(18,0),
+		cancel_detalle				varchar(255),
+		cancel_fecha				datetime,
+
+		CONSTRAINT FK_cancelacion_tipo FOREIGN KEY (cancel_tipo) REFERENCES NUL.Tipo_cancelacion (tipo_cancel_id)
+	);
+
+CREATE TABLE NUL.Tipo_esp
+(
+		tipo_esp_id 			numeric(18,0) PRIMARY KEY,
+		tipo_esp_descrip 		varchar(255)
+	);
+
+CREATE TABLE NUL.Especialidad
+(
+		esp_id 				numeric(18,0) PRIMARY KEY,
+		esp_tipo			numeric(18,0),
+		esp_descrip 		varchar(255),
+
+		CONSTRAINT FK_especialidad_esp FOREIGN KEY (esp_tipo) REFERENCES NUL.Tipo_esp (tipo_esp_id)
+	);
+
+CREATE TABLE NUL.Profesional
+(
+		prof_id				numeric(18,0) PRIMARY KEY,
+		prof_matric			numeric(18,0)
+	);
+
+CREATE TABLE NUL.Turno
+(
+		turno_id			 	numeric(18,0) PRIMARY KEY,
+		turno_afiliado		 	numeric(18,0),
+		turno_profesional	 	numeric(18,0),
+		turno_especialidad	 	numeric(18,0),
+		turno_fecha_hora	 	datetime,
+		turno_llegada		 	time,
+
+		CONSTRAINT FK_turno_afiliado 	 FOREIGN KEY (turno_afiliado) 	  REFERENCES NUL.Afiliado (afil_id),
+		CONSTRAINT FK_turno_profesional  FOREIGN KEY (turno_profesional)  REFERENCES NUL.Profesional (prof_id),
+		CONSTRAINT FK_turno_especialidad FOREIGN KEY (turno_especialidad) REFERENCES NUL.Especialidad (esp_id)
+	);
+
+CREATE TABLE NUL.Consulta
+(
+		cons_id 				numeric(18,0) IDENTITY(1,1) PRIMARY KEY,
+		cons_turno_id			numeric(18,0),
+		cons_bono_usado		 	numeric(18,0),
+		cons_fecha_hora			datetime,
+		cons_sintomas			varchar(255),
+		cons_enfermedades		varchar(255),
+
+		CONSTRAINT FK_bono_usado  FOREIGN KEY (cons_bono_usado) REFERENCES NUL.Bono (bono_id),
+		CONSTRAINT FK_turno       FOREIGN KEY (cons_turno_id)   REFERENCES NUL.Turno (turno_id)
+	);
+
+CREATE TABLE NUL.Profesional_especialidad
+(
+		esp_id 				numeric(18,0),
+		prof_id				numeric(18,0),
+
+		CONSTRAINT pk_Profesional_esp PRIMARY KEY (esp_id,prof_id),
+
+		CONSTRAINT FK_especialidad_pe FOREIGN KEY (esp_id) REFERENCES NUL.Especialidad (esp_id),
+		CONSTRAINT FK_profesional_pe  FOREIGN KEY (prof_id)  REFERENCES NUL.Profesional (prof_id)
+	);
+
+CREATE TABLE NUL.Dia
+(
+		dia_id 					numeric(18,0) IDENTITY(1,1) PRIMARY KEY,
+		dia_nombre				varchar(255)
+	);
+
+CREATE TABLE NUL.Agenda
+(
+		agenda_id 				numeric(18,0) IDENTITY(1,1) PRIMARY KEY,
+		agenda_prof_id			numeric(18,0),
+		agenda_prof_esp_id		numeric(18,0),
+		agenda_disp_desde 		date,
+		agenda_disp_hasta		date,
+
+		CONSTRAINT FK_agenda_profesional FOREIGN KEY (agenda_prof_id) REFERENCES NUL.Profesional (prof_id)
+	);
+
+CREATE TABLE NUL.Agenda_dia
+(
+		dia_id 					numeric(18,0),
+		agenda_id				numeric(18,0),
+		dia_hora_inicio 		time,
+		dia_hora_fin 			time,
+
+		CONSTRAINT pk_agenda_dia PRIMARY KEY (dia_id,agenda_id),
+
+		CONSTRAINT FK_dia_id FOREIGN KEY (dia_id) REFERENCES NUL.Dia (dia_id),
+		CONSTRAINT FK_agenda_id  FOREIGN KEY (agenda_id)  REFERENCES NUL.Agenda (agenda_id)
+	);
+
+GO
+
+----TRIGGER
+/*
+IF OBJECT_ID ('NUL.v_afil_bonos', 'V') IS NOT NULL  
+	DROP VIEW NUL.v_afil_bonos ; 
+GO
+
+CREATE TRIGGER insert_bono ON NUL.Bono_compra
+AFTER INSERT 
+AS
+BEGIN 
+	DECLARE @bono_id numeric(18,0)
+	DECLARE @bono_compra numeric(18,0)
+	DECLARE @bono_plan numeric(18,0)
+	DECLARE @bono_nro_consulta numeric(18,0)
+	DECLARE @bono_usado bit
+	DECLARE @afil varchar(255)
+
+	DECLARE afil CURSOR FOR SELECT DISTINCT bonoc_id_usuario FROM inserted
+
+	OPEN afil
+
+	FETCH NEXT FROM afil
+	INTO @afil
+
+	WHILE @@FETCH_STATUS =0
+	BEGIN
+		
+		
+		CREATE TABLE #BONOS
+		(
+				bono_id 				numeric(18,0),	
+				bono_compra 			numeric(18,0),				
+				bono_plan				numeric(18,0),
+				bono_nro_consulta	    numeric(18,0) IDENTITY(1,1),
+				bono_usado			    bit,
+			);
+
+
+
+			INSERT INTO #BONOS(bono_id, bono_compra, bono_plan,  bono_usado)
+			(
+				SELECT DISTINCT M.Bono_Consulta_Numero, BC.bonoc_id, M.Plan_Med_Codigo,  1
+				FROM gd_esquema.Maestra M JOIN  NUL.Usuario U ON CAST(M.Paciente_Dni AS CHAR) = U.user_username
+															 AND U.user_tipodoc  = 1
+										  JOIN  NUL.Bono_compra BC ON U.user_id = BC.Bonoc_id_usuario
+																  AND BC.bonoc_fecha = M.Compra_Bono_Fecha
+				WHERE M.Bono_Consulta_Numero IS NOT NULL AND M.Turno_Numero IS NULL AND BC.bonoc_id_usuario = @afil
+				GROUP BY M.Bono_Consulta_Numero, BC.bonoc_id, M.Plan_Med_Codigo
+			)
+
+			INSERT INTO NUL.Bono SELECT * FROM #BONOS
+			DROP TABLE #BONOS
+
+		FETCH NEXT FROM bonos_insertados
+		INTO @bono_id, @bono_compra, @bono_plan, @bono_usado
+		
+	END
+
+	CLOSE bonos_insertados
+	DEALLOCATE bonos_insertados
+END
+GO
+*/
+
+--Migración de datos
+BEGIN TRANSACTION	
+
+INSERT INTO NUL.Tipo_doc (doc_descrip) VALUES
+			('DNI'),
+			('PAS'),
+			('CI'),
+			('LC'),
+			('LE');
+
+INSERT INTO NUL.Usuario (user_tipodoc, user_username, user_pass)
+(
+	SELECT DISTINCT 1, M.Paciente_Dni, HASHBYTES('SHA2_256','w23e') 
+	FROM gd_esquema.Maestra M
+	WHERE M.Paciente_Mail IS NOT NULL
+);
+
+INSERT INTO NUL.Usuario (user_tipodoc, user_username, user_pass)
+(
+	SELECT DISTINCT 1, M.Medico_Dni, HASHBYTES('SHA2_256','w23e')
+	FROM gd_esquema.Maestra M
+	WHERE M.Medico_Mail IS NOT NULL
+);
+
+INSERT INTO NUL.Usuario (user_tipodoc, user_username, user_pass) VALUES
+			(1, 'admin', HASHBYTES('SHA2_256','w23e'))
+
+
+INSERT INTO NUL.Persona (pers_id ,pers_nombre, pers_apellido, pers_doc, pers_dire, pers_tel, pers_mail, pers_fecha_nac)
+(
+		SELECT DISTINCT U.user_id,  M.Paciente_Nombre, M.Paciente_Apellido, M.Paciente_Dni, M.Paciente_Direccion, M.Paciente_Telefono,
+						M.Paciente_Mail, M.Paciente_Fecha_Nac
+		FROM gd_esquema.Maestra M JOIN  NUL.Usuario U ON CAST(M.Paciente_Dni AS CHAR) = U.user_username
+		WHERE U.user_tipodoc  = 1
+);
+
+INSERT INTO NUL.Persona (pers_id ,pers_nombre, pers_apellido, pers_doc, pers_dire, pers_tel, pers_mail, pers_fecha_nac)
+(
+		SELECT DISTINCT U.user_id,  M.Medico_Nombre, M.Medico_Apellido, M.Medico_Dni, M.Medico_Direccion, M.Medico_Telefono,
+						M.Medico_Mail, M.Medico_Fecha_Nac
+		FROM gd_esquema.Maestra M JOIN  NUL.Usuario U ON CAST(M.Medico_Dni AS CHAR) = U.user_username
+		WHERE U.user_tipodoc  = 1
+);				                                             
+
+
+
+INSERT INTO NUL.Funcionalidad (func_descrip) VALUES
+			('ABM Rol'),					--1
+			('Abm Afiliado'),				--2
+			('Compra de bonos'),			--3
+			('Pedir turno'),				--4
+			('Registro de llegada para atención médica '), --5
+			('Registrar resultado para atención médica'),  --6
+			('Cancelar atención médica'),	--7
+			('Listado estadístico'),		--8
+			('Crear agenda');				--9
+
+INSERT INTO NUL.Rol (rol_descrip) VALUES
+			('Administrativo'),		--1
+			('Afiliado'),			--2
+			('Profesional');		--3
+
+
+
+INSERT INTO NUL.Rol_funcionalidad(rol_id, func_id) VALUES
+			(1,1),(1,2),(1,3),(1,4),(1,5),(1,8),
+			(2,3),(2,4),(2,7),
+			(3,6),(3,7),(3,9);
+
+
+-- JM
+INSERT INTO NUL.User_rol(rol_id, user_id)
+(
+	SELECT 1, user_id FROM NUL.Usuario 
+	WHERE user_username = 'admin' );
+
+INSERT INTO NUL.User_rol(rol_id, user_id)
+(
+	SELECT DISTINCT 2, user_id
+	FROM gd_esquema.Maestra M
+	JOIN NUL.Usuario U ON CAST(M.Paciente_Dni AS CHAR) = U.user_username
+	                  AND U.user_tipodoc = 1
+
+);
+
+INSERT INTO NUL.User_rol(rol_id, user_id)
+(
+	SELECT DISTINCT 3, user_id
+	FROM gd_esquema.Maestra M
+	JOIN NUL.Usuario U ON CAST(M.Medico_Dni AS CHAR) = U.user_username
+	                  AND U.user_tipodoc = 1
+);
+
+INSERT INTO NUL.Estado(estado_descrip) VALUES
+		('Soltero'),
+		('Casado'),
+		('Viudo'),
+		('Concubinato'),
+		('Divorciado');
+
+INSERT INTO NUL.Plan_medico(plan_id, plan_descrip, plan_precio_bono_cons, plan_precio_bono_farm)
+( 
+  SELECT DISTINCT M.Plan_Med_Codigo, M.Plan_Med_Descripcion, M.Plan_Med_Precio_Bono_Consulta, M.Plan_Med_Precio_Bono_Farmacia
+    FROM gd_esquema.Maestra M
+);
+
+INSERT INTO NUL.Afiliado(afil_id, afil_estado, afil_plan_med, afil_nro_afiliado, afil_familiares, afil_nro_consulta)
+(
+	SELECT DISTINCT U.user_id, '1', M.Plan_Med_Codigo, (M.Paciente_Dni*10+1)*100+1, '0', ISNULL((SELECT COUNT(M2.Bono_Consulta_Numero)
+																							FROM gd_esquema.Maestra M2
+																							WHERE M2.Paciente_Dni = M.Paciente_Dni
+																							  AND M2.Bono_Consulta_Numero IS NOT NULL 
+																							  AND M2.Turno_Numero IS NULL
+																							GROUP BY M2.Paciente_Dni),0)
+	FROM gd_esquema.Maestra M JOIN  NUL.Usuario U ON CAST(M.Paciente_Dni AS CHAR) = U.user_username
+												 AND U.user_tipodoc  = 1
+);
+
+
+INSERT INTO NUL.Bono_compra(bonoc_id_usuario, bonoc_fecha, bonoc_fecha_impresion, bonoc_cantidad, bonoc_monto_total) 
+(
+	SELECT U.user_id, M.Compra_Bono_Fecha, M.Bono_Consulta_Fecha_Impresion, COUNT(M.Bono_Consulta_Numero), (COUNT(*) * M.Plan_Med_Precio_Bono_Consulta) 
+	FROM gd_esquema.Maestra M JOIN  NUL.Usuario U ON CAST(M.Paciente_Dni AS CHAR) = U.user_username
+											     AND U.user_tipodoc = 1
+	WHERE M.Bono_Consulta_Numero IS NOT NULL AND M.Turno_Numero IS NULL
+	GROUP BY U.user_id, M.Compra_Bono_Fecha, M.Bono_Consulta_Fecha_Impresion, M.Plan_Med_Precio_Bono_Consulta
+);
+
+INSERT INTO NUL.Historial_plan_med(histo_plan_id, histo_afil_id, histo_fecha_id, histo_descrip)
+(
+	SELECT DISTINCT M.Plan_Med_Codigo, U.user_id, MIN(M.Turno_Fecha), 'Sin descripcion'
+    FROM gd_esquema.Maestra M JOIN  NUL.Usuario U ON CAST(M.Paciente_Dni AS CHAR) = U.user_username
+												AND U.user_tipodoc  = 1
+	GROUP BY M.Plan_Med_Codigo, U.user_id );
+
+/*  */
+INSERT INTO NUL.Bono(bono_id, bono_compra, bono_plan, bono_nro_consulta, bono_usado)
+(
+	SELECT DISTINCT M.Bono_Consulta_Numero, BC.bonoc_id, M.Plan_Med_Codigo, COUNT(BC.bonoc_id) + 1, 1
+	FROM gd_esquema.Maestra M JOIN  NUL.Usuario U ON CAST(M.Paciente_Dni AS CHAR) = U.user_username
+												 AND U.user_tipodoc  = 1
+	                         JOIN  NUL.Bono_compra BC ON U.user_id = BC.Bonoc_id_usuario
+													  AND BC.bonoc_fecha = M.Compra_Bono_Fecha
+	WHERE M.Bono_Consulta_Numero IS NOT NULL AND M.Turno_Numero IS NULL
+	GROUP BY M.Bono_Consulta_Numero, BC.bonoc_id, M.Plan_Med_Codigo
+);
+USE GD2C2016
+GO
+
+--CREATE SCHEMA [NUL]
+--GO
+
+-- Disable constraints for all tables:
+EXEC sp_msforeachtable 'ALTER TABLE ? NOCHECK CONSTRAINT all'
+
+-- Re-enable constraints for all tables:
+--EXEC sp_msforeachtable 'ALTER TABLE ? WITH CHECK CHECK CONSTRAINT all'
+
+
+--Drop de tablas por si existen
+
+IF OBJECT_ID('NUL.Agenda_dia', 'U') IS NOT NULL
+		DROP TABLE NUL.Agenda_dia;
+IF OBJECT_ID('NUL.Agenda', 'U') IS NOT NULL
+		DROP TABLE NUL.Agenda;
+IF OBJECT_ID('NUL.Dia', 'U') IS NOT NULL
+		DROP TABLE NUL.Dia;
+IF OBJECT_ID('NUL.Consulta', 'U') IS NOT NULL
+		DROP TABLE NUL.Consulta;
+IF OBJECT_ID('NUL.Turno', 'U') IS NOT NULL
+		DROP TABLE NUL.Turno;
+IF OBJECT_ID('NUL.Profesional_especialidad', 'U') IS NOT NULL
+		DROP TABLE NUL.Profesional_especialidad;
+IF OBJECT_ID('NUL.Profesional', 'U') IS NOT NULL
+		DROP TABLE NUL.Profesional;
+IF OBJECT_ID('NUL.Especialidad', 'U') IS NOT NULL
+		DROP TABLE NUL.Especialidad;
+IF OBJECT_ID('NUL.Tipo_esp', 'U') IS NOT NULL
+		DROP TABLE NUL.Tipo_esp;
+IF OBJECT_ID('NUL.Cancelacion', 'U') IS NOT NULL
+		DROP TABLE NUL.Cancelacion;
+IF OBJECT_ID('NUL.Tipo_cancelacion', 'U') IS NOT NULL
+		DROP TABLE NUL.Tipo_cancelacion;
+IF OBJECT_ID('NUL.Bono', 'U') IS NOT NULL
+		DROP TABLE NUL.Bono;
+IF OBJECT_ID('NUL.Historial_plan_med', 'U') IS NOT NULL
+		DROP TABLE NUL.Historial_plan_med;
+IF OBJECT_ID('NUL.Bono_compra', 'U') IS NOT NULL
+		DROP TABLE NUL.Bono_compra;
+IF OBJECT_ID('NUL.Afiliado', 'U') IS NOT NULL
+		DROP TABLE NUL.Afiliado;
+IF OBJECT_ID('NUL.Plan_medico', 'U') IS NOT NULL
+		DROP TABLE NUL.Plan_medico;
+IF OBJECT_ID('NUL.Estado', 'U') IS NOT NULL
+		DROP TABLE NUL.Estado;
+IF OBJECT_ID('NUL.User_rol', 'U') IS NOT NULL
+		DROP TABLE NUL.User_rol;
+IF OBJECT_ID('NUL.Rol_funcionalidad', 'U') IS NOT NULL
+		DROP TABLE NUL.Rol_funcionalidad;
+IF OBJECT_ID('NUL.Rol', 'U') IS NOT NULL
+		DROP TABLE NUL.Rol;
+IF OBJECT_ID('NUL.Funcionalidad', 'U') IS NOT NULL
+		DROP TABLE NUL.Funcionalidad;
+IF OBJECT_ID('NUL.Persona', 'U') IS NOT NULL
+		DROP TABLE NUL.Persona;
+IF OBJECT_ID('NUL.Usuario', 'U') IS NOT NULL
+		DROP TABLE NUL.Usuario;
+IF OBJECT_ID('NUL.Tipo_doc', 'U') IS NOT NULL
+		DROP TABLE NUL.Tipo_doc;		
+
+
+GO
+
+
+
+--Creación de tablas
+CREATE TABLE NUL.Tipo_doc
+(
+		doc_id 		 numeric(18,0) IDENTITY(1,1) PRIMARY KEY,
+		doc_descrip  varchar(255)
+	);
+
+CREATE TABLE NUL.Usuario
+(
+		user_id				numeric(18,0) IDENTITY(1,1) PRIMARY KEY,
+		user_tipodoc		numeric(18,0),
+		user_username 		varchar(255) NOT NULL,
+		user_pass	 		varchar(255) NOT NULL,
+		user_log_fallidos	tinyint DEFAULT 0,
+		user_habilitado  	bit DEFAULT 1,
+
+		CONSTRAINT FK_tipo_doc_usuario FOREIGN KEY (user_tipodoc) REFERENCES NUL.Tipo_doc(doc_id)
+	);
+
+CREATE TABLE NUL.Persona
+(
+		pers_id 			numeric(18,0) PRIMARY KEY,
+		pers_nombre 		varchar(255) NOT NULL,
+		pers_apellido 		varchar(255) NOT NULL,
+		pers_tipo_doc		numeric(18,0) DEFAULT 1,
+		pers_doc 			numeric(18,0) NOT NULL,
+		pers_dire 			varchar(255),
+		pers_tel			numeric(18,0),
+		pers_mail 			varchar(255),
+		pers_sexo 			char(1) DEFAULT 'M',
+		pers_fecha_nac 		datetime,
+
+		CONSTRAINT FK_tipo_doc FOREIGN KEY (pers_tipo_doc) REFERENCES NUL.Tipo_doc (doc_id)
+	);
+
+CREATE TABLE NUL.Funcionalidad
+(
+		func_id 			numeric(18,0) IDENTITY(1,1) PRIMARY KEY,
+		func_descrip		varchar(255)
+	);
+
+CREATE TABLE NUL.Rol
+(
+		rol_id 				numeric(18,0) IDENTITY(1,1) PRIMARY KEY,
+		rol_descrip			varchar(255),
+		rol_habilitado  	bit DEFAULT 1
+	);
+
+CREATE TABLE NUL.Rol_funcionalidad
+(
+		rol_id 				numeric(18,0),
+		func_id				numeric(18,0),
+
+
+		CONSTRAINT pk_Rol_funcionalidad PRIMARY KEY (rol_id,func_id),
+
+		CONSTRAINT FK_rol_id_rf 	FOREIGN KEY (rol_id) REFERENCES NUL.Rol (rol_id),
+		CONSTRAINT FK_func_id_rf	FOREIGN KEY (func_id) REFERENCES NUL.Funcionalidad (func_id)
+	);
+
+CREATE TABLE NUL.User_rol
+(
+		rol_id 				numeric(18,0),
+		user_id 			numeric(18,0),
+
+		CONSTRAINT pk_User_rol PRIMARY KEY (rol_id,user_id),
+
+		CONSTRAINT FK_rol_id_ur  FOREIGN KEY (rol_id)  REFERENCES NUL.Rol (rol_id),
+		CONSTRAINT FK_user_id_ur FOREIGN KEY (user_id) REFERENCES NUL.Usuario (user_id)
+	);
+
+CREATE TABLE NUL.Estado
+(
+		estado_id 			numeric(18,0) IDENTITY(1,1) PRIMARY KEY,
+		estado_descrip		varchar(255),
+	);
+
+CREATE TABLE NUL.Plan_medico
+(
+		plan_id 				numeric(18,0) PRIMARY KEY,
+		plan_descrip 			varchar(255),
+		plan_precio_bono_cons	numeric(18,2),
+		plan_precio_bono_farm   numeric(18,2), 										
+	);
+
+CREATE TABLE NUL.Afiliado
+(
+		afil_id 				numeric(18,0) PRIMARY KEY,
+		afil_estado 			numeric(18,0),
+		afil_plan_med 			numeric(18,0),
+		afil_nro_afiliado		numeric(18,0) UNIQUE,
+		afil_familiares 		tinyint,
+		afil_nro_consulta 		numeric(18,0),
+		afil_titular			numeric(18,0) DEFAULT NULL,
+
+		CONSTRAINT FK_afiliado_raiz FOREIGN KEY (afil_titular) REFERENCES NUL.Afiliado (afil_id),
+		CONSTRAINT FK_afiliado_estado FOREIGN KEY (afil_estado) REFERENCES NUL.Estado (estado_id),
+		CONSTRAINT FK_afiliado_plan_med FOREIGN KEY (afil_plan_med) REFERENCES NUL.Plan_medico (plan_id)
+	);
+
+CREATE TABLE NUL.Bono_compra
+(
+		bonoc_id 				numeric(18,0) IDENTITY(1,1) PRIMARY KEY,
+		bonoc_id_usuario  		numeric(18,0),
+		bonoc_fecha		  		datetime,
+		bonoc_fecha_impresion   datetime,
+		bonoc_cantidad  		numeric(18,0),
+		bonoc_monto_total  		numeric(16,2),
+
+		CONSTRAINT FK_bono_compra FOREIGN KEY (bonoc_id_usuario) REFERENCES NUL.Afiliado (afil_id)
+	);
+
+CREATE TABLE NUL.Historial_plan_med
+(
+		histo_plan_id			 numeric(18,0),
+		histo_afil_id			 numeric(18,0),
+		histo_fecha_id			 date,
+		histo_descrip			 varchar(255),
+
+		CONSTRAINT pk_plan_med PRIMARY KEY (histo_plan_id,histo_afil_id,histo_fecha_id),
+
+		CONSTRAINT FK_histo_plan_id FOREIGN KEY (histo_plan_id) REFERENCES NUL.Plan_medico (plan_id),
+		CONSTRAINT FK_histo_afil_id FOREIGN KEY (histo_afil_id) REFERENCES NUL.Afiliado (afil_id)
+	);
+
+CREATE TABLE NUL.Bono
+(
+		bono_id 				numeric(18,0) PRIMARY KEY,	--no es identity porque ya vienen valores y no desde 1,
+		bono_compra 			numeric(18,0),				--asique se va a manejar con un max(bono_id) + 1;
+		bono_plan				numeric(18,0),
+		bono_nro_consulta	    numeric(18,0),
+		bono_usado			    bit,
+		bono_comprador			numeric(18,0),
+
+		CONSTRAINT FK_bono_bono_compra FOREIGN KEY (bono_compra) REFERENCES NUL.Bono_compra (bonoc_id),
+		CONSTRAINT FK_bono_plan FOREIGN KEY (bono_plan) REFERENCES NUL.Plan_medico (plan_id),
+		CONSTRAINT FK_bono_comprador  FOREIGN KEY (bono_comprador) REFERENCES NUL.Afiliado (afil_id)
 	);
 
 CREATE TABLE NUL.Tipo_cancelacion
@@ -1255,7 +1782,6 @@ SELECT * FROM NUL.Bono B JOIN NUL.Bono_compra BC ON BC.bonoc_id = B.bono_compra
 END
 GO
 
-
 CREATE PROCEDURE NUL.sp_set_llegada(@user_id numeric(18,0), @id_turno numeric(18,0), @fecha datetime, @hora_llegada time, @bono_id numeric(18,0), @result int output)
 AS
 BEGIN
@@ -1281,7 +1807,7 @@ BEGIN
 							    bono_plan = (SELECT afil_plan_med FROM NUL.Afiliado WHERE afil_id = @user_id)
 			WHERE bono_id = @bono_id
 
-			UPDATE NUL.Afiliado SET afil_nro_consulta = @nro_cons + 1
+			UPDATE NUL.Afiliado SET afil_nro_consulta = @nro_cons
 
 			set @result = @@ERROR
 
@@ -1290,7 +1816,6 @@ BEGIN
 		end
 END
 GO
-
 
 CREATE PROCEDURE NUL.sp_new_bono(@id_user numeric(18,0), @fecha datetime, @cantidad numeric(18,0), @monto numeric(16,2), @plan numeric(18,0), @result int output)
 AS
@@ -1382,7 +1907,6 @@ BEGIN
 END
 GO
 
-
 CREATE PROCEDURE NUL.sp_agregar_a_grupo_familiar(@user_id numeric(18,0), @titular numeric(18,0), @nro_familiar int)
 AS
 BEGIN
@@ -1393,14 +1917,13 @@ BEGIN
 	IF @nro_familiar = 0
 		SET @ult_afil = @titular;
 	ELSE 
-		SELECT @ult_afil = CASE MAX(afil_nro_afiliado) WHEN NULL THEN @titular+1
-										   ELSE MAX(afil_nro_afiliado) 
-				END
-			FROM NUL.Afiliado 
-			WHERE afil_titular = @titular;
+
+		SELECT @ult_afil = ISNULL(MAX(afil_nro_afiliado), @titular)
+		FROM NUL.Afiliado 
+		WHERE afil_titular = @nuevo_titular;
 	
 	UPDATE NUL.Afiliado SET afil_nro_afiliado = @ult_afil+1 WHERE afil_id = @user_id;
-	UPDATE NUL.Afiliado SET afil_titular = @titular WHERE afil_id = @user_id;
+	UPDATE NUL.Afiliado SET afil_titular = @nuevo_titular WHERE afil_id = @user_id;
 
 	UPDATE NUL.Afiliado SET afil_familiares = @cantidad_fam + 1 WHERE afil_id = @nuevo_titular;
 
