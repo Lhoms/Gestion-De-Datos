@@ -256,8 +256,8 @@ namespace ClinicaFrba.Abm_Afiliado
 
         private void buttonModificar_Click(object sender, EventArgs e)
         {
-            try
-            {
+            //try
+            //{
                 //llamar al stored que modifica afiliados
                 MessageBox.Show("modificar afiliado");
 
@@ -274,13 +274,13 @@ namespace ClinicaFrba.Abm_Afiliado
 
                 Form1 form = new Form1(this.sesion);
                 form.Show();
-                this.Close();
+                this.Hide();
 
-            }
-            catch (Exception exc)
-            {
-                MessageBox.Show(exc.Message, "Aviso", MessageBoxButtons.OK);
-            }
+            //}
+            //catch (Exception exc)
+            //{
+            //    MessageBox.Show(exc.Message, "Aviso", MessageBoxButtons.OK);
+            //}
    
         }
 
@@ -304,7 +304,7 @@ namespace ClinicaFrba.Abm_Afiliado
 
             DAL.Classes.DBHelper.ExecuteDataSet("NUL.sp_actualizar_plan", dbParams);
 
-            if ((int)result.Value != 0)
+            if (int.Parse(result.Value.ToString()) != 0)
                 throw new Exception("Error modificando el plan");
         }
 

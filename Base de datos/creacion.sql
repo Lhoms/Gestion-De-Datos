@@ -914,14 +914,6 @@ END
 
 GO
 
-
-IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID('NUL.sp_cambiar_plan'))
-BEGIN
-    DROP PROCEDURE NUL.sp_cambiar_plan
-END
-
-GO
-
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID('NUL.sp_agregar_a_grupo_familiar'))
 BEGIN
     DROP PROCEDURE NUL.sp_agregar_a_grupo_familiar
@@ -1421,22 +1413,6 @@ WHERE t.turno_profesional = @prof AND t.turno_fecha_hora between @fecha_desde AN
 END
 GO
 
-
-CREATE PROCEDURE NUL.sp_cambiar_plan(@afil numeric(18,0), @plan numeric(18,0), @fecha DateTime, @motivo varchar(250), @error int output)
-AS
-BEGIN
-
-	UPDATE NUL.Afiliado SET afil_plan_med = @plan
-	WHERE afil_id = @afil
-
-	INSERT INTO NUL.Historial_plan_med (histo_plan_id, histo_afil_id, histo_fecha_id, histo_descrip)
-							VALUES(@plan, @afil, @fecha, @motivo);
-
-	set @error = @@ERROR
-
-END
-GO
-
 CREATE PROCEDURE NUL.sp_agregar_a_grupo_familiar(@user_id numeric(18,0), @titular numeric(18,0), @nro_familiar int, @fecha DateTime)
 AS
 BEGIN
@@ -1496,10 +1472,16 @@ AS
 BEGIN
 	
 	DECLARE @afil_dependiente numeric(18,0)
+	DECLARE @motivo2 varchar(255) = 'Titular cambia plan'
 
 	DECLARE afil CURSOR FOR (SELECT afil_id FROM NUL.Afiliado WHERE afil_titular = @afil)
 
-		UPDATE NUL.Afiliado SET afil_plan_med = @plan WHERE afil_id = @afil
+
+	UPDATE NUL.Afiliado SET afil_plan_med = @plan WHERE afil_id = @afil
+
+	INSERT INTO NUL.Historial_plan_med (histo_plan_id, histo_afil_id, histo_fecha_id, histo_descrip)
+						VALUES(@plan, @afil, @fecha, @motivo);
+
 
 	OPEN afil
 	FETCH NEXT FROM afil INTO @afil_dependiente
@@ -1507,10 +1489,17 @@ BEGIN
 	WHILE @@FETCH_STATUS = 0
 	BEGIN
 		UPDATE NUL.Afiliado SET afil_plan_med = @plan WHERE afil_id = @afil_dependiente
-		exec NUL.sp_cambiar_plan @afil, @plan, @fecha, 'Titular cambia plan', @error
+
+		INSERT INTO NUL.Historial_plan_med (histo_plan_id, histo_afil_id, histo_fecha_id, histo_descrip)
+					VALUES(@plan, @afil_dependiente, @fecha, @motivo2);
+
+
+		FETCH NEXT FROM afil INTO @afil_dependiente
 	END
 	CLOSE afil
 	DEALLOCATE afil
+
+	set @error = @@ERROR
 
 END
 GO
