@@ -160,6 +160,7 @@ namespace ClinicaFrba.Abm_Afiliado
             SqlParameter[] dbParams = new SqlParameter[]
                     {
                         DAL.Classes.DBHelper.MakeParam("@id", SqlDbType.Decimal, 100, this.afiliadoDatos.id),
+                        DAL.Classes.DBHelper.MakeParam("@fecha", SqlDbType.DateTime, 100, DateTime.Parse(ConfigurationManager.AppSettings.Get("FechaSistema"))),
                         result,
                     };
 

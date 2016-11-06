@@ -312,8 +312,6 @@ CREATE TABLE NUL.Historial_baja
 (
 		baja_user_id 			numeric(18,0),
 		baja_fecha_id			DateTime,
-		baja_descrip 	 		varchar(250) default NULL,
-
 
 		CONSTRAINT pk_histo_baja PRIMARY KEY (baja_user_id,baja_fecha_id),
 		CONSTRAINT FK_user_baja FOREIGN KEY (baja_user_id) REFERENCES NUL.Usuario (user_id)
@@ -541,7 +539,8 @@ FROM NUL.Bono B1
 
 INSERT INTO NUL.Tipo_cancelacion(tipo_cancel_detalle) VALUES
 ('Cancelada por el afiliado'),
-('Cancelada por el médico');
+('Cancelada por el médico'),
+('Usuario dado de baja');
 
 /* Cancelación queda vacía por ahora */
 
@@ -1089,11 +1088,16 @@ BEGIN
 END
 GO
 
-CREATE PROCEDURE NUL.sp_del_usuario(@id numeric(18,0), @result int output)
+CREATE PROCEDURE NUL.sp_del_usuario(@id numeric(18,0), @fecha DateTime, @result int output)
 AS 
 BEGIN
 	UPDATE NUL.Usuario SET user_habilitado = 0
 	WHERE user_id = @id
+
+
+	INSERT INTO NUL.Historial_baja(baja_user_id, baja_fecha_id)
+		VALUES (@id, @fecha);	 		
+
 
 	set @result = @@ERROR
 END
