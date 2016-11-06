@@ -64,9 +64,6 @@ namespace ClinicaFrba.Abm_Afiliado
 
             llenarComboBoxes();
 
-            buttonAgregarConyuge.Enabled = false;
-            buttonAgregarHijo.Enabled = false;
-
             
         }
 
@@ -331,7 +328,6 @@ namespace ClinicaFrba.Abm_Afiliado
 
         private void buttonAgregarConyuge_Click(object sender, EventArgs e)
         {
-
             try
             {
                 agregarFamiliar("conyuge");
@@ -378,6 +374,9 @@ namespace ClinicaFrba.Abm_Afiliado
                 form = new Abm_Afiliado.AltaFamiliar(raizGrupoFamiliar, comboBoxPlanMedico.Text, tipo_alta, familiares);
 
                 form.Show();
+
+                if (tipo_alta == "conyuge")
+                    this.buttonAgregarConyuge.Enabled = false;
                 
 
             }

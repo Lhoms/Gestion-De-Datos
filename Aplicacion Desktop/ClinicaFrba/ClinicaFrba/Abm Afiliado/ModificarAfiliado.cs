@@ -260,7 +260,7 @@ namespace ClinicaFrba.Abm_Afiliado
             //try
             //{
                 //llamar al stored que modifica afiliados
-                MessageBox.Show("modificar afiliado");
+                modificarAfiliado();
 
 
                 if (this.afiliadoDatos.planMedico_id != this.planes[this.comboBoxPlan.Text])
@@ -283,6 +283,35 @@ namespace ClinicaFrba.Abm_Afiliado
             //    MessageBox.Show(exc.Message, "Aviso", MessageBoxButtons.OK);
             //}
    
+        }
+
+        private void modificarAfiliado()
+        {
+            // NUL.sp_modificar_usuario(  @user_id numeric(18,0),@pers_dire varchar(255),
+	    //                               @pers_tel numeric(18,0), @pers_mail varchar(255), @pers_sexo char(1) , @afil_estado numeric(18,0))
+
+            obtenerUsuario();
+
+            SqlParameter[] dbParams = new SqlParameter[]
+            {
+                DAL.Classes.DBHelper.MakeParam("@user_id", SqlDbType.Decimal, 0, afiliadoDatos.id),
+                DAL.Classes.DBHelper.MakeParam("@pers_dire", SqlDbType.VarChar, 0, afiliadoDatosNuevos.direccion),
+                DAL.Classes.DBHelper.MakeParam("@pers_tel", SqlDbType.Decimal, 0, afiliadoDatosNuevos.telefono),
+                DAL.Classes.DBHelper.MakeParam("@pers_mail", SqlDbType.VarChar, 0, afiliadoDatosNuevos.mail),
+                DAL.Classes.DBHelper.MakeParam("@pers_sexo", SqlDbType.Char, 0, afiliadoDatosNuevos.sexo),
+                DAL.Classes.DBHelper.MakeParam("@afil_estado", SqlDbType.Decimal, 0, this.afiliadoDatosNuevos.estadoCivil_id),
+            };
+
+
+            MessageBox.Show(afiliadoDatos.id +
+afiliadoDatosNuevos.direccion +
+afiliadoDatosNuevos.telefono +
+afiliadoDatosNuevos.mail +
+afiliadoDatosNuevos.sexo +
+afiliadoDatosNuevos.estadoCivil_id);
+
+            DAL.Classes.DBHelper.ExecuteDataSet("NUL.sp_modificar_usuario", dbParams);
+
         }
 
         private void cambiarPlan()

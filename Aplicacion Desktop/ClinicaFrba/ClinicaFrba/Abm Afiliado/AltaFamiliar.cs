@@ -23,7 +23,11 @@ namespace ClinicaFrba.Abm_Afiliado
         Afiliado afiliado;
         ArrayList afiliados;
 
-        DataSet dsDoc, dsEstado;
+        List<string> doc_descrip;
+        Dictionary<string, int> doc_id;
+
+        List<string> estado_descrip;
+        Dictionary<string, int> estado_id;
 
         public AltaFamiliar()
         {
@@ -40,13 +44,17 @@ namespace ClinicaFrba.Abm_Afiliado
             this.afiliado = new Afiliado();
             this.afiliados = afiliados;
 
-            this.comboBoxTipoDoc.ValueMember = "doc_descrip";
-            this.dsDoc = getTipoDoc();
-            this.comboBoxTipoDoc.DataSource = this.dsDoc.Tables[0];
+            doc_descrip = new List<string>();
+            doc_id = new Dictionary<string, int>();
 
-            this.comboBoxEstadoCivil.ValueMember = "estado_descrip";
-            this.dsEstado = getEstado();
-            this.comboBoxEstadoCivil.DataSource = this.dsEstado.Tables[0];
+            estado_descrip = new List<string>();
+            estado_id = new Dictionary<string, int>();
+
+            getTipoDoc();
+            this.comboBoxTipoDoc.DataSource = this.doc_descrip;
+
+            getEstados();
+            this.comboBoxEstadoCivil.DataSource = this.estado_descrip;
 
 
             this.afiliado.planMedico = plan;
@@ -156,28 +164,12 @@ namespace ClinicaFrba.Abm_Afiliado
             
         }
 
-        private void nuevo_afiliado(Afiliado afiliado)
-        {
-            //llamar store para crear nuevo usuario+persona+afiliado
-        }
 
         private DataSet get_usuario(string username, string tipo_doc)
         {
-            string expresion = "SELECT * FROM NUL.Usuario U WHERE U.user_username = '" + username +"' AND U.user_tipodoc = " + get_tipo_doc_id(tipo_doc).ToString();
+            string expresion = "SELECT * FROM NUL.Usuario U WHERE U.user_username = '" + username +"' AND U.user_tipodoc = " + get_tipo_doc_id().ToString();
 
             return DAL.Classes.DBHelper.ExecuteQuery_DS(expresion);      
-        }
-
-
-        private void comboBoxTipoDoc_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            //
-        }
-
-
-        private void labelTipoDoc_Click(object sender, EventArgs e)
-        {
-            //
         }
 
 
@@ -190,13 +182,10 @@ namespace ClinicaFrba.Abm_Afiliado
 
         private void buttonLimpiar_Click(object sender, EventArgs e)
         {
-           
-
             textBoxNombre.Text = "";
             textBoxApellido.Text = "";
             textBoxDocumento.Text = "";
             comboBoxTipoDoc.Text = "";
-            //dateTimePickerNacimiento;
             comboBoxSexo.Text = "";
             textBoxDireccion.Text = "";
             textBoxTelefono.Text = "";
@@ -206,83 +195,55 @@ namespace ClinicaFrba.Abm_Afiliado
         }
 
 
-        private void numericUpDownCantHijos_KeyDown(object sender, KeyEventArgs e)
+        public void getTipoDoc()
         {
-            //
-        }
+            string expresion = "SELECT doc_id, doc_descrip FROM NUL.Tipo_doc";
 
+            SqlDataReader lector = DAL.Classes.DBHelper.ExecuteQuery_DR(expresion);
 
-        private void numericUpDownCantHijos_KeyUp(object sender, KeyEventArgs e)
-        {
-            //
-        }
+            if (lector != null)
+            {
+                this.doc_descrip.Add(lector["doc_descrip"].ToString());
+                this.doc_id.Add(lector["doc_descrip"].ToString(), int.Parse(lector["doc_id"].ToString()));
 
+                while (lector.Read())
+                {
+                    this.doc_descrip.Add(lector["doc_descrip"].ToString());
+                    this.doc_id.Add(lector["doc_descrip"].ToString(), int.Parse(lector["doc_id"].ToString()));
+                }
 
-        private void comboBoxEstadoCivil_TextChanged(object sender, EventArgs e)
-        {
-            //
-        }
-
-
-        private void numericUpDownCantHijos_ValueChanged(object sender, EventArgs e)
-        {
-            //
-        }
-
-
-
-        private void textBoxDocumento_TextChanged(object sender, EventArgs e)
-        {
-            //
-        }
-
-        private void comboBoxTipoDoc_TextChanged(object sender, EventArgs e)
-        {
-            //
-        }
-
-        public static DataSet getTipoDoc()
-        {
-            SqlParameter[] dbParams = new SqlParameter[]
-                    {
-                       
-                    };
-
-
-            return DAL.Classes.DBHelper.ExecuteDataSet("NUL.sp_get_tipo_doc", dbParams);
+            }
 
         }
 
-        private int get_tipo_doc_id(string tipo_doc)
+        private int get_tipo_doc_id()
         {
-            string expresion = "doc_descrip = '" + tipo_doc + "'";
-            int tipo = 1;
-
-            tipo = int.Parse(this.dsDoc.Tables[0].Rows[0][0].ToString());
-
-            return tipo;
+            return this.doc_id[this.comboBoxTipoDoc.Text];
         }
 
-        public DataSet getEstado()
+        public void getEstados()
         {
-            SqlParameter[] dbParams = new SqlParameter[]
-                    {
-                       
-                    };
+            string expresion = "SELECT estado_id, estado_descrip FROM NUL.Estado";
 
+            SqlDataReader lector = DAL.Classes.DBHelper.ExecuteQuery_DR(expresion);
 
-            return DAL.Classes.DBHelper.ExecuteDataSet("NUL.sp_get_estados_civiles", dbParams);
+            if (lector != null)
+            {
+                estado_id.Add((string)lector["estado_descrip"].ToString(), int.Parse(lector["estado_id"].ToString()));
+                estado_descrip.Add((string)lector["estado_descrip"].ToString());
+
+                while (lector.Read())
+                {
+                    estado_id.Add((string)lector["estado_descrip"].ToString(), int.Parse(lector["estado_id"].ToString()));
+                    estado_descrip.Add((string)lector["estado_descrip"].ToString());
+                }
+            }
 
         }
 
-        private int get_estado_id(string estado)
+        private int get_estado_id()
         {
-            string expresion = "estado_descrip = '" + estado + "'";
-            int tipo = 1;
-
-            tipo = int.Parse(this.dsEstado.Tables[0].Rows[0][0].ToString());
-
-            return tipo;
+            return this.estado_id[this.comboBoxEstadoCivil.Text];
         }
 
     }

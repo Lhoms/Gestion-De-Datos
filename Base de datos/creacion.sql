@@ -949,6 +949,13 @@ END
 
 GO
 
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID('NUL.sp_modificar_usuario'))
+BEGIN
+    DROP PROCEDURE NUL.sp_modificar_usuario
+END
+
+GO
+
 
 CREATE PROCEDURE NUL.sp_get_top5_esp_cancel(@anio numeric(18,0), @semestre numeric(18,0),@mes numeric(18,0))
 AS
@@ -1527,5 +1534,22 @@ BEGIN
 
 	set @error = @@ERROR
 
+END
+GO
+
+CREATE PROCEDURE NUL.sp_modificar_usuario(@user_id numeric(18,0),@pers_dire varchar(255),
+	 @pers_tel numeric(18,0), @pers_mail varchar(255), @pers_sexo char(1) , @afil_estado numeric(18,0))
+AS
+BEGIN
+	UPDATE NUL.Persona SET
+		pers_dire = @pers_dire,
+		pers_tel = @pers_tel,
+		pers_mail = @pers_mail,
+		pers_sexo = @pers_sexo
+	WHERE pers_id = @user_id
+
+	UPDATE NUL.Afiliado SET
+		afil_estado = @afil_estado
+		WHERE afil_id = @user_id
 END
 GO

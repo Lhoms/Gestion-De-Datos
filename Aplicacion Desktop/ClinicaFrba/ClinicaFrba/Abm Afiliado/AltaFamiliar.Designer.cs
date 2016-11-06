@@ -108,7 +108,6 @@
             this.comboBoxEstadoCivil.Name = "comboBoxEstadoCivil";
             this.comboBoxEstadoCivil.Size = new System.Drawing.Size(147, 21);
             this.comboBoxEstadoCivil.TabIndex = 24;
-            this.comboBoxEstadoCivil.TextChanged += new System.EventHandler(this.comboBoxEstadoCivil_TextChanged);
             // 
             // dateTimePickerNacimiento
             // 
@@ -147,8 +146,6 @@
             this.comboBoxTipoDoc.Name = "comboBoxTipoDoc";
             this.comboBoxTipoDoc.Size = new System.Drawing.Size(90, 21);
             this.comboBoxTipoDoc.TabIndex = 20;
-            this.comboBoxTipoDoc.SelectedIndexChanged += new System.EventHandler(this.comboBoxTipoDoc_SelectedIndexChanged);
-            this.comboBoxTipoDoc.TextChanged += new System.EventHandler(this.comboBoxTipoDoc_TextChanged);
             // 
             // labelTipoDoc
             // 
@@ -158,7 +155,6 @@
             this.labelTipoDoc.Size = new System.Drawing.Size(31, 13);
             this.labelTipoDoc.TabIndex = 19;
             this.labelTipoDoc.Text = "Tipo:";
-            this.labelTipoDoc.Click += new System.EventHandler(this.labelTipoDoc_Click);
             // 
             // labelEstadoCivil
             // 
@@ -243,7 +239,6 @@
             this.textBoxDocumento.Name = "textBoxDocumento";
             this.textBoxDocumento.Size = new System.Drawing.Size(147, 20);
             this.textBoxDocumento.TabIndex = 2;
-            this.textBoxDocumento.TextChanged += new System.EventHandler(this.textBoxDocumento_TextChanged);
             // 
             // textBoxApellido
             // 
@@ -307,6 +302,11 @@
             this.groupBoxAltaAfiliado.PerformLayout();
             this.ResumeLayout(false);
 
+        }
+
+        private void comboBoxTipoDoc_SelectedIndexChanged(object sender, System.EventArgs e)
+        {
+            throw new System.NotImplementedException();
         }
 
         private void buttonAgregarHijo_Click(object sender, System.EventArgs e)
