@@ -401,6 +401,10 @@ namespace ClinicaFrba.Pedir_Turno
                 DAL.Classes.DBHelper.MakeParam("@fec_fin", SqlDbType.DateTime, 250, hasta),
             };
 
+                MessageBox.Show(obtenerProfesionalId().ToString() + " \n  " + this.especialidades_id[this.comboBoxEsp.Text].ToString() + " \n  " +
+                    desde.ToString() + " \n  " + hasta.ToString());
+
+
                 DataTable dt = DAL.Classes.DBHelper.ExecuteDataSet("NUL.sp_get_disp_profesional", dbParams).Tables[0];
 
                 if (dt.Rows.Count == 0)
