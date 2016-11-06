@@ -1422,17 +1422,17 @@ END
 GO
 
 
-CREATE PROCEDURE NUL.sp_cambiar_plan(@user_id numeric(18,0), @plan_id numeric(18,0), @fecha DateTime, @motivo varchar(250), @result int output)
+CREATE PROCEDURE NUL.sp_cambiar_plan(@afil numeric(18,0), @plan numeric(18,0), @fecha DateTime, @motivo varchar(250), @error int output)
 AS
 BEGIN
 
-	UPDATE NUL.Afiliado SET afil_plan_med = @plan_id
-	WHERE afil_id = @user_id
+	UPDATE NUL.Afiliado SET afil_plan_med = @plan
+	WHERE afil_id = @afil
 
 	INSERT INTO NUL.Historial_plan_med (histo_plan_id, histo_afil_id, histo_fecha_id, histo_descrip)
-							VALUES(@plan_id, @user_id, @fecha, @motivo);
+							VALUES(@plan, @afil, @fecha, @motivo);
 
-	set @result = @@ERROR
+	set @error = @@ERROR
 
 END
 GO
