@@ -709,6 +709,28 @@ AS
 GO
 
 
+--trigger
+
+
+IF OBJECT_ID ('NUL.cancelar_turnos ', 'TR') IS NOT NULL  
+	DROP TRIGGER NUL.cancelar_turnos ; 
+GO
+
+
+CREATE TRIGGER cancelar_turnos ON NUL.Historial_baja
+AFTER INSERT
+AS
+BEGIN
+		
+		INSERT INTO NUL.Cancelacion 
+			SELECT T.turno_id,3,'Usuario dado de baja',I.baja_fecha_id FROM NUL.Turno T JOIN inserted I
+				ON T.turno_afiliado = I.baja_user_id
+				WHERE T.turno_fecha_hora >= I.baja_fecha_id
+	
+END
+
+
+
 --stored procedures
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID('NUL.sp_get_top5_esp_cancel'))
 BEGIN
