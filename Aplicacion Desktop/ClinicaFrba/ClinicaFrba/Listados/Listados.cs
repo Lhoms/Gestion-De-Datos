@@ -57,7 +57,30 @@ namespace ClinicaFrba.Listados
             this.comboBoxPlan.DataSource = plan_descrip;
             ocultarPlanEspecialidad();
 
+            historial(false);
+
         }
+
+        private void historial(bool x)
+        {
+            this.labelAfiliado.Visible = x;
+            this.textBoxAfiliado.Visible = x;
+
+            this.numericSemestre.Visible = !x;
+            this.numericMes.Visible = !x;
+            this.comboBoxPlan.Visible = !x;
+            this.comboBoxTipoEsp.Visible = !x;
+            this.comboBoxEspecialidad.Visible = !x;
+            this.label2.Visible = !x;
+            this.label3.Visible = !x;
+            this.label4.Visible = !x;
+            this.labelTipo.Visible = !x;
+            this.labelPlan.Visible = !x;
+            this.labelEspecialidad.Visible = !x;
+
+
+        }
+
 
         private void llenarTipoEsp()
         {
@@ -88,35 +111,51 @@ namespace ClinicaFrba.Listados
 
                     case "Top 5 de las especialidades que mas registrarion cancelaciones.":
 
+                        historial(false);
                         ocultarPlanEspecialidad();
+                        
                         break;
 
                     case "Top 5 de los profesionales mas consultados por plan.":
 
+                        historial(false);
                         ocultarPlanEspecialidad();
                         this.labelPlan.Visible = true;
                         this.comboBoxPlan.Visible = true;
+                        
                         break;
 
                     case "Top 5 de los profesionales con menos horas trabajadas por plan y especialidad.":
 
+
+                        historial(false);
                         this.labelPlan.Visible = true;
                         this.comboBoxPlan.Visible = true;
                         this.comboBoxTipoEsp.Visible = true;
                         this.labelTipo.Visible = true;
                         this.labelEspecialidad.Visible = true;
                         this.comboBoxEspecialidad.Visible = true;
+                        
                         break;
 
                     case "Top 5 de los afiliados con mayor cantidad de bonos comprados.":
 
+                        historial(false);
                         ocultarPlanEspecialidad();
+
                         break;
 
                     case "Top 5 de las especialidades de medicos con mas bonos de consultas utilizados.":
 
-                        ocultarPlanEspecialidad();
+                        historial(false);
+                        ocultarPlanEspecialidad();                        
                         break;
+
+                    case "Historial de Planes":
+                        
+                        historial(true);
+                        break;
+
                 }
             }
             catch (Exception exc)
@@ -141,16 +180,18 @@ namespace ClinicaFrba.Listados
             this.dataGridTop5.DataSource = this.dt;
 
             this.dataGridTop5.Columns[0].Visible = false;
-            this.dataGridTop5.Columns[1].HeaderText = "Especialidad";
+            this.dataGridTop5.Columns[1].HeaderText = "Especialidad"; this.dataGridTop5.Columns[1].Visible = true;
             this.dataGridTop5.Columns[2].Visible = false;
-            this.dataGridTop5.Columns[3].HeaderText = "Tipo";
+
+            this.dataGridTop5.Columns[3].HeaderText = "Tipo"; this.dataGridTop5.Columns[3].Visible = true;
             this.dataGridTop5.Columns[3].Width = 150;
-            this.dataGridTop5.Columns[4].HeaderText = "Cancelaciones"; this.dataGridTop5.Columns[4].Width = 80;
+
+            this.dataGridTop5.Columns[4].HeaderText = "Cancelaciones"; this.dataGridTop5.Columns[4].Width = 80; 
+            this.dataGridTop5.Columns[4].Visible = true;
+
             this.dataGridTop5.Columns[5].Visible = false;
             this.dataGridTop5.Columns[6].Visible = false;
             this.dataGridTop5.Columns[7].Visible = false;
-
-
 
 
         }
@@ -199,6 +240,21 @@ namespace ClinicaFrba.Listados
             this.dt = DAL.Classes.DBHelper.ExecuteDataSet("NUL.sp_get_top5_prof_horas", dbParams).Tables[0];
 
             this.dataGridTop5.DataSource = this.dt;
+
+            this.dataGridTop5.Columns[0].Visible = false;
+            this.dataGridTop5.Columns[1].Visible = false;
+            this.dataGridTop5.Columns[2].Visible = false;
+            this.dataGridTop5.Columns[3].HeaderText = "Nombre"; this.dataGridTop5.Columns[3].Visible = true;
+            this.dataGridTop5.Columns[4].HeaderText = "Apellido"; this.dataGridTop5.Columns[4].Visible = true;
+            this.dataGridTop5.Columns[5].Visible = false;
+            this.dataGridTop5.Columns[6].Visible = false;
+            this.dataGridTop5.Columns[7].Visible = false;
+            this.dataGridTop5.Columns[8].Visible = false;
+            this.dataGridTop5.Columns[9].Visible = false;
+            this.dataGridTop5.Columns[10].Visible = false;
+            this.dataGridTop5.Columns[11].Visible = false;
+            this.dataGridTop5.Columns[12].Visible = false;
+            this.dataGridTop5.Columns[13].HeaderText = "Cantidad hs"; this.dataGridTop5.Columns[13].Visible = true; 
         }
 
         private void get_top5_afil_bonos()
@@ -213,6 +269,17 @@ namespace ClinicaFrba.Listados
             this.dt = DAL.Classes.DBHelper.ExecuteDataSet("NUL.sp_get_top5_afil_bonos", dbParams).Tables[0];
 
             this.dataGridTop5.DataSource = this.dt;
+
+            this.dataGridTop5.Columns[0].Visible = false;
+            this.dataGridTop5.Columns[1].Visible = false;
+            this.dataGridTop5.Columns[2].Visible = false;
+            this.dataGridTop5.Columns[3].HeaderText = "Nombre"; this.dataGridTop5.Columns[3].Visible = true;
+            this.dataGridTop5.Columns[4].HeaderText = "Apellido"; this.dataGridTop5.Columns[4].Visible = true;
+            this.dataGridTop5.Columns[5].Visible = false;
+            this.dataGridTop5.Columns[6].HeaderText = "Documento"; this.dataGridTop5.Columns[6].Visible = true;
+            this.dataGridTop5.Columns[7].HeaderText = "Cantidad"; this.dataGridTop5.Columns[7].Visible = true;
+            this.dataGridTop5.Columns[8].HeaderText = "Grupo"; this.dataGridTop5.Columns[8].Visible = true;
+
         }
 
 
@@ -228,6 +295,15 @@ namespace ClinicaFrba.Listados
             this.dt = DAL.Classes.DBHelper.ExecuteDataSet("NUL.sp_get_top5_esp_bonos", dbParams).Tables[0];
 
             this.dataGridTop5.DataSource = this.dt;
+
+            this.dataGridTop5.Columns[0].Visible = false;
+            this.dataGridTop5.Columns[1].Visible = false;
+            this.dataGridTop5.Columns[2].Visible = false;
+            this.dataGridTop5.Columns[3].HeaderText = "Especialidad"; this.dataGridTop5.Columns[3].Visible = true;
+            this.dataGridTop5.Columns[4].Visible = false;
+            this.dataGridTop5.Columns[5].HeaderText = "Tipo especialidad"; this.dataGridTop5.Columns[5].Visible = true;
+            this.dataGridTop5.Columns[6].HeaderText = "Cantidad"; this.dataGridTop5.Columns[6].Visible = true;
+
         }
 
         private void get_planes()
@@ -289,6 +365,11 @@ namespace ClinicaFrba.Listados
                 case "Top 5 de las especialidades de medicos con mas bonos de consultas utilizados.":
 
                     get_top5_esp_bonos();
+                    break;
+
+                case "Historial de Planes":
+
+                    get_historial();
                     break;
             }
 
@@ -352,5 +433,26 @@ namespace ClinicaFrba.Listados
             }
 
         }
+
+        private void get_historial()
+        {
+            string select = "SELECT histo_fecha_id, histo_descrip, afil_nro_afiliado, pers_nombre, pers_apellido, PL.plan_descrip "+
+                            "FROM NUL.Historial_plan_med H JOIN NUL.Afiliado A ON H.histo_afil_id = A.afil_id JOIN NUL.Persona P ON P.pers_id = A.afil_id "+
+                            "JOIN NUL.Plan_medico PL ON PL.plan_id = H.histo_plan_id  ";
+            string where = "WHERE YEAR(histo_fecha_id) = "+ this.numericAño.Value +" AND A.afil_nro_afiliado LIKE '%" + this.textBoxAfiliado.Text + "%'";
+
+            this.dataGridTop5.DataSource = DAL.Classes.DBHelper.ExecuteQuery_DS(select + where).Tables[0];
+
+            this.dataGridTop5.Columns[0].HeaderText = "Fecha"; this.dataGridTop5.Columns[0].Visible = true;
+            this.dataGridTop5.Columns[1].HeaderText = "Motivo"; this.dataGridTop5.Columns[1].Visible = true;
+            this.dataGridTop5.Columns[2].HeaderText = "Numero Afiliado"; this.dataGridTop5.Columns[2].Visible = true;
+            this.dataGridTop5.Columns[3].HeaderText = "Nombre"; this.dataGridTop5.Columns[3].Visible = true;
+            this.dataGridTop5.Columns[4].HeaderText = "Apellido"; this.dataGridTop5.Columns[4].Visible = true;
+            this.dataGridTop5.Columns[5].HeaderText = "Plan Nuevo"; this.dataGridTop5.Columns[5].Visible = true;
+
+
+        }
+
+    
     }
 }

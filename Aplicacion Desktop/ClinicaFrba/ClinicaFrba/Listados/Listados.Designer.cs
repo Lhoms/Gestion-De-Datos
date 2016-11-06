@@ -46,6 +46,8 @@
             this.comboBoxListado = new System.Windows.Forms.ComboBox();
             this.dataGridTop5 = new System.Windows.Forms.DataGridView();
             this.buttonVolver = new System.Windows.Forms.Button();
+            this.textBoxAfiliado = new System.Windows.Forms.TextBox();
+            this.labelAfiliado = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericSemestre)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericMes)).BeginInit();
@@ -55,6 +57,8 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.labelAfiliado);
+            this.groupBox1.Controls.Add(this.textBoxAfiliado);
             this.groupBox1.Controls.Add(this.labelTipo);
             this.groupBox1.Controls.Add(this.comboBoxTipoEsp);
             this.groupBox1.Controls.Add(this.labelPlan);
@@ -73,7 +77,7 @@
             this.groupBox1.Controls.Add(this.dataGridTop5);
             this.groupBox1.Location = new System.Drawing.Point(12, 12);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(541, 425);
+            this.groupBox1.Size = new System.Drawing.Size(656, 425);
             this.groupBox1.TabIndex = 1;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Listados";
@@ -251,7 +255,8 @@
             "Top 5 de los profesionales mas consultados por plan.",
             "Top 5 de los profesionales con menos horas trabajadas por plan y especialidad.",
             "Top 5 de los afiliados con mayor cantidad de bonos comprados.",
-            "Top 5 de las especialidades de medicos con mas bonos de consultas utilizados."});
+            "Top 5 de las especialidades de medicos con mas bonos de consultas utilizados.",
+            "Historial de Planes"});
             this.comboBoxListado.Location = new System.Drawing.Point(88, 24);
             this.comboBoxListado.Name = "comboBoxListado";
             this.comboBoxListado.Size = new System.Drawing.Size(414, 21);
@@ -267,12 +272,12 @@
             this.dataGridTop5.Location = new System.Drawing.Point(6, 233);
             this.dataGridTop5.Name = "dataGridTop5";
             this.dataGridTop5.ReadOnly = true;
-            this.dataGridTop5.Size = new System.Drawing.Size(528, 186);
+            this.dataGridTop5.Size = new System.Drawing.Size(644, 186);
             this.dataGridTop5.TabIndex = 0;
             // 
             // buttonVolver
             // 
-            this.buttonVolver.Location = new System.Drawing.Point(478, 443);
+            this.buttonVolver.Location = new System.Drawing.Point(593, 443);
             this.buttonVolver.Name = "buttonVolver";
             this.buttonVolver.Size = new System.Drawing.Size(75, 23);
             this.buttonVolver.TabIndex = 12;
@@ -280,11 +285,27 @@
             this.buttonVolver.UseVisualStyleBackColor = true;
             this.buttonVolver.Click += new System.EventHandler(this.buttonVolver_Click);
             // 
+            // textBoxAfiliado
+            // 
+            this.textBoxAfiliado.Location = new System.Drawing.Point(286, 54);
+            this.textBoxAfiliado.Name = "textBoxAfiliado";
+            this.textBoxAfiliado.Size = new System.Drawing.Size(149, 20);
+            this.textBoxAfiliado.TabIndex = 18;
+            // 
+            // labelAfiliado
+            // 
+            this.labelAfiliado.AutoSize = true;
+            this.labelAfiliado.Location = new System.Drawing.Point(185, 57);
+            this.labelAfiliado.Name = "labelAfiliado";
+            this.labelAfiliado.Size = new System.Drawing.Size(98, 13);
+            this.labelAfiliado.TabIndex = 19;
+            this.labelAfiliado.Text = "Numero de afiliado:";
+            // 
             // Listados
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(565, 478);
+            this.ClientSize = new System.Drawing.Size(680, 474);
             this.Controls.Add(this.buttonVolver);
             this.Controls.Add(this.groupBox1);
             this.MaximizeBox = false;
@@ -321,5 +342,7 @@
         private System.Windows.Forms.ComboBox comboBoxPlan;
         private System.Windows.Forms.Label labelTipo;
         private System.Windows.Forms.ComboBox comboBoxTipoEsp;
+        private System.Windows.Forms.Label labelAfiliado;
+        private System.Windows.Forms.TextBox textBoxAfiliado;
     }
 }

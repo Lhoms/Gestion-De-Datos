@@ -121,7 +121,7 @@ namespace ClinicaFrba.Abm_Afiliado
 
             if (string.IsNullOrWhiteSpace(comboBoxTipoDoc.Text))
                 throw new Exception("El campo tipo de documento no puede estar vacio");
-            else this.afiliado.tipo_doc = comboBoxTipoDoc.Text;
+            else this.afiliado.tipo_doc_id = get_tipo_doc_id();
 
             if (string.IsNullOrWhiteSpace(comboBoxSexo.Text))
                 throw new Exception("El campo sexo no puede estar vacio");
@@ -153,7 +153,7 @@ namespace ClinicaFrba.Abm_Afiliado
 
             if (string.IsNullOrWhiteSpace(comboBoxEstadoCivil.Text))
                 throw new Exception("El campo estado civil no puede estar vacio");
-            else this.afiliado.estadoCivil = comboBoxEstadoCivil.Text;
+            else this.afiliado.estadoCivil_id = get_estado_id();
 
             if (this.dateTimePickerNacimiento.Value > Convert.ToDateTime(ConfigurationManager.AppSettings.Get("FechaSistema")))
                 throw new Exception("La fecha de nacimiento no puede ser mayor a hoy");

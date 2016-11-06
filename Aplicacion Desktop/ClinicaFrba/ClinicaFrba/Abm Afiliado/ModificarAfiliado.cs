@@ -66,6 +66,8 @@ namespace ClinicaFrba.Abm_Afiliado
             modificarPlanHabilitado();
             rellenarBoxes();
 
+            comprobarSiPerdioElRol();
+
         }
 
         private void modificarPlanHabilitado()
@@ -400,6 +402,37 @@ namespace ClinicaFrba.Abm_Afiliado
             GrupoFamiliar form = new GrupoFamiliar(this.sesion, this.afiliado);
             form.Show();
             this.Hide();
+        }
+
+        private void buttonReasignar_Click(object sender, EventArgs e)
+        {
+            //NUL.sp_asignar_rol_afiliado(@user_id numeric(18,0))
+            
+            SqlParameter[] dbParams = new SqlParameter[]
+            {
+                DAL.Classes.DBHelper.MakeParam("@user_id", SqlDbType.Decimal, 0, Decimal.Parse(this.afiliado.Cells[1].Value.ToString())),
+            };
+
+
+            DAL.Classes.DBHelper.ExecuteDataSet("NUL.sp_asignar_rol_afiliado", dbParams);
+
+            MessageBox.Show("Se reasigno el Rol Afiliado correctamente");
+            this.buttonReasignar.Enabled = false;
+
+        
+        }
+
+        private void comprobarSiPerdioElRol()
+        {
+            string select = "SELECT R.rol_id, R.rol_descrip FROM NUL.Usuario U JOIN NUL.User_rol UR ON UR.user_id = U.user_id JOIN NUL.Rol R ON R.rol_id = UR.rol_id ";
+	        string where = "WHERE U.user_id = " + this.afiliado.Cells[1].Value.ToString();
+
+            DataTable dt = DAL.Classes.DBHelper.ExecuteQuery_DS(select + where).Tables[0];
+
+            if (dt.Rows.Count > 0)
+                this.buttonReasignar.Enabled = false;
+            else
+                this.buttonReasignar.Enabled = true;
         }
 
     }

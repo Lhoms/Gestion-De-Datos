@@ -24,6 +24,7 @@ namespace ClinicaFrba.Abm_Afiliado
         ArrayList familiares;
         string password;
         long creado_id; //en este voy a mantener el id del usuario creado
+        long titular_nroAfil;
 
         List<string> doc_descrip;
         Dictionary<string, int> doc_id;
@@ -74,13 +75,15 @@ namespace ClinicaFrba.Abm_Afiliado
             this.comboBoxEstadoCivil.DataSource = this.estado_descrip;
           
             this.comboBoxPlanMedico.DataSource = this.plan_descrip;
+
+            this.buttonAgregarHijo.Enabled = false;
         }
 
 
         private void buttonAceptar_Click(object sender, EventArgs e)
         {
-            //try
-            //{
+            try
+            {
                 obtenerUsuario();
 
                 DataSet ds = get_usuario(afiliado.username, afiliado.tipo_doc); //busca al usuario por si existe
@@ -100,6 +103,8 @@ namespace ClinicaFrba.Abm_Afiliado
                     {
                         nuevo_afiliado(element);
                         notificarUsuarioNuevo(element);
+
+                        agregarAlGrupo(element);
                     }
 
                     
@@ -110,15 +115,40 @@ namespace ClinicaFrba.Abm_Afiliado
 
                     this.Hide();
                 }
-                
 
-            //}
 
-            //catch (Exception exc)
-            //{
-            //    MessageBox.Show(exc.Message, "Aviso", MessageBoxButtons.OK);
-            //}
+            }
 
+            catch (Exception exc)
+            {
+                MessageBox.Show(exc.Message, "Aviso", MessageBoxButtons.OK);
+            }
+
+        }
+
+        private void agregarAlGrupo(Afiliado afiliad)
+        {
+            string ultimos2Digitos = (this.afiliado.numeroAfiliado.ToString());
+            ultimos2Digitos = ultimos2Digitos.Substring(ultimos2Digitos.Length-2, 2);
+            int tipo_familiar;
+
+            if (ultimos2Digitos == "02")
+                tipo_familiar = 0;
+            else
+                tipo_familiar = 1;
+
+
+            SqlParameter[] dbParams = new SqlParameter[]
+                {
+                    DAL.Classes.DBHelper.MakeParam("@user_id", SqlDbType.Decimal, 100, this.creado_id),
+                    DAL.Classes.DBHelper.MakeParam("@titular", SqlDbType.Decimal, 100, this.titular_nroAfil),
+                    DAL.Classes.DBHelper.MakeParam("@nro_familiar", SqlDbType.Decimal, 100, tipo_familiar),
+                    DAL.Classes.DBHelper.MakeParam("@fecha", SqlDbType.DateTime, 100, DateTime.Parse(ConfigurationManager.AppSettings.Get("FechaSistema"))),
+
+                };
+
+
+            DAL.Classes.DBHelper.ExecuteDataSet("NUL.sp_agregar_a_grupo_familiar", dbParams);
         }
 
         private void notificarUsuarioNuevo(Afiliado usuario)
@@ -152,6 +182,8 @@ namespace ClinicaFrba.Abm_Afiliado
                 this.afiliado.username = textBoxDocumento.Text;
                 this.afiliado.numeroAfiliado = 
                     (((long.Parse(textBoxDocumento.Text))*10) + get_tipo_doc_id()) * 100 + 1;
+
+                this.titular_nroAfil = this.afiliado.numeroAfiliado;
             }
 
             if (string.IsNullOrWhiteSpace(comboBoxSexo.Text))
@@ -264,7 +296,7 @@ namespace ClinicaFrba.Abm_Afiliado
             SqlParameter[] dbParams = new SqlParameter[]
             {
                 DAL.Classes.DBHelper.MakeParam("@afil_id",           SqlDbType.Decimal,  0, this.creado_id),
-                DAL.Classes.DBHelper.MakeParam("@afil_estado",       SqlDbType.Decimal,  0, get_estado_id()), 
+                DAL.Classes.DBHelper.MakeParam("@afil_estado",       SqlDbType.Decimal,  0, this.afiliado.estadoCivil_id), 
                 DAL.Classes.DBHelper.MakeParam("@afil_plan_med",     SqlDbType.Decimal,  0, get_plan_id()),
                 DAL.Classes.DBHelper.MakeParam("@afil_nro_afiliado", SqlDbType.Decimal,  0, afiliado.numeroAfiliado),
             };
@@ -451,6 +483,19 @@ namespace ClinicaFrba.Abm_Afiliado
         private int get_plan_id()
         {
             return this.plan_id[this.comboBoxPlanMedico.Text];
+        }
+
+        private void comboBoxEstadoCivil_SelectionChangeCommitted(object sender, EventArgs e)
+        {
+            if (this.comboBoxEstadoCivil.Text == "Casado" || this.comboBoxEstadoCivil.Text == "Concubinato")
+                this.comboBoxEstadoCivil.Enabled = true;
+            else
+                this.comboBoxEstadoCivil.Enabled = false;
+        }
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+            this.buttonAgregarHijo.Enabled = this.checkBox1.Checked;
         }
 
 

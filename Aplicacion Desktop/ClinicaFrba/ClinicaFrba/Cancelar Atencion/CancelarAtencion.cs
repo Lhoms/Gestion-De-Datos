@@ -318,8 +318,8 @@ namespace ClinicaFrba.Cancelar_Atencion
             {
                 cancelarTurno(int.Parse(row["turno_id"].ToString()), 2, this.richTextMotivo.Text);
             }
-             MessageBox.Show("Se cancelaron los turnos desde: " + this.dateTimePicker2.Value.ToString() + " hasta: " + this.dateTimePicker1.Value.ToString(),
-                    "Aviso", MessageBoxButtons.OK)
+            MessageBox.Show("Se cancelaron los turnos desde: " + this.dateTimePicker2.Value.ToString() + " hasta: " + this.dateTimePicker1.Value.ToString(),
+                   "Aviso", MessageBoxButtons.OK);
             
             salir();
         }

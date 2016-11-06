@@ -56,6 +56,7 @@
             this.buttonAgregarConyuge = new System.Windows.Forms.Button();
             this.buttonAgregarHijo = new System.Windows.Forms.Button();
             this.buttonLimpiar = new System.Windows.Forms.Button();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.groupBoxAltaAfiliado.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -123,6 +124,7 @@
             this.comboBoxEstadoCivil.Name = "comboBoxEstadoCivil";
             this.comboBoxEstadoCivil.Size = new System.Drawing.Size(147, 21);
             this.comboBoxEstadoCivil.TabIndex = 24;
+            this.comboBoxEstadoCivil.SelectionChangeCommitted += new System.EventHandler(this.comboBoxEstadoCivil_SelectionChangeCommitted);
             // 
             // dateTimePickerNacimiento
             // 
@@ -328,11 +330,22 @@
             this.buttonLimpiar.UseVisualStyleBackColor = true;
             this.buttonLimpiar.Click += new System.EventHandler(this.buttonLimpiar_Click);
             // 
+            // checkBox1
+            // 
+            this.checkBox1.AutoSize = true;
+            this.checkBox1.Location = new System.Drawing.Point(135, 318);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(15, 14);
+            this.checkBox1.TabIndex = 28;
+            this.checkBox1.UseVisualStyleBackColor = true;
+            this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
+            // 
             // AltaAfiliado
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(609, 364);
+            this.Controls.Add(this.checkBox1);
             this.Controls.Add(this.buttonLimpiar);
             this.Controls.Add(this.buttonAgregarHijo);
             this.Controls.Add(this.buttonAgregarConyuge);
@@ -347,6 +360,7 @@
             this.groupBoxAltaAfiliado.ResumeLayout(false);
             this.groupBoxAltaAfiliado.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -385,5 +399,6 @@
         private System.Windows.Forms.Button buttonAgregarConyuge;
         private System.Windows.Forms.Button buttonAgregarHijo;
         private System.Windows.Forms.Button buttonLimpiar;
+        private System.Windows.Forms.CheckBox checkBox1;
     }
 }
