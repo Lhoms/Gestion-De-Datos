@@ -75,6 +75,18 @@ namespace ClinicaFrba.Abm_Afiliado
 
         }
 
+        private void esRaiz(string nro)
+        {
+            string nroAfiliado = nro;
+            nroAfiliado = nroAfiliado.Substring((nroAfiliado.Length - 2), 2);
+            int numero = int.Parse(nroAfiliado);
+
+            if (numero != 01)
+                throw new Exception("Ese numero no pertenece al numero de afiliado del titular del grupo");
+
+
+        }
+
         private bool tieneFamiliaresEnSuGrupo()
         {
             string nroAfiliado = this.afiliado.Cells[13].Value.ToString();
@@ -129,6 +141,8 @@ namespace ClinicaFrba.Abm_Afiliado
             comprobarSiExisteElGrupo();
 
             comprobarQueNoSeaElMismo();
+
+            esRaiz(this.textBox1.Text);
 
             int nroFamiliar = comprobarTipoFamiliar();
                 

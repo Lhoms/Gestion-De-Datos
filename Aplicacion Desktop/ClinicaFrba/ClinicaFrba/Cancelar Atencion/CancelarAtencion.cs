@@ -319,7 +319,18 @@ namespace ClinicaFrba.Cancelar_Atencion
                 cancelarTurno(int.Parse(row["turno_id"].ToString()), 2, this.richTextMotivo.Text);
             }
              MessageBox.Show("Se cancelaron los turnos desde: " + this.dateTimePicker2.Value.ToString() + " hasta: " + this.dateTimePicker1.Value.ToString(),
-                    "Aviso", MessageBoxButtons.OK);
+                    "Aviso", MessageBoxButtons.OK)
+            
+            salir();
+        }
+
+        private void salir()
+        {
+            Form1 form = new Form1(this.sesion);
+
+            form.Show();
+
+            this.Hide();
         }
 
         private void obtenerTurnosEnRango()
@@ -413,6 +424,9 @@ namespace ClinicaFrba.Cancelar_Atencion
                 cancelarTurno( t, 1, this.richTextMotivo.Text);
 
                 MessageBox.Show("Se cancelo el turno correctamente");
+
+                salir();
+
             } 
         }
 

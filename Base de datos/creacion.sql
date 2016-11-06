@@ -728,7 +728,7 @@ BEGIN
 				WHERE T.turno_fecha_hora >= I.baja_fecha_id
 	
 END
-
+GO
 
 
 --stored procedures
@@ -952,6 +952,13 @@ GO
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID('NUL.sp_modificar_usuario'))
 BEGIN
     DROP PROCEDURE NUL.sp_modificar_usuario
+END
+
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID('NUL.sp_asignar_rol_afiliado'))
+BEGIN
+    DROP PROCEDURE NUL.sp_asignar_rol_afiliado
 END
 
 GO
@@ -1458,7 +1465,7 @@ BEGIN
 		SET @ult_afil = @titular;
 	ELSE 
 
-		SELECT @ult_afil = ISNULL(MAX(afil_nro_afiliado), @titular)+1
+		SELECT @ult_afil = ISNULL(MAX(afil_nro_afiliado), @titular+1)
 		FROM NUL.Afiliado 
 		WHERE afil_titular = @nuevo_titular;
 	
@@ -1553,3 +1560,11 @@ BEGIN
 		WHERE afil_id = @user_id
 END
 GO
+
+CREATE PROCEDURE NUL.sp_asignar_rol_afiliado(@user_id numeric(18,0))
+AS
+BEGIN
+
+	INSERT INTO NUL.User_rol (rol_id, user_id) VALUES (2,@user_id)
+
+END

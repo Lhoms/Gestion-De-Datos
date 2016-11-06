@@ -269,24 +269,19 @@ namespace ClinicaFrba.Abm_Afiliado
                 DAL.Classes.DBHelper.MakeParam("@afil_nro_afiliado", SqlDbType.Decimal,  0, afiliado.numeroAfiliado),
             };
 
-            MessageBox.Show(creado_id.ToString() + get_estado_id().ToString() + get_plan_id().ToString() + afiliado.numeroAfiliado.ToString());
-
             DAL.Classes.DBHelper.ExecuteDataSet("NUL.agregar_afiliado", dbParams);
         }
 
         private void darRolAfiliado(Afiliado afiliado)
-        {
-            //SqlParameter[] dbParams = new SqlParameter[]
-            //{
-            //    DAL.Classes.DBHelper.MakeParam("@afil_id",           SqlDbType.Decimal,  0, this.creado_id),
-            //    DAL.Classes.DBHelper.MakeParam("@afil_estado",       SqlDbType.Decimal,  0, get_estado_id()), 
-            //    DAL.Classes.DBHelper.MakeParam("@afil_plan_med",     SqlDbType.Decimal,  0, get_plan_id()),
-            //    DAL.Classes.DBHelper.MakeParam("@afil_nro_afiliado", SqlDbType.Decimal,  0, afiliado.numeroAfiliado),
-            //};
+        {//NUL.sp_asignar_rol_afiliado(@user_id numeric(18,0))
+            
+            SqlParameter[] dbParams = new SqlParameter[]
+            {
+                DAL.Classes.DBHelper.MakeParam("@user_id", SqlDbType.Decimal, 0, this.creado_id),
+            };
 
-            //MessageBox.Show(creado_id.ToString() + get_estado_id().ToString() + get_plan_id().ToString() + afiliado.numeroAfiliado.ToString());
 
-            //DAL.Classes.DBHelper.ExecuteDataSet("NUL.agregar_afiliado", dbParams);
+            DAL.Classes.DBHelper.ExecuteDataSet("NUL.sp_asignar_rol_afiliado", dbParams);
         }
 
         private DataSet get_usuario(string username, string tipo_doc)
@@ -314,7 +309,6 @@ namespace ClinicaFrba.Abm_Afiliado
             textBoxApellido.Text = "";
             textBoxDocumento.Text = "";
             comboBoxTipoDoc.Text = "";
-            //dateTimePickerNacimiento;
             comboBoxSexo.Text = "";
             textBoxDireccion.Text = "";
             textBoxTelefono.Text = "";

@@ -257,8 +257,8 @@ namespace ClinicaFrba.Abm_Afiliado
 
         private void buttonModificar_Click(object sender, EventArgs e)
         {
-            //try
-            //{
+            try
+            {
                 //llamar al stored que modifica afiliados
                 modificarAfiliado();
 
@@ -277,18 +277,18 @@ namespace ClinicaFrba.Abm_Afiliado
                 form.Show();
                 this.Hide();
 
-            //}
-            //catch (Exception exc)
-            //{
-            //    MessageBox.Show(exc.Message, "Aviso", MessageBoxButtons.OK);
-            //}
+            }
+            catch (Exception exc)
+            {
+                MessageBox.Show(exc.Message, "Aviso", MessageBoxButtons.OK);
+            }
    
         }
 
         private void modificarAfiliado()
         {
             // NUL.sp_modificar_usuario(  @user_id numeric(18,0),@pers_dire varchar(255),
-	    //                               @pers_tel numeric(18,0), @pers_mail varchar(255), @pers_sexo char(1) , @afil_estado numeric(18,0))
+	                                   // @pers_tel numeric(18,0), @pers_mail varchar(255), @pers_sexo char(1) , @afil_estado numeric(18,0))
 
             obtenerUsuario();
 
@@ -301,14 +301,6 @@ namespace ClinicaFrba.Abm_Afiliado
                 DAL.Classes.DBHelper.MakeParam("@pers_sexo", SqlDbType.Char, 0, afiliadoDatosNuevos.sexo),
                 DAL.Classes.DBHelper.MakeParam("@afil_estado", SqlDbType.Decimal, 0, this.afiliadoDatosNuevos.estadoCivil_id),
             };
-
-
-            MessageBox.Show(afiliadoDatos.id +
-afiliadoDatosNuevos.direccion +
-afiliadoDatosNuevos.telefono +
-afiliadoDatosNuevos.mail +
-afiliadoDatosNuevos.sexo +
-afiliadoDatosNuevos.estadoCivil_id);
 
             DAL.Classes.DBHelper.ExecuteDataSet("NUL.sp_modificar_usuario", dbParams);
 
