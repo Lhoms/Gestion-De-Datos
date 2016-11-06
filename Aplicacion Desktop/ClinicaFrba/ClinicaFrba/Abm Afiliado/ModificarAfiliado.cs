@@ -63,8 +63,14 @@ namespace ClinicaFrba.Abm_Afiliado
             this.labelNroAfil.Text = this.afiliado.Cells[13].Value.ToString();          //nro afiliado
 
             modificacionHabilitada();
+            modificarPlanHabilitado();
             rellenarBoxes();
 
+        }
+
+        private void modificarPlanHabilitado()
+        {
+            throw new NotImplementedException();
         }
 
         private void rellenarBoxes()
@@ -273,12 +279,12 @@ namespace ClinicaFrba.Abm_Afiliado
 
         private void cambiarPlan()
         {
-            //sp_actualizar_plan(@afil numeric(18,0),@plan numeric(18,0),@motivo varchar(255),@error int output)
+           // NUL.sp_actualizar_plan(@afil numeric(18,0),@plan numeric(18,0),@motivo varchar(255),@error int output)
 
             int nuevoPlan = this.planes[this.comboBoxPlan.Text];
-            DateTime fechaHoy = DateTime.Parse(ConfigurationManager.AppSettings.Get("FechaSistema")) ;
-            
-            SqlParameter result = DAL.Classes.DBHelper.MakeParamOutput("@result", SqlDbType.Int, 100);
+            DateTime fechaHoy = DateTime.Parse(ConfigurationManager.AppSettings.Get("FechaSistema"));
+
+            SqlParameter result = DAL.Classes.DBHelper.MakeParamOutput("@error", SqlDbType.Int, 100);
 
             SqlParameter[] dbParams = new SqlParameter[]
             {
@@ -292,7 +298,7 @@ namespace ClinicaFrba.Abm_Afiliado
             DAL.Classes.DBHelper.ExecuteDataSet("NUL.sp_actualizar_plan", dbParams);
 
             if ((int)result.Value != 0)
-                throw new Exception("Error modificando el rol");
+                throw new Exception("Error modificando el plan");
         }
 
         private void obtenerUsuario()

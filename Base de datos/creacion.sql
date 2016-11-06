@@ -6,6 +6,8 @@ GO
 
 --Drop de tablas por si existen
 
+IF OBJECT_ID('NUL.Historial_baja', 'U') IS NOT NULL
+		DROP TABLE NUL.Historial_baja;
 IF OBJECT_ID('NUL.Agenda_dia', 'U') IS NOT NULL
 		DROP TABLE NUL.Agenda_dia;
 IF OBJECT_ID('NUL.Agenda', 'U') IS NOT NULL
@@ -54,8 +56,6 @@ IF OBJECT_ID('NUL.Usuario', 'U') IS NOT NULL
 		DROP TABLE NUL.Usuario;
 IF OBJECT_ID('NUL.Tipo_doc', 'U') IS NOT NULL
 		DROP TABLE NUL.Tipo_doc;		
-IF OBJECT_ID('NUL.Historial_baja', 'U') IS NOT NULL
-		DROP TABLE NUL.Historial_baja;
 
 GO
 
@@ -175,12 +175,13 @@ CREATE TABLE NUL.Bono_compra
 
 CREATE TABLE NUL.Historial_plan_med
 (
+		histo_id 				 numeric(18,0) IDENTITY(1,1),
 		histo_plan_id			 numeric(18,0),
 		histo_afil_id			 numeric(18,0),
 		histo_fecha_id			 date,
 		histo_descrip			 varchar(255),
 
-		CONSTRAINT pk_plan_med PRIMARY KEY (histo_plan_id,histo_afil_id,histo_fecha_id),
+		CONSTRAINT pk_plan_med PRIMARY KEY (histo_id,histo_plan_id,histo_afil_id,histo_fecha_id),
 
 		CONSTRAINT FK_histo_plan_id FOREIGN KEY (histo_plan_id) REFERENCES NUL.Plan_medico (plan_id),
 		CONSTRAINT FK_histo_afil_id FOREIGN KEY (histo_afil_id) REFERENCES NUL.Afiliado (afil_id)

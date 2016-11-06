@@ -192,6 +192,7 @@ namespace ClinicaFrba
 
            else
            {
+               this.groupBox1.Enabled = false;
                throw new Exception("No hay roles disponibles");
            }
 

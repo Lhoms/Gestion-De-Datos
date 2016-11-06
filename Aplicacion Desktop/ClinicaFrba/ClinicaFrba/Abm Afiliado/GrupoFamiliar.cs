@@ -96,44 +96,59 @@ namespace ClinicaFrba.Abm_Afiliado
 
         private void buttonAgregar_Click(object sender, EventArgs e)
         {
-
-            agregarAlGrupo();
-
-            salir();
-        }
-
-        private void agregarAlGrupo()
-        {
             try
             {
-                comprobarSiExisteElGrupo();
-
-                comprobarQueNoSeaElMismo();
-
-                int nroFamiliar = comprobarTipoFamiliar();
-                
-                this.afiliadoDatos.id = int.Parse(this.afiliado.Cells[1].Value.ToString());
-
-
-                SqlParameter[] dbParams = new SqlParameter[]
-                    {
-                        DAL.Classes.DBHelper.MakeParam("@user_id", SqlDbType.Decimal, 100, this.afiliadoDatos.id),
-                        DAL.Classes.DBHelper.MakeParam("@titular", SqlDbType.Decimal, 100, Decimal.Parse(this.textBox1.Text)),
-                        DAL.Classes.DBHelper.MakeParam("@nro_familiar", SqlDbType.Decimal, 100, nroFamiliar),
-                        DAL.Classes.DBHelper.MakeParam("@fecha", SqlDbType.DateTime, 100, DateTime.Parse(ConfigurationManager.AppSettings.Get("FechaSistema"))),
-
-                    };
-
-
-                DAL.Classes.DBHelper.ExecuteDataSet("NUL.sp_agregar_a_grupo_familiar", dbParams);
-
-                MessageBox.Show("Se agrego correctamente al grupo", "Aviso", MessageBoxButtons.OK);
-
+                agregarAlGrupo();
+                notificarNuevoNumeroAfiliado();
+                salir();
             }
             catch (Exception exc)
             {
                 MessageBox.Show(exc.Message, "Aviso", MessageBoxButtons.OK);
             }
+        }
+
+        private void notificarNuevoNumeroAfiliado()
+        {
+            string user_id = this.afiliado.Cells[1].Value.ToString();
+
+
+            string expresion = "SELECT afil_nro_afiliado FROM NUL.Afiliado WHERE afil_id = " + user_id;
+
+            SqlDataReader lector = DAL.Classes.DBHelper.ExecuteQuery_DR(expresion);
+
+            string mensaje = "Su nuevo numero de afiliado es: " + lector["afil_nro_afiliado"].ToString();
+
+            MessageBox.Show( mensaje, "Aviso", MessageBoxButtons.OK);
+
+        }
+
+        private void agregarAlGrupo()
+        {
+
+            comprobarSiExisteElGrupo();
+
+            comprobarQueNoSeaElMismo();
+
+            int nroFamiliar = comprobarTipoFamiliar();
+                
+            this.afiliadoDatos.id = int.Parse(this.afiliado.Cells[1].Value.ToString());
+
+
+            SqlParameter[] dbParams = new SqlParameter[]
+                {
+                    DAL.Classes.DBHelper.MakeParam("@user_id", SqlDbType.Decimal, 100, this.afiliadoDatos.id),
+                    DAL.Classes.DBHelper.MakeParam("@titular", SqlDbType.Decimal, 100, Decimal.Parse(this.textBox1.Text)),
+                    DAL.Classes.DBHelper.MakeParam("@nro_familiar", SqlDbType.Decimal, 100, nroFamiliar),
+                    DAL.Classes.DBHelper.MakeParam("@fecha", SqlDbType.DateTime, 100, DateTime.Parse(ConfigurationManager.AppSettings.Get("FechaSistema"))),
+
+                };
+
+
+            DAL.Classes.DBHelper.ExecuteDataSet("NUL.sp_agregar_a_grupo_familiar", dbParams);
+
+            MessageBox.Show("Se agrego correctamente al grupo", "Aviso", MessageBoxButtons.OK);
+
         }
 
         private void comprobarQueNoSeaElMismo()
@@ -160,8 +175,6 @@ namespace ClinicaFrba.Abm_Afiliado
         private void comprobarSiHayConyuge()
         {
             string conyuge = (long.Parse(this.textBox1.Text) + 1).ToString();
-
-            MessageBox.Show(conyuge);
 
             string expresion = "SELECT * FROM NUL.Afiliado WHERE afil_nro_afiliado = " + conyuge;
 

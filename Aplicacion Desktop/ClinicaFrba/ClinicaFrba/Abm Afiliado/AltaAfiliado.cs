@@ -55,6 +55,8 @@ namespace ClinicaFrba.Abm_Afiliado
             this.sesion = sesion;
 
             this.familiares = new ArrayList();
+
+            this.dateTimePickerNacimiento.MaxDate = DateTime.Parse(ConfigurationManager.AppSettings.Get("FechaSistema"));
             
             getTipoDoc();
             getPlanes();
@@ -200,13 +202,14 @@ namespace ClinicaFrba.Abm_Afiliado
             this.afiliado.nroConsulta = 0;
         }
 
-        private void nuevo_afiliado(Afiliado a)
+        private void nuevo_afiliado(Afiliado afiliado)
         {
             try
             {
-                crearUsuario(a);
-                crearPersona(a);
-                crearAfiliado(a);
+                crearUsuario(afiliado);
+                crearPersona(afiliado);
+                crearAfiliado(afiliado);
+                darRolAfiliado(afiliado);
             }
             catch (Exception exc)
             {
@@ -214,7 +217,7 @@ namespace ClinicaFrba.Abm_Afiliado
             }
         }
 
-        private void crearUsuario(Afiliado a)
+        private void crearUsuario(Afiliado afiliado)
         {
             string username = afiliado.username;
             int tipo_doc = afiliado.tipo_doc_id;
@@ -238,14 +241,55 @@ namespace ClinicaFrba.Abm_Afiliado
 
         }
 
-        private void crearPersona(Afiliado a)
+        private void crearPersona(Afiliado afiliado)
         {
-            //throw new NotImplementedException();
+
+            SqlParameter[] dbParams = new SqlParameter[]
+            {
+                DAL.Classes.DBHelper.MakeParam("@pers_id",        SqlDbType.Decimal,     0, creado_id),
+                DAL.Classes.DBHelper.MakeParam("@pers_nombre",    SqlDbType.VarChar,     0, afiliado.nombre), 
+                DAL.Classes.DBHelper.MakeParam("@pers_apellido",  SqlDbType.VarChar,     0, afiliado.apellido),
+                DAL.Classes.DBHelper.MakeParam("@pers_doc",       SqlDbType.Decimal,     0, afiliado.documento),
+                DAL.Classes.DBHelper.MakeParam("@pers_dire",      SqlDbType.Decimal,     0, afiliado.tipo_doc_id), 
+                DAL.Classes.DBHelper.MakeParam("@pers_tel",       SqlDbType.Decimal,     0, afiliado.telefono),
+                DAL.Classes.DBHelper.MakeParam("@pers_mail",      SqlDbType.VarChar,     0, afiliado.mail),
+                DAL.Classes.DBHelper.MakeParam("@pers_fecha_nac", SqlDbType.DateTime,    0, afiliado.nacimiento), 
+                DAL.Classes.DBHelper.MakeParam("@pers_sexo",      SqlDbType.Char,        0, afiliado.sexo),
+                
+
+            };
+
+            DAL.Classes.DBHelper.ExecuteDataSet("NUL.agregar_persona", dbParams);
         }
 
-        private void crearAfiliado(Afiliado a)
+        private void crearAfiliado(Afiliado afiliado)
         {
-            //throw new NotImplementedException();
+            SqlParameter[] dbParams = new SqlParameter[]
+            {
+                DAL.Classes.DBHelper.MakeParam("@afil_id",           SqlDbType.Decimal,  0, this.creado_id),
+                DAL.Classes.DBHelper.MakeParam("@afil_estado",       SqlDbType.Decimal,  0, get_estado_id()), 
+                DAL.Classes.DBHelper.MakeParam("@afil_plan_med",     SqlDbType.Decimal,  0, get_plan_id()),
+                DAL.Classes.DBHelper.MakeParam("@afil_nro_afiliado", SqlDbType.Decimal,  0, afiliado.numeroAfiliado),
+            };
+
+            MessageBox.Show(creado_id.ToString() + get_estado_id().ToString() + get_plan_id().ToString() + afiliado.numeroAfiliado.ToString());
+
+            DAL.Classes.DBHelper.ExecuteDataSet("NUL.agregar_afiliado", dbParams);
+        }
+
+        private void darRolAfiliado(Afiliado afiliado)
+        {
+            //SqlParameter[] dbParams = new SqlParameter[]
+            //{
+            //    DAL.Classes.DBHelper.MakeParam("@afil_id",           SqlDbType.Decimal,  0, this.creado_id),
+            //    DAL.Classes.DBHelper.MakeParam("@afil_estado",       SqlDbType.Decimal,  0, get_estado_id()), 
+            //    DAL.Classes.DBHelper.MakeParam("@afil_plan_med",     SqlDbType.Decimal,  0, get_plan_id()),
+            //    DAL.Classes.DBHelper.MakeParam("@afil_nro_afiliado", SqlDbType.Decimal,  0, afiliado.numeroAfiliado),
+            //};
+
+            //MessageBox.Show(creado_id.ToString() + get_estado_id().ToString() + get_plan_id().ToString() + afiliado.numeroAfiliado.ToString());
+
+            //DAL.Classes.DBHelper.ExecuteDataSet("NUL.agregar_afiliado", dbParams);
         }
 
         private DataSet get_usuario(string username, string tipo_doc)
