@@ -310,7 +310,7 @@ GO
 CREATE TABLE NUL.Historial_baja
 (
 		baja_user_id 			numeric(18,0),
-		baja_fecha_id			DateTime(18,0),
+		baja_fecha_id			DateTime,
 		baja_descrip 	 		varchar(250) default NULL,
 
 

@@ -138,14 +138,6 @@ namespace ClinicaFrba.Login
 
         public void getTipoDoc()
         {
-            //    SqlParameter[] dbParams = new SqlParameter[]
-            //        {
-
-            //        };
-
-
-            //return DAL.Classes.DBHelper.ExecuteDataSet("NUL.sp_get_tipo_doc", dbParams);
-
             string expresion = "SELECT doc_id, doc_descrip FROM NUL.Tipo_doc";
 
             SqlDataReader lector = DAL.Classes.DBHelper.ExecuteQuery_DR(expresion);

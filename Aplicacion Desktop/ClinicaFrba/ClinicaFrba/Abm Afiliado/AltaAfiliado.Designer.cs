@@ -29,8 +29,6 @@
         private void InitializeComponent()
         {
             this.groupBoxAltaAfiliado = new System.Windows.Forms.GroupBox();
-            this.numericUpDownCantHijos = new System.Windows.Forms.NumericUpDown();
-            this.labelCantFamiliares = new System.Windows.Forms.Label();
             this.labelTelefono = new System.Windows.Forms.Label();
             this.textBoxTelefono = new System.Windows.Forms.TextBox();
             this.comboBoxPlanMedico = new System.Windows.Forms.ComboBox();
@@ -59,13 +57,10 @@
             this.buttonAgregarHijo = new System.Windows.Forms.Button();
             this.buttonLimpiar = new System.Windows.Forms.Button();
             this.groupBoxAltaAfiliado.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownCantHijos)).BeginInit();
             this.SuspendLayout();
             // 
             // groupBoxAltaAfiliado
             // 
-            this.groupBoxAltaAfiliado.Controls.Add(this.numericUpDownCantHijos);
-            this.groupBoxAltaAfiliado.Controls.Add(this.labelCantFamiliares);
             this.groupBoxAltaAfiliado.Controls.Add(this.labelTelefono);
             this.groupBoxAltaAfiliado.Controls.Add(this.textBoxTelefono);
             this.groupBoxAltaAfiliado.Controls.Add(this.comboBoxPlanMedico);
@@ -94,25 +89,6 @@
             this.groupBoxAltaAfiliado.TabIndex = 0;
             this.groupBoxAltaAfiliado.TabStop = false;
             this.groupBoxAltaAfiliado.Text = "Alta Afiliado";
-            // 
-            // numericUpDownCantHijos
-            // 
-            this.numericUpDownCantHijos.Location = new System.Drawing.Point(435, 178);
-            this.numericUpDownCantHijos.Name = "numericUpDownCantHijos";
-            this.numericUpDownCantHijos.Size = new System.Drawing.Size(120, 20);
-            this.numericUpDownCantHijos.TabIndex = 30;
-            this.numericUpDownCantHijos.ValueChanged += new System.EventHandler(this.numericUpDownCantHijos_ValueChanged);
-            this.numericUpDownCantHijos.KeyDown += new System.Windows.Forms.KeyEventHandler(this.numericUpDownCantHijos_KeyDown);
-            this.numericUpDownCantHijos.KeyUp += new System.Windows.Forms.KeyEventHandler(this.numericUpDownCantHijos_KeyUp);
-            // 
-            // labelCantFamiliares
-            // 
-            this.labelCantFamiliares.AutoSize = true;
-            this.labelCantFamiliares.Location = new System.Drawing.Point(337, 180);
-            this.labelCantFamiliares.Name = "labelCantFamiliares";
-            this.labelCantFamiliares.Size = new System.Drawing.Size(78, 13);
-            this.labelCantFamiliares.TabIndex = 28;
-            this.labelCantFamiliares.Text = "Cant familiares:";
             // 
             // labelTelefono
             // 
@@ -147,7 +123,6 @@
             this.comboBoxEstadoCivil.Name = "comboBoxEstadoCivil";
             this.comboBoxEstadoCivil.Size = new System.Drawing.Size(147, 21);
             this.comboBoxEstadoCivil.TabIndex = 24;
-            this.comboBoxEstadoCivil.TextChanged += new System.EventHandler(this.comboBoxEstadoCivil_TextChanged);
             // 
             // dateTimePickerNacimiento
             // 
@@ -186,9 +161,6 @@
             this.comboBoxTipoDoc.Name = "comboBoxTipoDoc";
             this.comboBoxTipoDoc.Size = new System.Drawing.Size(90, 21);
             this.comboBoxTipoDoc.TabIndex = 20;
-            this.comboBoxTipoDoc.SelectedIndexChanged += new System.EventHandler(this.comboBoxTipoDoc_SelectedIndexChanged);
-            this.comboBoxTipoDoc.TextChanged += new System.EventHandler(this.comboBoxTipoDoc_TextChanged);
-            this.comboBoxTipoDoc.Validating += new System.ComponentModel.CancelEventHandler(this.comboBoxTipoDoc_Validating);
             // 
             // labelTipoDoc
             // 
@@ -198,7 +170,6 @@
             this.labelTipoDoc.Size = new System.Drawing.Size(31, 13);
             this.labelTipoDoc.TabIndex = 19;
             this.labelTipoDoc.Text = "Tipo:";
-            this.labelTipoDoc.Click += new System.EventHandler(this.labelTipoDoc_Click);
             // 
             // labelPlanMedico
             // 
@@ -292,7 +263,6 @@
             this.textBoxDocumento.Name = "textBoxDocumento";
             this.textBoxDocumento.Size = new System.Drawing.Size(147, 20);
             this.textBoxDocumento.TabIndex = 2;
-            this.textBoxDocumento.TextChanged += new System.EventHandler(this.textBoxDocumento_TextChanged);
             // 
             // textBoxApellido
             // 
@@ -376,9 +346,13 @@
             this.Text = "Alta Afiliado";
             this.groupBoxAltaAfiliado.ResumeLayout(false);
             this.groupBoxAltaAfiliado.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownCantHijos)).EndInit();
             this.ResumeLayout(false);
 
+        }
+
+        private void comboBoxEstadoCivil_TextChanged(object sender, System.EventArgs e)
+        {
+            throw new System.NotImplementedException();
         }
 
         #endregion
@@ -406,12 +380,10 @@
         private System.Windows.Forms.ComboBox comboBoxPlanMedico;
         private System.Windows.Forms.Label labelTelefono;
         private System.Windows.Forms.TextBox textBoxTelefono;
-        private System.Windows.Forms.Label labelCantFamiliares;
         private System.Windows.Forms.Button buttonAceptar;
         private System.Windows.Forms.Button buttonCancelar;
         private System.Windows.Forms.Button buttonAgregarConyuge;
         private System.Windows.Forms.Button buttonAgregarHijo;
         private System.Windows.Forms.Button buttonLimpiar;
-        private System.Windows.Forms.NumericUpDown numericUpDownCantHijos;
     }
 }

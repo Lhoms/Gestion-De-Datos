@@ -22,8 +22,17 @@ namespace ClinicaFrba.Abm_Afiliado
         Sesion sesion;
         Afiliado afiliado;
         ArrayList familiares;
+        string password;
+        long creado_id; //en este voy a mantener el id del usuario creado
 
-        DataSet dsDoc, dsEstado, dsPlanes;
+        List<string> doc_descrip;
+        Dictionary<string, int> doc_id;
+
+        List<string> plan_descrip;
+        Dictionary<string, int> plan_id;
+
+        List<string> estado_descrip;
+        Dictionary<string, int> estado_id;
 
         public AltaAfiliado(Sesion sesion)
         {        
@@ -31,10 +40,26 @@ namespace ClinicaFrba.Abm_Afiliado
            
             this.afiliado = new Afiliado();
 
+            doc_descrip = new List<string>();
+            doc_id = new Dictionary<string, int>();
+
+            plan_descrip = new List<string>();
+            plan_id = new Dictionary<string, int>();
+
+            estado_descrip = new List<string>();
+            estado_id = new Dictionary<string, int>();
+
+            password = "w23e"; //todos van a tener esta pass
+
+
             this.sesion = sesion;
 
             this.familiares = new ArrayList();
             
+            getTipoDoc();
+            getPlanes();
+            getEstados();
+
             llenarComboBoxes();
 
             buttonAgregarConyuge.Enabled = false;
@@ -45,24 +70,18 @@ namespace ClinicaFrba.Abm_Afiliado
 
         private void llenarComboBoxes()
         {
-            this.comboBoxTipoDoc.ValueMember = "doc_descrip";
-            this.dsDoc = getTipoDoc();
-            this.comboBoxTipoDoc.DataSource = this.dsDoc.Tables[0];
+            this.comboBoxTipoDoc.DataSource = this.doc_descrip;
 
-            this.comboBoxEstadoCivil.ValueMember = "estado_descrip";
-            this.dsEstado = getEstado();
-            this.comboBoxEstadoCivil.DataSource = this.dsEstado.Tables[0];
-
-            this.comboBoxPlanMedico.ValueMember = "plan_descrip";
-            this.dsPlanes = getPlanes();
-            this.comboBoxPlanMedico.DataSource = this.dsPlanes.Tables[0];
+            this.comboBoxEstadoCivil.DataSource = this.estado_descrip;
+          
+            this.comboBoxPlanMedico.DataSource = this.plan_descrip;
         }
 
 
         private void buttonAceptar_Click(object sender, EventArgs e)
         {
-            try
-            {
+            //try
+            //{
                 obtenerUsuario();
 
                 DataSet ds = get_usuario(afiliado.username, afiliado.tipo_doc); //busca al usuario por si existe
@@ -94,12 +113,12 @@ namespace ClinicaFrba.Abm_Afiliado
                 }
                 
 
-            }
+            //}
 
-            catch (Exception exc)
-            {
-                MessageBox.Show(exc.Message, "Aviso", MessageBoxButtons.OK);
-            }
+            //catch (Exception exc)
+            //{
+            //    MessageBox.Show(exc.Message, "Aviso", MessageBoxButtons.OK);
+            //}
 
         }
 
@@ -124,7 +143,7 @@ namespace ClinicaFrba.Abm_Afiliado
 
             if (string.IsNullOrWhiteSpace(comboBoxTipoDoc.Text))
                 throw new Exception("El campo tipo de documento no puede estar vacio");
-            else this.afiliado.tipo_doc = comboBoxTipoDoc.Text;
+            else this.afiliado.tipo_doc_id = get_tipo_doc_id();
 
             if (string.IsNullOrWhiteSpace(textBoxDocumento.Text))
                 throw new Exception("El campo documento no puede estar vacio");
@@ -133,7 +152,7 @@ namespace ClinicaFrba.Abm_Afiliado
                 this.afiliado.documento = long.Parse(textBoxDocumento.Text);
                 this.afiliado.username = textBoxDocumento.Text;
                 this.afiliado.numeroAfiliado = 
-                    (((long.Parse(textBoxDocumento.Text))*10) + get_tipo_doc_id(this.afiliado.tipo_doc)) * 100 + 1;
+                    (((long.Parse(textBoxDocumento.Text))*10) + get_tipo_doc_id()) * 100 + 1;
             }
 
             if (string.IsNullOrWhiteSpace(comboBoxSexo.Text))
@@ -166,15 +185,13 @@ namespace ClinicaFrba.Abm_Afiliado
 
             if (string.IsNullOrWhiteSpace(comboBoxEstadoCivil.Text))
                 throw new Exception("El campo estado civil no puede estar vacio");
-            else this.afiliado.estadoCivil = comboBoxEstadoCivil.Text;
+            else this.afiliado.estadoCivil_id = get_estado_id();
 
-            if (string.IsNullOrWhiteSpace(numericUpDownCantHijos.Text))
-                throw new Exception("El campo cantidad de hijos no puede estar vacio");
-            else this.afiliado.cantFamiliares = int.Parse(numericUpDownCantHijos.Text);
+            this.afiliado.cantFamiliares = 0;
 
             if (string.IsNullOrWhiteSpace(comboBoxPlanMedico.Text))
                 throw new Exception("El campo plan medico no puede estar vacio");
-            else this.afiliado.planMedico = comboBoxPlanMedico.Text;
+            else this.afiliado.planMedico_id = get_plan_id();
 
             if (this.dateTimePickerNacimiento.Value > Convert.ToDateTime(ConfigurationManager.AppSettings.Get("FechaSistema")))
                 throw new Exception("La fecha de nacimiento no puede ser mayor a hoy");
@@ -185,25 +202,56 @@ namespace ClinicaFrba.Abm_Afiliado
 
         private void nuevo_afiliado(Afiliado a)
         {
-            //llamar store para crear nuevo usuario+persona+afiliado
+            try
+            {
+                crearUsuario(a);
+                crearPersona(a);
+                crearAfiliado(a);
+            }
+            catch (Exception exc)
+            {
+                MessageBox.Show(exc.Message, "Aviso", MessageBoxButtons.OK);
+            }
+        }
+
+        private void crearUsuario(Afiliado a)
+        {
+            string username = afiliado.username;
+            int tipo_doc = afiliado.tipo_doc_id;
+
+
+            SqlParameter id = DAL.Classes.DBHelper.MakeParamOutput("@id", SqlDbType.Decimal, 100);
+
+            SqlParameter[] dbParams = new SqlParameter[]
+            {
+                DAL.Classes.DBHelper.MakeParam("@user_username", SqlDbType.VarChar, 0, username),
+                DAL.Classes.DBHelper.MakeParam("@user_tipodoc", SqlDbType.Decimal    , 0, tipo_doc), 
+                DAL.Classes.DBHelper.MakeParam("@user_pass"    , SqlDbType.VarChar, 0, password),
+                id,
+
+            };
+
+
+            DAL.Classes.DBHelper.ExecuteDataSet("NUL.agregar_usuario", dbParams);
+
+            creado_id = long.Parse(id.Value.ToString());
+
+        }
+
+        private void crearPersona(Afiliado a)
+        {
+            //throw new NotImplementedException();
+        }
+
+        private void crearAfiliado(Afiliado a)
+        {
+            //throw new NotImplementedException();
         }
 
         private DataSet get_usuario(string username, string tipo_doc)
         {
-            string expresion = "SELECT * FROM NUL.Usuario U WHERE U.user_username = '" + username + "' AND U.user_tipodoc = " + get_tipo_doc_id(tipo_doc).ToString();
+            string expresion = "SELECT * FROM NUL.Usuario U WHERE U.user_username = '" + username + "' AND U.user_tipodoc = " + get_tipo_doc_id().ToString();
             return DAL.Classes.DBHelper.ExecuteQuery_DS(expresion);
-        }
-
-
-        private void comboBoxTipoDoc_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
-
-        private void labelTipoDoc_Click(object sender, EventArgs e)
-        {
-
         }
 
 
@@ -231,7 +279,6 @@ namespace ClinicaFrba.Abm_Afiliado
             textBoxTelefono.Text = "";
             textBoxMail.Text = "";
             comboBoxEstadoCivil.Text = "";
-            numericUpDownCantHijos.Text = "";
             comboBoxPlanMedico.Text = "";
 
             familiares.Clear();
@@ -277,7 +324,10 @@ namespace ClinicaFrba.Abm_Afiliado
 
             else
             {
-                long raizGrupoFamiliar = (((long.Parse(textBoxDocumento.Text)) * 10) + get_tipo_doc_id(this.afiliado.tipo_doc)) * 100;
+                this.textBoxDocumento.Enabled = false;
+                this.comboBoxPlanMedico.Enabled = false;
+
+                long raizGrupoFamiliar = (((long.Parse(textBoxDocumento.Text)) * 10) + get_tipo_doc_id()) * 100;
 
                 Abm_Afiliado.AltaFamiliar form;
 
@@ -290,175 +340,83 @@ namespace ClinicaFrba.Abm_Afiliado
         }
 
 
-        private void numericUpDownCantHijos_KeyDown(object sender, KeyEventArgs e)
+        public void getTipoDoc()
         {
-            //
-        }
+            string expresion = "SELECT doc_id, doc_descrip FROM NUL.Tipo_doc";
 
+            SqlDataReader lector = DAL.Classes.DBHelper.ExecuteQuery_DR(expresion);
 
-        private void numericUpDownCantHijos_KeyUp(object sender, KeyEventArgs e)
-        {
-            //
-        }
-
-
-        private void comboBoxEstadoCivil_TextChanged(object sender, EventArgs e)
-        {
-            cambioCantidadDeFamiliares();
-        }
-
-
-        private void numericUpDownCantHijos_ValueChanged(object sender, EventArgs e)
-        {
-            cambioCantidadDeFamiliares();
-        }
-
-
-        private void cambioCantidadDeFamiliares()
-        {
-            switch (comboBoxEstadoCivil.Text)
+            if (lector != null)
             {
-                case "Casado":
-                    if ((numericUpDownCantHijos.Value - familiares.Count) == 0)
-                    {
-                        buttonAgregarConyuge.Enabled = false;
-                        buttonAgregarHijo.Enabled = false;
-                    }
+                this.doc_descrip.Add(lector["doc_descrip"].ToString());
+                this.doc_id.Add(lector["doc_descrip"].ToString(), int.Parse(lector["doc_id"].ToString()));
 
-                    else
-                    if ((numericUpDownCantHijos.Value - familiares.Count) == 1)
-                    {
-                        buttonAgregarConyuge.Enabled = true;
-                        buttonAgregarHijo.Enabled = false;
-                    }
-
-                    else
-                    {
-                        buttonAgregarConyuge.Enabled = true;
-                        buttonAgregarHijo.Enabled = true;
-                    }
-                    break;
-
-                case "Concubinato":
-                    if ((numericUpDownCantHijos.Value - familiares.Count) == 0)
-                    {
-                        buttonAgregarConyuge.Enabled = false;
-                        buttonAgregarHijo.Enabled = false;
-                    }
-
-                    else
-                        if ((numericUpDownCantHijos.Value - familiares.Count) == 1)
-                        {
-                            buttonAgregarConyuge.Enabled = true;
-                            buttonAgregarHijo.Enabled = false;
-                        }
-
-                        else
-                        {
-                            buttonAgregarConyuge.Enabled = true;
-                            buttonAgregarHijo.Enabled = true;
-                        }
-                    break;
-
-                default:
-                    if ((numericUpDownCantHijos.Value - familiares.Count) == 0)
-                    {
-                        buttonAgregarConyuge.Enabled = false;
-                        buttonAgregarHijo.Enabled = false;
-                    }
-
-                    else
-                    {
-                        buttonAgregarConyuge.Enabled = false;
-                        buttonAgregarHijo.Enabled = true;
-                    }
-
-                    break;
-
+                while (lector.Read())
+                {
+                    this.doc_descrip.Add(lector["doc_descrip"].ToString());
+                    this.doc_id.Add(lector["doc_descrip"].ToString(), int.Parse(lector["doc_id"].ToString()));
+                }
 
             }
+
         }
 
-        private void textBoxDocumento_TextChanged(object sender, EventArgs e)
+        private int get_tipo_doc_id()
         {
-            //
+            return this.doc_id[this.comboBoxTipoDoc.Text];
         }
 
-        private void comboBoxTipoDoc_TextChanged(object sender, EventArgs e)
+        public void getEstados()
         {
-            //
+            string expresion = "SELECT estado_id, estado_descrip FROM NUL.Estado";
+
+            SqlDataReader lector = DAL.Classes.DBHelper.ExecuteQuery_DR(expresion);
+
+            if (lector != null)
+            {
+                estado_id.Add((string)lector["estado_descrip"].ToString(), int.Parse(lector["estado_id"].ToString()));
+                estado_descrip.Add((string)lector["estado_descrip"].ToString());
+
+                while (lector.Read())
+                {
+                    estado_id.Add((string)lector["estado_descrip"].ToString(), int.Parse(lector["estado_id"].ToString()));
+                    estado_descrip.Add((string)lector["estado_descrip"].ToString());
+                }
+            }
+
         }
 
-        public static DataSet getTipoDoc()
+        private int get_estado_id()
         {
-            SqlParameter[] dbParams = new SqlParameter[]
-                    {
-                       
-                    };
-
-
-            return DAL.Classes.DBHelper.ExecuteDataSet("NUL.sp_get_tipo_doc", dbParams);
-
+            return this.estado_id[this.comboBoxEstadoCivil.Text];
         }
 
-        private int get_tipo_doc_id(string tipo_doc)
+        public void getPlanes()
         {
-            string expresion = "doc_descrip = '" + tipo_doc + "'";
-            int tipo = 1;
+            string expresion = "SELECT plan_id, plan_descrip FROM NUL.Plan_medico";
 
-            tipo = int.Parse(this.dsDoc.Tables[0].Rows[0][0].ToString());
+            SqlDataReader lector = DAL.Classes.DBHelper.ExecuteQuery_DR(expresion);
 
-            return tipo;
+            if (lector != null)
+            {
+                plan_id.Add((string)lector["plan_descrip"].ToString(), int.Parse(lector["plan_id"].ToString()));
+                plan_descrip.Add((string)lector["plan_descrip"].ToString());
+
+                while (lector.Read())
+                {
+                    plan_id.Add((string)lector["plan_descrip"].ToString(), int.Parse(lector["plan_id"].ToString()));
+                    plan_descrip.Add((string)lector["plan_descrip"].ToString());
+                }
+            }
+
         }
 
-        public DataSet getEstado()
+        private int get_plan_id()
         {
-            SqlParameter[] dbParams = new SqlParameter[]
-                    {
-                       
-                    };
-
-
-            return DAL.Classes.DBHelper.ExecuteDataSet("NUL.sp_get_estados_civiles", dbParams);
-
+            return this.plan_id[this.comboBoxPlanMedico.Text];
         }
 
-        private int get_estado_id(string estado)
-        {
-            string expresion = "estado_descrip = '" + estado + "'";
-            int tipo = 1;
 
-            tipo = int.Parse(this.dsEstado.Tables[0].Rows[0][0].ToString());
-
-            return tipo;
-        }
-
-        public DataSet getPlanes()
-        {
-            SqlParameter[] dbParams = new SqlParameter[]
-                    {
-                       
-                    };
-
-
-            return DAL.Classes.DBHelper.ExecuteDataSet("NUL.sp_get_planes", dbParams);
-
-        }
-
-        private int get_plan_id(string plan)
-        {
-            string expresion = "plan_descrip = '" + plan + "'";
-            int tipo = 1;
-
-            tipo = int.Parse(this.dsPlanes.Tables[0].Rows[0][0].ToString());
-
-            return tipo;
-        }
-
-        private void comboBoxTipoDoc_Validating(object sender, CancelEventArgs e)
-        {
-            //  
-        }
 
     }
     

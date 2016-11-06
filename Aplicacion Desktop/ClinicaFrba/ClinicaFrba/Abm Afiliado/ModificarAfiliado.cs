@@ -252,7 +252,7 @@ namespace ClinicaFrba.Abm_Afiliado
                 if (this.afiliadoDatos.planMedico_id != this.planes[this.comboBoxPlan.Text])
                 {
                     //llamar al stored de modificar plan medico
-                    MessageBox.Show("cambiar el plan medico");
+                    MessageBox.Show("Se cambio de plan medico");
                     cambiarPlan();
                 }
 
@@ -273,6 +273,8 @@ namespace ClinicaFrba.Abm_Afiliado
 
         private void cambiarPlan()
         {
+            //sp_actualizar_plan(@afil numeric(18,0),@plan numeric(18,0),@motivo varchar(255),@error int output)
+
             int nuevoPlan = this.planes[this.comboBoxPlan.Text];
             DateTime fechaHoy = DateTime.Parse(ConfigurationManager.AppSettings.Get("FechaSistema")) ;
             
@@ -280,14 +282,14 @@ namespace ClinicaFrba.Abm_Afiliado
 
             SqlParameter[] dbParams = new SqlParameter[]
             {
-                DAL.Classes.DBHelper.MakeParam("@user_id", SqlDbType.Decimal, 0, afiliadoDatos.id),
-                DAL.Classes.DBHelper.MakeParam("@plan_id", SqlDbType.Decimal, 0, nuevoPlan),
+                DAL.Classes.DBHelper.MakeParam("@afil", SqlDbType.Decimal, 0, afiliadoDatos.id),
+                DAL.Classes.DBHelper.MakeParam("@plan", SqlDbType.Decimal, 0, nuevoPlan),
                 DAL.Classes.DBHelper.MakeParam("@fecha", SqlDbType.DateTime, 0, fechaHoy),
                 DAL.Classes.DBHelper.MakeParam("@motivo", SqlDbType.VarChar, 0, this.richTextBox1.Text),
                 result,
             };
 
-            DAL.Classes.DBHelper.ExecuteDataSet("NUL.sp_cambiar_plan", dbParams);
+            DAL.Classes.DBHelper.ExecuteDataSet("NUL.sp_actualizar_plan", dbParams);
 
             if ((int)result.Value != 0)
                 throw new Exception("Error modificando el rol");
