@@ -30,7 +30,7 @@ Estrategia
 -Lo que no pueden es comprar bonos o pedir turnos por medio de su cuenta (por no podes loguearse) ni por medio de un administrativo porque se valida que este habilitado, primero debera ser habilitado y luego podran realizar acciones por el.
 -Si una persona se cambia de plan y tenia bonos del anterior, estos bonos no sirven para el plan nuevo, pero si vuelve a ese plan anterior en algun momento esos bonos si volveran a servir ya que pago por ellos.
 -Como comprobamos que los que estan en la tabla maestra no fueron usados en orden de su numero identificador(del sistema anterior) y mas importante, que registra turnos donde varias personas se presentaron al mismo tiempo a distintos turnos con distintos bonos, no pudimos darle un valor al campo bono numero de consulta con ese criterio, por lo que le dimos valores secuenciales en funcion del orden en como se compraron esos bonos (considerando tambien que se compraron uno o mas por vez). Luego en nuestra implementacion del sistema si se comienza a numerar los bonos cuando el paciente se presenta con su bono al turno, manteniendo hasta ese momento el valor de numero de bono en null.
--El registro de cambios de plan con su respectivo motivo esta disponible en la ventana listados, se podra filtrar por usuario y año
+-El registro de cambios de plan con su respectivo motivo esta disponible en la ventana listados, se podra filtrar por numero de afiliado y año.
 -
 -
 -
