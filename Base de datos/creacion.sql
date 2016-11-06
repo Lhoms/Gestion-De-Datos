@@ -1467,14 +1467,14 @@ GO
 
 
 
-CREATE PROCEDURE NUL.agregar_persona(@pers_nombre varchar(255), @pers_apellido varchar(255),@pers_doc varchar(255),
+CREATE PROCEDURE NUL.agregar_persona(@pers_id numeric(18,0),@pers_nombre varchar(255), @pers_apellido varchar(255),@pers_doc varchar(255),
 		@pers_dire varchar(255), @pers_tel numeric(18,2),@pers_mail varchar(255), @pers_fecha_nac datetime,@pers_sexo char)
 
 AS
 BEGIN
 
- INSERT INTO NUL.Persona (pers_nombre, pers_apellido, pers_doc, pers_dire, pers_tel, pers_mail, pers_fecha_nac,pers_sexo)
-	values(@pers_nombre, @pers_apellido, @pers_doc, @pers_dire, @pers_tel, @pers_mail, @pers_fecha_nac,@pers_sexo)
+ INSERT INTO NUL.Persona (pers_id,pers_nombre, pers_apellido, pers_doc, pers_dire, pers_tel, pers_mail, pers_fecha_nac,pers_sexo)
+	values(@pers_id,@pers_nombre, @pers_apellido, @pers_doc, @pers_dire, @pers_tel, @pers_mail, @pers_fecha_nac,@pers_sexo)
 
 END
 GO
