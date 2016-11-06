@@ -77,6 +77,7 @@ namespace ClinicaFrba.Abm_Afiliado
             this.comboBoxPlanMedico.DataSource = this.plan_descrip;
 
             this.buttonAgregarHijo.Enabled = false;
+            this.buttonAgregarConyuge.Enabled = false;
         }
 
 
@@ -488,9 +489,9 @@ namespace ClinicaFrba.Abm_Afiliado
         private void comboBoxEstadoCivil_SelectionChangeCommitted(object sender, EventArgs e)
         {
             if (this.comboBoxEstadoCivil.Text == "Casado" || this.comboBoxEstadoCivil.Text == "Concubinato")
-                this.comboBoxEstadoCivil.Enabled = true;
+                this.buttonAgregarConyuge.Enabled = true;
             else
-                this.comboBoxEstadoCivil.Enabled = false;
+                this.buttonAgregarConyuge.Enabled = false;
         }
 
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
