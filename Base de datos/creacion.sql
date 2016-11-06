@@ -54,7 +54,8 @@ IF OBJECT_ID('NUL.Usuario', 'U') IS NOT NULL
 		DROP TABLE NUL.Usuario;
 IF OBJECT_ID('NUL.Tipo_doc', 'U') IS NOT NULL
 		DROP TABLE NUL.Tipo_doc;		
-
+IF OBJECT_ID('NUL.Historial_baja', 'U') IS NOT NULL
+		DROP TABLE NUL.Historial_baja;
 
 GO
 
@@ -305,6 +306,18 @@ CREATE TABLE NUL.Agenda_dia
 	);
 
 GO
+
+CREATE TABLE NUL.Historial_baja
+(
+		baja_user_id 			numeric(18,0),
+		baja_fecha_id			DateTime(18,0),
+		baja_descrip 	 		varchar(250) default NULL,
+
+
+		CONSTRAINT pk_histo_baja PRIMARY KEY (baja_user_id,baja_fecha_id),
+		CONSTRAINT FK_user_baja FOREIGN KEY (baja_user_id) REFERENCES NUL.Usuario (user_id)
+	);                        
+
 
 ----TRIGGER
 /*
@@ -834,6 +847,13 @@ BEGIN
     DROP PROCEDURE NUL.sp_set_resultado_consulta
 END
 
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID('NUL.sp_actualizar_plan'))
+BEGIN
+    DROP PROCEDURE NUL.sp_actualizar_plan
+END
+
+
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID('NUL.sp_new_agenda_profesional'))
 BEGIN
     DROP PROCEDURE NUL.sp_new_agenda_profesional
@@ -1236,11 +1256,11 @@ BEGIN
 END
 GO
 
-CREATE PROCEDURE agregar_usuario(@user_username varchar(255), @user_tipodoc numeric(18,0),@user_pass varchar(255),@id numeric(18,0) output)
+CREATE PROCEDURE NUL.agregar_usuario(@user_username varchar(255), @user_tipodoc numeric(18,0),@user_pass varchar(255),@id numeric(18,0) output)
 AS
 BEGIN
 	
-	INSERT INTO NUL.Usuario(user_username,user_tipodoc, user_pass) values (@user_username,@user_tipodoc, @user_pass)
+	INSERT INTO NUL.Usuario(user_username,user_tipodoc, user_pass) values (@user_username,@user_tipodoc, HASHBYTES('SHA2_256',@user_pass))
 	SET @id = @@IDENTITY
 
 END
@@ -1447,7 +1467,7 @@ GO
 
 
 
-CREATE PROCEDURE agregar_persona(@pers_nombre varchar(255), @pers_apellido varchar(255),@pers_doc varchar(255),
+CREATE PROCEDURE NUL.agregar_persona(@pers_nombre varchar(255), @pers_apellido varchar(255),@pers_doc varchar(255),
 		@pers_dire varchar(255), @pers_tel numeric(18,2),@pers_mail varchar(255), @pers_fecha_nac datetime,@pers_sexo char)
 
 AS
@@ -1460,12 +1480,36 @@ END
 GO
 
 
-CREATE PROCEDURE agregar_afiliado(@afil_id numeric(18,0),@afil_estado numeric(18,0),@afil_plan_med numeric(18,0),@afil_nro_afiliado numeric(18,0))
+CREATE PROCEDURE NUL.agregar_afiliado(@afil_id numeric(18,0),@afil_estado numeric(18,0),@afil_plan_med numeric(18,0),@afil_nro_afiliado numeric(18,0))
 AS
 BEGIN
 
 INSERT INTO NUL.Afiliado(afil_id,afil_estado,afil_plan_med,afil_nro_afiliado) values 
 	(@afil_id,@afil_estado,@afil_plan_med,@afil_nro_afiliado)
+
+END
+GO
+
+CREATE PROCEDURE NUL.sp_actualizar_plan(@afil numeric(18,0),@plan numeric(18,0),@motivo varchar(255),@error int output)
+AS
+BEGIN
+	
+	DECLARE @afil_dependiente numeric(18,0)
+
+	DECLARE afil CURSOR FOR (SELECT afil_id FROM NUL.Afiliado WHERE afil_titular = @afil)
+
+		UPDATE NUL.Afiliado SET afil_plan_med = @plan WHERE afil_id = @afil
+
+	OPEN afil
+	FETCH NEXT FROM afil INTO @afil_dependiente
+	
+	WHILE @@FETCH_STATUS = 0
+	BEGIN
+		UPDATE NUL.Afiliado SET afil_plan_med = @plan WHERE afil_id = @afil_dependiente
+		exec NUL.sp_cambiar_plan @afil, @plan, 'Titular cambia plan', @error
+	END
+	CLOSE afil
+	DEALLOCATE afil
 
 END
 GO
