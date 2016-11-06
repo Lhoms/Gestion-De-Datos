@@ -171,6 +171,7 @@
             this.Controls.Add(this.groupBoxFuncionalidades);
             this.Controls.Add(this.comboBoxRoles);
             this.Controls.Add(this.label1);
+            this.MaximizeBox = false;
             this.Name = "ModificarRol";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Modificacion Rol";

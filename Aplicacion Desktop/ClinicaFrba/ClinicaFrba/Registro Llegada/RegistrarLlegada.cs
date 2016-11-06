@@ -254,9 +254,9 @@ namespace ClinicaFrba.Registro_Llegada
                 llenarEspecialidades();
                 cargarProfesionales();
             }
-            catch (Exception exc)
+            catch (Exception)
             {
-                MessageBox.Show(exc.Message, "Aviso", MessageBoxButtons.OK);
+                
             }
 
         }
@@ -400,6 +400,7 @@ namespace ClinicaFrba.Registro_Llegada
                     int i = 0;
 
                     mensaje = "Sus bonos disponibles son: \n";
+                    mensaje = mensaje + lector["bono_id"] + "\n";
 
                     while (lector.Read() && i < 30)
                     {

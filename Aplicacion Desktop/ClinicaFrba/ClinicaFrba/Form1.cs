@@ -95,7 +95,6 @@ namespace ClinicaFrba
             dr = ds.Tables[0].Select(expresion);
 
             this.buttonAltaRol.Enabled = dr.Count() > 0;
-            this.buttonBajaRol.Enabled = dr.Count() > 0;
             this.buttonModificarRol.Enabled = dr.Count() > 0;
 
             //ABM Afiliado
@@ -104,7 +103,6 @@ namespace ClinicaFrba
             dr = ds.Tables[0].Select(expresion);
 
             this.buttonAltaAfiliado.Enabled = dr.Count() > 0;
-            this.buttonBajaAfiliado.Enabled = dr.Count() > 0;
             this.buttonModificarAfiliado.Enabled = dr.Count() > 0;
 
 
@@ -231,17 +229,6 @@ namespace ClinicaFrba
             this.Hide();
         }
 
-        private void buttonBajaRol_Click(object sender, EventArgs e)
-        {
-            this.sesion.rol_actual_id = get_rol_id();
-
-            AbmRol.ModificarRol form = new AbmRol.ModificarRol(this.sesion);
-
-            form.Show();
-
-            this.Hide();
-        }
-
         private void buttonModificarRol_Click(object sender, EventArgs e)
         {
             this.sesion.rol_actual_id = get_rol_id();
@@ -258,17 +245,6 @@ namespace ClinicaFrba
             this.sesion.rol_actual_id = get_rol_id();
 
             Abm_Afiliado.AltaAfiliado form = new Abm_Afiliado.AltaAfiliado(this.sesion);
-
-            form.Show();
-
-            this.Hide();
-        }
-
-        private void buttonBajaAfiliado_Click(object sender, EventArgs e)
-        {
-            this.sesion.rol_actual_id = get_rol_id();
-
-            Abm_Afiliado.BusquedaAfiliado form = new Abm_Afiliado.BusquedaAfiliado(this.sesion);
 
             form.Show();
 

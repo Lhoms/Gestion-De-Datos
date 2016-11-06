@@ -726,6 +726,7 @@ BEGIN
 			SELECT T.turno_id,3,'Usuario dado de baja',I.baja_fecha_id FROM NUL.Turno T JOIN inserted I
 				ON T.turno_afiliado = I.baja_user_id
 				WHERE T.turno_fecha_hora >= I.baja_fecha_id
+				AND T.turno_id NOT IN (SELECT cancel_turno_id FROM NUL.Cancelacion)
 	
 END
 GO
@@ -1412,32 +1413,28 @@ AS
 BEGIN
 
 with FECHAS(fecha) AS (
-	SELECT CAST(@fec_inicio as datetime) fecha
-	UNION ALL
-	SELECT DATEADD(mi, 30, fecha) fecha
-	FROM FECHAS
-	WHERE fecha < @fec_fin 
-),
---Seleccion de los turnos que tiene el medico actualmente disponibles
+			SELECT CAST(@fec_inicio as datetime) fecha
+			UNION ALL
+			SELECT DATEADD(mi, 30, fecha) fecha
+			FROM FECHAS
+			WHERE fecha < @fec_fin 
+		),
+		--Seleccion de los turnos que tiene el medico actualmente disponibles
 TURNOS AS (SELECT * FROM NUL.Turno 
-WHERE turno_profesional = @id_prof AND turno_fecha_hora BETWEEN @fec_inicio AND @fec_fin
-AND turno_id NOT IN 
-	(SELECT cancel_turno_id FROM NUL.Cancelacion C JOIN NUL.Tipo_cancelacion TC ON C.cancel_tipo = TC.tipo_cancel_id 
-		WHERE TC.tipo_cancel_detalle != 'Cancelada por el médico' ))
+		WHERE turno_profesional = @id_prof AND turno_fecha_hora BETWEEN @fec_inicio AND @fec_fin
+		AND turno_id NOT IN 
+			(SELECT cancel_turno_id FROM NUL.Cancelacion C JOIN NUL.Tipo_cancelacion TC ON C.cancel_tipo = TC.tipo_cancel_id 
+				WHERE TC.tipo_cancel_detalle != 'Cancelada por el médico' ))
+
+SELECT F.fecha,A.agenda_id, DATEPART(DW,F.fecha) as dia from FECHAS F
+JOIN NUL.Agenda A ON F.fecha BETWEEN A.agenda_disp_desde AND A.agenda_disp_hasta
+JOIN NUL.Agenda_dia AD ON AD.agenda_id = A.agenda_id AND CONVERT(time,F.fecha) >= AD.dia_hora_inicio AND CONVERT(time,F.fecha)< AD.dia_hora_fin AND DATEPART(DW,F.fecha) = AD.dia_id
+WHERE A.agenda_prof_id = @id_prof AND A.agenda_prof_esp_id = @esp_id 
+AND F.fecha NOT IN (SELECT turno_fecha_hora FROM TURNOS)
+ORDER BY fecha,A.agenda_id
 
 
-SELECT * FROM (select distinct 
- F.fecha
-from FECHAS F JOIN NUL.Agenda A ON DATEFROMPARTS(YEAR(F.fecha),MONTH(F.fecha),DAY(F.fecha)) BETWEEN A.agenda_disp_desde AND A.agenda_disp_hasta
-	JOIN NUL.Agenda_dia AD ON DATEPART(DW,F.fecha) = AD.dia_id AND AD.agenda_id = A.agenda_id 
-		AND CONVERT(time,F.fecha) >= AD.dia_hora_inicio AND CONVERT(time,F.fecha)< AD.dia_hora_fin
-	JOIN TURNOS T ON F.fecha != T.turno_fecha_hora
-WHERE A.agenda_prof_esp_id = @esp_id AND A.agenda_prof_id = @id_prof) as temp
-WHERE fecha NOT IN (SELECT turno_fecha_hora FROM TURNOS)
-order by 1
-
-OPTION  ( MAXRECURSION 500 );
-
+OPTION(MAXRECURSION 500)
 END
 GO
 

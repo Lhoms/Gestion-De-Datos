@@ -202,6 +202,7 @@ namespace ClinicaFrba.Compra_Bono
                     int i = 0;
 
                     mensaje = "Sus bonos disponibles son: \n";
+                    mensaje = mensaje + lector["bono_id"] + "\n";
 
                     while (lector.Read() && i < 30)
                     {

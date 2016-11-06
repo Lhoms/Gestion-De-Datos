@@ -90,7 +90,7 @@
             0,
             0,
             0});
-            this.numericMinutos.Location = new System.Drawing.Point(536, 76);
+            this.numericMinutos.Location = new System.Drawing.Point(494, 77);
             this.numericMinutos.Maximum = new decimal(new int[] {
             30,
             0,
@@ -102,7 +102,7 @@
             // 
             // numericHora
             // 
-            this.numericHora.Location = new System.Drawing.Point(467, 75);
+            this.numericHora.Location = new System.Drawing.Point(425, 76);
             this.numericHora.Maximum = new decimal(new int[] {
             23,
             0,
@@ -116,7 +116,7 @@
             // 
             this.label7.AutoSize = true;
             this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label7.Location = new System.Drawing.Point(522, 76);
+            this.label7.Location = new System.Drawing.Point(480, 77);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(12, 17);
             this.label7.TabIndex = 20;

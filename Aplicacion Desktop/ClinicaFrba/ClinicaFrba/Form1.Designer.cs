@@ -42,17 +42,15 @@
             this.buttonPedirTurno = new System.Windows.Forms.Button();
             this.buttonListadoEstadistico = new System.Windows.Forms.Button();
             this.groupBoxAfiliado = new System.Windows.Forms.GroupBox();
-            this.buttonModificarAfiliado = new System.Windows.Forms.Button();
-            this.buttonBajaAfiliado = new System.Windows.Forms.Button();
             this.buttonAltaAfiliado = new System.Windows.Forms.Button();
             this.groupBoxRol = new System.Windows.Forms.GroupBox();
-            this.buttonModificarRol = new System.Windows.Forms.Button();
-            this.buttonBajaRol = new System.Windows.Forms.Button();
             this.buttonAltaRol = new System.Windows.Forms.Button();
             this.comboBoxRol = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
             this.labelFechaActual = new System.Windows.Forms.Label();
             this.labelFecha = new System.Windows.Forms.Label();
+            this.buttonModificarRol = new System.Windows.Forms.Button();
+            this.buttonModificarAfiliado = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBoxAtencionMedica.SuspendLayout();
             this.groupBoxTurno.SuspendLayout();
@@ -203,7 +201,6 @@
             // groupBoxAfiliado
             // 
             this.groupBoxAfiliado.Controls.Add(this.buttonModificarAfiliado);
-            this.groupBoxAfiliado.Controls.Add(this.buttonBajaAfiliado);
             this.groupBoxAfiliado.Controls.Add(this.buttonAltaAfiliado);
             this.groupBoxAfiliado.Location = new System.Drawing.Point(11, 95);
             this.groupBoxAfiliado.Name = "groupBoxAfiliado";
@@ -213,31 +210,11 @@
             this.groupBoxAfiliado.TabStop = false;
             this.groupBoxAfiliado.Text = "Afiliado";
             // 
-            // buttonModificarAfiliado
-            // 
-            this.buttonModificarAfiliado.Location = new System.Drawing.Point(262, 19);
-            this.buttonModificarAfiliado.Name = "buttonModificarAfiliado";
-            this.buttonModificarAfiliado.Size = new System.Drawing.Size(103, 33);
-            this.buttonModificarAfiliado.TabIndex = 2;
-            this.buttonModificarAfiliado.Text = "Modificar  Afiliado";
-            this.buttonModificarAfiliado.UseVisualStyleBackColor = true;
-            this.buttonModificarAfiliado.Click += new System.EventHandler(this.buttonModificarAfiliado_Click);
-            // 
-            // buttonBajaAfiliado
-            // 
-            this.buttonBajaAfiliado.Location = new System.Drawing.Point(137, 19);
-            this.buttonBajaAfiliado.Name = "buttonBajaAfiliado";
-            this.buttonBajaAfiliado.Size = new System.Drawing.Size(103, 33);
-            this.buttonBajaAfiliado.TabIndex = 1;
-            this.buttonBajaAfiliado.Text = "Baja Afiliado";
-            this.buttonBajaAfiliado.UseVisualStyleBackColor = true;
-            this.buttonBajaAfiliado.Click += new System.EventHandler(this.buttonBajaAfiliado_Click);
-            // 
             // buttonAltaAfiliado
             // 
-            this.buttonAltaAfiliado.Location = new System.Drawing.Point(17, 19);
+            this.buttonAltaAfiliado.Location = new System.Drawing.Point(27, 19);
             this.buttonAltaAfiliado.Name = "buttonAltaAfiliado";
-            this.buttonAltaAfiliado.Size = new System.Drawing.Size(103, 33);
+            this.buttonAltaAfiliado.Size = new System.Drawing.Size(146, 33);
             this.buttonAltaAfiliado.TabIndex = 0;
             this.buttonAltaAfiliado.Text = "Alta Afiliado";
             this.buttonAltaAfiliado.UseVisualStyleBackColor = true;
@@ -246,7 +223,6 @@
             // groupBoxRol
             // 
             this.groupBoxRol.Controls.Add(this.buttonModificarRol);
-            this.groupBoxRol.Controls.Add(this.buttonBajaRol);
             this.groupBoxRol.Controls.Add(this.buttonAltaRol);
             this.groupBoxRol.Location = new System.Drawing.Point(11, 20);
             this.groupBoxRol.Name = "groupBoxRol";
@@ -256,31 +232,11 @@
             this.groupBoxRol.TabStop = false;
             this.groupBoxRol.Text = "Rol";
             // 
-            // buttonModificarRol
-            // 
-            this.buttonModificarRol.Location = new System.Drawing.Point(262, 19);
-            this.buttonModificarRol.Name = "buttonModificarRol";
-            this.buttonModificarRol.Size = new System.Drawing.Size(103, 33);
-            this.buttonModificarRol.TabIndex = 2;
-            this.buttonModificarRol.Text = "Modificar Rol";
-            this.buttonModificarRol.UseVisualStyleBackColor = true;
-            this.buttonModificarRol.Click += new System.EventHandler(this.buttonModificarRol_Click);
-            // 
-            // buttonBajaRol
-            // 
-            this.buttonBajaRol.Location = new System.Drawing.Point(137, 19);
-            this.buttonBajaRol.Name = "buttonBajaRol";
-            this.buttonBajaRol.Size = new System.Drawing.Size(103, 33);
-            this.buttonBajaRol.TabIndex = 1;
-            this.buttonBajaRol.Text = "Baja Rol";
-            this.buttonBajaRol.UseVisualStyleBackColor = true;
-            this.buttonBajaRol.Click += new System.EventHandler(this.buttonBajaRol_Click);
-            // 
             // buttonAltaRol
             // 
-            this.buttonAltaRol.Location = new System.Drawing.Point(17, 19);
+            this.buttonAltaRol.Location = new System.Drawing.Point(27, 19);
             this.buttonAltaRol.Name = "buttonAltaRol";
-            this.buttonAltaRol.Size = new System.Drawing.Size(103, 33);
+            this.buttonAltaRol.Size = new System.Drawing.Size(146, 33);
             this.buttonAltaRol.TabIndex = 0;
             this.buttonAltaRol.Text = "Alta Rol";
             this.buttonAltaRol.UseVisualStyleBackColor = true;
@@ -324,6 +280,26 @@
             this.labelFecha.TabIndex = 6;
             this.labelFecha.Text = "Fecha:";
             // 
+            // buttonModificarRol
+            // 
+            this.buttonModificarRol.Location = new System.Drawing.Point(207, 19);
+            this.buttonModificarRol.Name = "buttonModificarRol";
+            this.buttonModificarRol.Size = new System.Drawing.Size(146, 33);
+            this.buttonModificarRol.TabIndex = 2;
+            this.buttonModificarRol.Text = "Modificacion y baja de rol";
+            this.buttonModificarRol.UseVisualStyleBackColor = true;
+            this.buttonModificarRol.Click += new System.EventHandler(this.buttonModificarRol_Click);
+            // 
+            // buttonModificarAfiliado
+            // 
+            this.buttonModificarAfiliado.Location = new System.Drawing.Point(207, 19);
+            this.buttonModificarAfiliado.Name = "buttonModificarAfiliado";
+            this.buttonModificarAfiliado.Size = new System.Drawing.Size(146, 33);
+            this.buttonModificarAfiliado.TabIndex = 2;
+            this.buttonModificarAfiliado.Text = "Modificar y baja de afiliado";
+            this.buttonModificarAfiliado.UseVisualStyleBackColor = true;
+            this.buttonModificarAfiliado.Click += new System.EventHandler(this.buttonModificarAfiliado_Click);
+            // 
             // Form1
             // 
             this.AllowDrop = true;
@@ -361,8 +337,6 @@
         private System.Windows.Forms.ComboBox comboBoxRol;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.GroupBox groupBoxRol;
-        private System.Windows.Forms.Button buttonModificarRol;
-        private System.Windows.Forms.Button buttonBajaRol;
         private System.Windows.Forms.Button buttonAltaRol;
         private System.Windows.Forms.GroupBox groupBoxTurno;
         private System.Windows.Forms.Button buttonCancelarTurno;
@@ -372,13 +346,13 @@
         private System.Windows.Forms.Button buttonRegistrarResultado;
         private System.Windows.Forms.Button buttonRegistrarLlegada;
         private System.Windows.Forms.GroupBox groupBoxAfiliado;
-        private System.Windows.Forms.Button buttonModificarAfiliado;
-        private System.Windows.Forms.Button buttonBajaAfiliado;
         private System.Windows.Forms.Button buttonAltaAfiliado;
         private System.Windows.Forms.GroupBox groupBoxAtencionMedica;
         private System.Windows.Forms.Button buttonCrearAgenda;
         private System.Windows.Forms.Label labelFechaActual;
         private System.Windows.Forms.Label labelFecha;
+        private System.Windows.Forms.Button buttonModificarAfiliado;
+        private System.Windows.Forms.Button buttonModificarRol;
     }
 }
 

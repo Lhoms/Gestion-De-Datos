@@ -31,12 +31,12 @@
             this.label1 = new System.Windows.Forms.Label();
             this.textBoxNombre = new System.Windows.Forms.TextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.buttonTodo = new System.Windows.Forms.Button();
+            this.buttonLimpiar = new System.Windows.Forms.Button();
             this.checkListFuncionalidades = new System.Windows.Forms.CheckedListBox();
             this.label2 = new System.Windows.Forms.Label();
             this.buttonAceptar = new System.Windows.Forms.Button();
             this.buttonCancelar = new System.Windows.Forms.Button();
-            this.buttonLimpiar = new System.Windows.Forms.Button();
-            this.buttonTodo = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -69,7 +69,26 @@
             this.groupBox1.Size = new System.Drawing.Size(373, 353);
             this.groupBox1.TabIndex = 3;
             this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Alta Rol";
+            // 
+            // buttonTodo
+            // 
+            this.buttonTodo.Location = new System.Drawing.Point(200, 315);
+            this.buttonTodo.Name = "buttonTodo";
+            this.buttonTodo.Size = new System.Drawing.Size(98, 23);
+            this.buttonTodo.TabIndex = 7;
+            this.buttonTodo.Text = "Seleccionar todo";
+            this.buttonTodo.UseVisualStyleBackColor = true;
+            this.buttonTodo.Click += new System.EventHandler(this.buttonTodo_Click);
+            // 
+            // buttonLimpiar
+            // 
+            this.buttonLimpiar.Location = new System.Drawing.Point(74, 315);
+            this.buttonLimpiar.Name = "buttonLimpiar";
+            this.buttonLimpiar.Size = new System.Drawing.Size(98, 23);
+            this.buttonLimpiar.TabIndex = 6;
+            this.buttonLimpiar.Text = "Limpiar";
+            this.buttonLimpiar.UseVisualStyleBackColor = true;
+            this.buttonLimpiar.Click += new System.EventHandler(this.buttonLimpiar_Click);
             // 
             // checkListFuncionalidades
             // 
@@ -108,26 +127,6 @@
             this.buttonCancelar.UseVisualStyleBackColor = true;
             this.buttonCancelar.Click += new System.EventHandler(this.buttonCancelar_Click);
             // 
-            // buttonLimpiar
-            // 
-            this.buttonLimpiar.Location = new System.Drawing.Point(74, 315);
-            this.buttonLimpiar.Name = "buttonLimpiar";
-            this.buttonLimpiar.Size = new System.Drawing.Size(98, 23);
-            this.buttonLimpiar.TabIndex = 6;
-            this.buttonLimpiar.Text = "Limpiar";
-            this.buttonLimpiar.UseVisualStyleBackColor = true;
-            this.buttonLimpiar.Click += new System.EventHandler(this.buttonLimpiar_Click);
-            // 
-            // buttonTodo
-            // 
-            this.buttonTodo.Location = new System.Drawing.Point(200, 315);
-            this.buttonTodo.Name = "buttonTodo";
-            this.buttonTodo.Size = new System.Drawing.Size(98, 23);
-            this.buttonTodo.TabIndex = 7;
-            this.buttonTodo.Text = "Seleccionar todo";
-            this.buttonTodo.UseVisualStyleBackColor = true;
-            this.buttonTodo.Click += new System.EventHandler(this.buttonTodo_Click);
-            // 
             // AltaRol
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -136,6 +135,7 @@
             this.Controls.Add(this.buttonCancelar);
             this.Controls.Add(this.buttonAceptar);
             this.Controls.Add(this.groupBox1);
+            this.MaximizeBox = false;
             this.Name = "AltaRol";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Alta Rol";
