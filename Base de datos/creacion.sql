@@ -1568,5 +1568,5 @@ BEGIN
 	INSERT INTO NUL.User_rol (rol_id, user_id) VALUES (2,@user_id)
 
 END
-
+GO
 
