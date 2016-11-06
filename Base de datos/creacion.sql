@@ -1491,7 +1491,7 @@ INSERT INTO NUL.Afiliado(afil_id,afil_estado,afil_plan_med,afil_nro_afiliado) va
 END
 GO
 
-CREATE PROCEDURE NUL.sp_actualizar_plan(@afil numeric(18,0),@plan numeric(18,0),@motivo varchar(255),@error int output)
+CREATE PROCEDURE NUL.sp_actualizar_plan(@afil numeric(18,0),@plan numeric(18,0),@motivo varchar(255),@fecha DateTime,@error int output)
 AS
 BEGIN
 	
@@ -1507,7 +1507,7 @@ BEGIN
 	WHILE @@FETCH_STATUS = 0
 	BEGIN
 		UPDATE NUL.Afiliado SET afil_plan_med = @plan WHERE afil_id = @afil_dependiente
-		exec NUL.sp_cambiar_plan @afil, @plan, 'Titular cambia plan', @error
+		exec NUL.sp_cambiar_plan @afil, @plan, @fecha, 'Titular cambia plan', @error
 	END
 	CLOSE afil
 	DEALLOCATE afil

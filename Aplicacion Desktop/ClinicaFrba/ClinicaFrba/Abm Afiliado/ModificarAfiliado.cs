@@ -70,7 +70,14 @@ namespace ClinicaFrba.Abm_Afiliado
 
         private void modificarPlanHabilitado()
         {
-            throw new NotImplementedException();
+            string nro_afil = this.afiliado.Cells[13].Value.ToString();
+            string ultimos2 = nro_afil.Substring(nro_afil.Length - 2, 2);
+
+            if (ultimos2 == "01")
+                this.comboBoxPlan.Enabled = true;
+            else
+                this.comboBoxPlan.Enabled = false;
+
         }
 
         private void rellenarBoxes()
