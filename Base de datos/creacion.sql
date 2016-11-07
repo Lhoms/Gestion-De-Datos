@@ -4,7 +4,7 @@ GO
 CREATE SCHEMA [NUL]
 GO
 
---Drop de tablas por si existen
+--Drop de tablas
 BEGIN TRANSACTION
 
 IF OBJECT_ID('NUL.Dias_cancelados', 'U') IS NOT NULL
@@ -400,8 +400,7 @@ INSERT INTO NUL.Rol_funcionalidad(rol_id, func_id) VALUES
 			(2,3),(2,4),(2,7),
 			(3,6),(3,7),(3,9);
 
-
--- JM
+ 
 INSERT INTO NUL.User_rol(rol_id, user_id)
 (
 	SELECT 1, user_id FROM NUL.Usuario 
@@ -577,7 +576,7 @@ COMMIT TRANSACTION
 
 BEGIN TRANSACTION
 
---view
+--Drop y creacion de Vistas
 
 IF OBJECT_ID ('NUL.v_esp_canceladas', 'V') IS NOT NULL  
 	DROP VIEW NUL.v_esp_canceladas ; 
@@ -655,7 +654,7 @@ AS
 GO
 
 
---trigger
+--Drop y creacion de Trigger
 
 
 IF OBJECT_ID ('NUL.cancelar_turnos ', 'TR') IS NOT NULL  
@@ -678,7 +677,8 @@ END
 GO
 
 
---stored procedures
+--Drop stored procedures
+
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID('NUL.sp_get_top5_esp_cancel'))
 BEGIN
     DROP PROCEDURE NUL.sp_get_top5_esp_cancel
@@ -942,6 +942,8 @@ END
 GO
 
 
+--Creacion de los stored procedures
+
 CREATE PROCEDURE NUL.sp_get_top5_esp_cancel(@anio numeric(18,0), @semestre numeric(18,0),@mes numeric(18,0))
 AS
 BEGIN
@@ -1046,8 +1048,6 @@ BEGIN
 
 END
 GO
-
---JMZ - SP.
 
 CREATE PROCEDURE NUL.sp_login(@username varchar(255), @tipo_doc numeric(18,0), @pass varchar(255), @result int output, @error varchar(255) output, @id numeric(18,0) output)
 AS

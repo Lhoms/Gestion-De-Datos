@@ -1,16 +1,25 @@
 Estrategia
 
 -La migracion se hizo tomando como clave no repetible el documento de los pacientes y de los profesionales
+
+-El número de documento no es único por persona en Argentina, por eso consideramos que el username de cada usuario va a ser la combinación de su documento y el tipo.
 -Se asumen que todos los documentos migrados son tipo DNI
 -Los usuarios se van a identificar mediante la combinacion de documento + tipo documento ya que el documento solo luego se podria repetir
--Se toma Bono_Consulta_Numero como valor unico para identificar cada bono
 -Como admin es un caso especial en el login, se le dara tipo documento DNI, aunque no tenga documento se usara como validacion que ponga el campo DNI y no otro
 -Al primer uso se le pide al profesional que ingrese su matricula, el cuadro de mensaje estara en pantalla junto al "home" hasta que ingrese su matricula y sea valida (!= "" y no tenga letras)
 -Como sexo default se definio M:masculino, un administrador podra modificarlo
 -Cada persona pertenece a un grupo familiar de solo el mismo, luego se podran conformar los grupos familiares 
 -Como la tabla maestra no tiene numero de afiliado se decidio usar dni+01 en caso del afiliado base, dni del base + 02 por conyuge, etc..
--Si bien se sabe que los botones no habilitados deberian setearse false en la propiedad Visible, en algunos como en el home se prefirio hacerlo en Enabled por cuestion de diseño
+
+
+-Se toma Bono_Consulta_Numero como valor unico para identificar cada bono
+Como comprobamos que los que estan en la tabla maestra no fueron usados en orden de su numero identificador(del sistema anterior) y mas importante, que registra turnos donde varias personas se presentaron al mismo tiempo a distintos turnos con distintos bonos, no pudimos darle un valor al campo bono numero de consulta con ese criterio, por lo que le dimos valores secuenciales en funcion del orden en como se compraron esos bonos (considerando tambien que se compraron uno o mas por vez). Luego en nuestra implementacion del sistema si se comienza a numerar los bonos cuando el paciente se presenta con su bono al turno, manteniendo hasta ese momento el valor de numero de bono en null.
+
 -Cuando se inscribe a una persona y sus familiares, primero se registrara a la persona y si no hubo errores se va a registrar a la familia, se van a intentar registrar a todos a menos que uno haya ingresado un usuario ya existente. El alta se detiene en el que tuvo el error, los anteriores se registraron, si habia mas se van a tener que dar de alta solos y anexarse luego al grupo familiar.
+
+-Si bien se sabe que los botones no habilitados deberian setearse false en la propiedad Visible, en algunos como en el home se prefirio hacerlo en Enabled por cuestion de diseño
+
+
 -Un usuario podra cambiar de plan aunque tenga turnos pendientes, debera comprar bonos del nuevo plan para ser atendido.
 -La baja y la modificacion estan en una misma vista.
 -No se puede modificar un rol que esta dado de baja.
@@ -19,6 +28,7 @@ Estrategia
 -El campo familiares afil_familiares de afiliado se refiere al numero de personas que se encuentran en su grupo familiar y no a su numero de familiares real.
 -Un profesional podra editar los sintomas y enfermedades de una consulta por haberse equivocado o aberle faltado agregar alguna descripcion.
 -El campo nro_afiliado va a estar determinado en la forma: (Doc*10+1)*100 en donde Doc es el nro de documento del afiliado; 1 es el tipo de documento DNI(como dijimos anteriormente, se presume que todos son DNI) y se multiplica por 100 con el objetivo de que los siguientes afiliados pertenecientes al mismo grupo familiar tengan su correlativo a partir de éste número. Por Ejemplo: DNI: 28758698 - Nro afiliado: 28758698101 - Siguiente del grupo familiar: 28758698102
+
 -Una persona que crea un grupo familiar (registrandose solo) puede tener a cargo a su conyuge y a sus hijos, eso interpretamos como familiares.
 -Se construyó la agenda del año 2015 basándose en los turnos que tuvo cada profesional, poniendo como vigencia de la agenda la primer y la última fecha de turnos que atendió. Asimismo, los horarios de cada día, se los determinó por los turnos mínimos y máximos que tuvo el profesional en esos días. 
 -Cancelacion de turno solo esta disponible para afiliados para cancelar sus turnos de a uno, o para profesionales para cancelar un rango de turnos, para los otros roles no hay acciones disponibles en esta funcionalidad.
@@ -29,7 +39,7 @@ Estrategia
 -Al darse de baja un afiliado se conseva su grupo familiar y bonos. Se considera esto porque si una persona ingresa mal 3 veces su contraseña perderia el grupo como sus bonos y no es correcto, los turnos si, se dan como cancelados para que otro los use.
 -Lo que no pueden es comprar bonos o pedir turnos por medio de su cuenta (por no podes loguearse) ni por medio de un administrativo porque se valida que este habilitado, primero debera ser habilitado y luego podran realizar acciones por el.
 -Si una persona se cambia de plan y tenia bonos del anterior, estos bonos no sirven para el plan nuevo, pero si vuelve a ese plan anterior en algun momento esos bonos si volveran a servir ya que pago por ellos.
--Como comprobamos que los que estan en la tabla maestra no fueron usados en orden de su numero identificador(del sistema anterior) y mas importante, que registra turnos donde varias personas se presentaron al mismo tiempo a distintos turnos con distintos bonos, no pudimos darle un valor al campo bono numero de consulta con ese criterio, por lo que le dimos valores secuenciales en funcion del orden en como se compraron esos bonos (considerando tambien que se compraron uno o mas por vez). Luego en nuestra implementacion del sistema si se comienza a numerar los bonos cuando el paciente se presenta con su bono al turno, manteniendo hasta ese momento el valor de numero de bono en null.
+-
 -El registro de cambios de plan con su respectivo motivo esta disponible en la ventana listados, se podra filtrar por numero de afiliado y año.
 -
 -
