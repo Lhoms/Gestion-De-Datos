@@ -5,7 +5,10 @@ GO
 --GO
 
 --Drop de tablas por si existen
+BEGIN TRANSACTION
 
+IF OBJECT_ID('NUL.Dias_cancelados', 'U') IS NOT NULL
+		DROP TABLE NUL.Dias_cancelados;
 IF OBJECT_ID('NUL.Historial_baja', 'U') IS NOT NULL
 		DROP TABLE NUL.Historial_baja;
 IF OBJECT_ID('NUL.Agenda_dia', 'U') IS NOT NULL
@@ -306,7 +309,6 @@ CREATE TABLE NUL.Agenda_dia
 		CONSTRAINT FK_agenda_id  FOREIGN KEY (agenda_id)  REFERENCES NUL.Agenda (agenda_id)
 	);
 
-GO
 
 CREATE TABLE NUL.Historial_baja
 (
@@ -315,8 +317,19 @@ CREATE TABLE NUL.Historial_baja
 
 		CONSTRAINT pk_histo_baja PRIMARY KEY (baja_user_id,baja_fecha_id),
 		CONSTRAINT FK_user_baja FOREIGN KEY (baja_user_id) REFERENCES NUL.Usuario (user_id)
-	);                        
+	);     
 
+CREATE TABLE NUL.Dias_cancelados
+(
+		canceld_id			    numeric(18,0) IDENTITY(1,1),
+		canceld_prof			numeric(18,0),
+		calceld_dia				date,
+
+		CONSTRAINT pk_dias_cancel PRIMARY KEY (canceld_id,canceld_prof,calceld_dia),
+		CONSTRAINT FK_dc_profesional FOREIGN KEY (canceld_prof) REFERENCES NUL.Profesional (prof_id)
+	);   	                   
+GO
+COMMIT TRANSACTION
 
 ----TRIGGER
 /*
@@ -626,10 +639,7 @@ INSERT INTO NUL.Agenda_dia(dia_id, agenda_id, dia_hora_inicio, dia_hora_fin)
 COMMIT TRANSACTION
 
 
--- Re-enable constraints for all tables:
-EXEC sp_msforeachtable 'ALTER TABLE ? WITH CHECK CHECK CONSTRAINT all'
-
-GO
+BEGIN TRANSACTION
 
 --view
 
@@ -713,7 +723,7 @@ GO
 
 
 IF OBJECT_ID ('NUL.cancelar_turnos ', 'TR') IS NOT NULL  
-	DROP TRIGGER NUL.cancelar_turnos ; 
+	DROP TRIGGER NUL.cancelar_turnos; 
 GO
 
 
@@ -737,195 +747,225 @@ IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID('NUL.sp_get_top5_es
 BEGIN
     DROP PROCEDURE NUL.sp_get_top5_esp_cancel
 END
+GO
 
 
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID('NUL.sp_get_top5_prof_consultados'))
 BEGIN
     DROP PROCEDURE NUL.sp_get_top5_prof_consultados
 END
+GO
 
 
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID('NUL.sp_get_top5_prof_horas'))
 BEGIN
     DROP PROCEDURE NUL.sp_get_top5_prof_horas
 END
+GO
 
 
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID('NUL.sp_get_top5_afil_bonos'))
 BEGIN
     DROP PROCEDURE NUL.sp_get_top5_afil_bonos
 END
+GO
 
 
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID('NUL.sp_get_top5_esp_bonos'))
 BEGIN
     DROP PROCEDURE NUL.sp_get_top5_esp_bonos
 END
+GO
 
 
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID('NUL.sp_get_tipo_doc'))
 BEGIN
     DROP PROCEDURE NUL.sp_get_tipo_doc
 END
+GO
 
 
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID('NUL.sp_get_usuario'))
 BEGIN
     DROP PROCEDURE NUL.sp_get_usuario
 END
+GO
 
 
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID('NUL.sp_get_estados_civiles'))
 BEGIN
     DROP PROCEDURE NUL.sp_get_estados_civiles
 END
+GO
 
 
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID('NUL.sp_get_planes'))
 BEGIN
     DROP PROCEDURE NUL.sp_get_planes
 END
+GO
 
 
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID('NUL.sp_login'))
 BEGIN
     DROP PROCEDURE NUL.sp_login
 END
+GO
 
 
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID('NUL.sp_get_roles_disponibles_por_usuario'))
 BEGIN
     DROP PROCEDURE NUL.sp_get_roles_disponibles_por_usuario
 END
+GO
 
 
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID('NUL.sp_del_usuario'))
 BEGIN
     DROP PROCEDURE NUL.sp_del_usuario
 END
+GO
 
 
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID('NUL.sp_get_funciones_por_rol'))
 BEGIN
     DROP PROCEDURE NUL.sp_get_funciones_por_rol
 END
+GO
 
 
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID('NUL.sp_del_rol'))
 BEGIN
     DROP PROCEDURE NUL.sp_del_rol
 END
+GO
 
 
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID('NUL.sp_upd_rol'))
 BEGIN
     DROP PROCEDURE NUL.sp_upd_rol
 END
+GO
 
 
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID('NUL.sp_set_funcion_rol'))
 BEGIN
     DROP PROCEDURE NUL.sp_set_funcion_rol
 END
+GO
 
 
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID('NUL.sp_new_rol'))
 BEGIN
     DROP PROCEDURE NUL.sp_new_rol
 END
+GO
 
 
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID('NUL.sp_buscar_usuarios'))
 BEGIN
     DROP PROCEDURE NUL.sp_buscar_usuarios
 END
+GO
 
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID('NUL.sp_del_funciones_rol'))
 BEGIN
     DROP PROCEDURE NUL.sp_del_funciones_rol
 END
+GO
 
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID('NUL.sp_habil_usuario'))
 BEGIN
     DROP PROCEDURE NUL.sp_habil_usuario
 END
+GO
 
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID('NUL.sp_get_turnos_pedidos'))
 BEGIN
     DROP PROCEDURE NUL.sp_get_turnos_pedidos
 END
+GO
 
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID('NUL.sp_cancelar_turno'))
 BEGIN
     DROP PROCEDURE NUL.sp_cancelar_turno
 END
+GO
 
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID('NUL.sp_set_pedir_turno'))
 BEGIN
     DROP PROCEDURE NUL.sp_set_pedir_turno
 END
+GO
 
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID('NUL.sp_set_resultado_consulta'))
 BEGIN
     DROP PROCEDURE NUL.sp_set_resultado_consulta
 END
+GO
 
 
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID('NUL.sp_actualizar_plan'))
 BEGIN
     DROP PROCEDURE NUL.sp_actualizar_plan
 END
+GO
 
 
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID('NUL.sp_new_agenda_profesional'))
 BEGIN
     DROP PROCEDURE NUL.sp_new_agenda_profesional
 END
+GO
 
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID('NUL.sp_new_dia_agenda_profesional'))
 BEGIN
     DROP PROCEDURE NUL.sp_new_dia_agenda_profesional
 END
+GO
 
 
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID('NUL.agregar_persona'))
 BEGIN
     DROP PROCEDURE NUL.agregar_persona
 END
+GO
 
 
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID('NUL.sp_set_matricula_profesional'))
 BEGIN
     DROP PROCEDURE NUL.sp_set_matricula_profesional
 END
+GO
 
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID('NUL.sp_validar_bono'))
 BEGIN
     DROP PROCEDURE NUL.sp_validar_bono
 END
+GO
 
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID('NUL.sp_set_llegada'))
 BEGIN
     DROP PROCEDURE NUL.sp_set_llegada
 END
+GO
 
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID('NUL.sp_new_bono'))
 BEGIN
     DROP PROCEDURE NUL.sp_new_bono
 END
+GO
 
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID('NUL.sp_get_disp_profesional'))
 BEGIN
     DROP PROCEDURE NUL.sp_get_disp_profesional
 END
-
 GO
 
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID('NUL.sp_turnos_profesional'))
 BEGIN
     DROP PROCEDURE NUL.sp_turnos_profesional
 END
-
 GO
 
 
@@ -933,35 +973,36 @@ IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID('NUL.agregar_afilia
 BEGIN
     DROP PROCEDURE NUL.agregar_afiliado
 END
-
 GO
 
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID('NUL.sp_agregar_a_grupo_familiar'))
 BEGIN
     DROP PROCEDURE NUL.sp_agregar_a_grupo_familiar
 END
-
 GO
 
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID('NUL.agregar_usuario'))
 BEGIN
     DROP PROCEDURE NUL.agregar_usuario
 END
-
 GO
 
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID('NUL.sp_modificar_usuario'))
 BEGIN
     DROP PROCEDURE NUL.sp_modificar_usuario
 END
-
 GO
 
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID('NUL.sp_asignar_rol_afiliado'))
 BEGIN
     DROP PROCEDURE NUL.sp_asignar_rol_afiliado
 END
+GO
 
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID('NUL.sp_cancelar_dia'))
+BEGIN
+    DROP PROCEDURE NUL.sp_cancelar_dia
+END
 GO
 
 
@@ -1267,6 +1308,17 @@ BEGIN
 END
 GO
 
+
+CREATE PROCEDURE NUL.sp_cancelar_dia(@id_prof numeric(18,0),@dia_cancelado datetime, @dia_cancelacion datetime)
+AS
+BEGIN
+ 
+	INSERT INTO NUL.dias_cancelados (canceld_prof, calceld_dia) values (@id_prof, @dia_cancelado);
+
+END
+GO
+
+
 CREATE PROCEDURE NUL.sp_set_pedir_turno(@afil_id numeric(18,0), @prof_id numeric(18,0), @esp_id numeric(18,0), @fecha datetime, @result int output)
 AS 
 BEGIN
@@ -1567,3 +1619,4 @@ BEGIN
 END
 GO
 
+COMMIT TRANSACTION

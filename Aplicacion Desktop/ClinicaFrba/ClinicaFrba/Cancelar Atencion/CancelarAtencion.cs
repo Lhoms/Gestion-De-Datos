@@ -314,27 +314,47 @@ namespace ClinicaFrba.Cancelar_Atencion
 
         private void cancelarTurnosProfesional()
         {
+            //aca cancelo los turnos
             foreach (DataRow row in turnos.Rows)
             {
                 cancelarTurno(int.Parse(row["turno_id"].ToString()), 2, this.richTextMotivo.Text);
             }
+
+            //aca los agrego los dias a dias cancelados
+            DateTime diaInicio = this.dateTimePicker2.Value; //cancela desde este dia
+            DateTime diaFin =  this.dateTimePicker1.Value;   // hasta este inclusive
+
+
+            while (diaInicio <= diaFin)
+            {
+                cancelarDia(diaInicio);             
+
+                diaInicio = diaInicio.AddDays(1);   //avanzo dia a dia
+            }
+
+
+
             MessageBox.Show("Se cancelaron los turnos desde: " + this.dateTimePicker2.Value.ToString() + " hasta: " + this.dateTimePicker1.Value.ToString(),
-                   "Aviso", MessageBoxButtons.OK);
-            
+                                "Aviso", MessageBoxButtons.OK);
             salir();
         }
 
-        private void salir()
-        {
-            Form1 form = new Form1(this.sesion);
 
-            form.Show();
+        private void cancelarDia(DateTime dia_cancelado)
+        {//NUL.sp_cancelar_dia(@id_prof numeric(18,0),@dia_cancelado datetime, @dia_cancelacion datetime)
 
-            this.Hide();
+            SqlParameter[] dbParams = new SqlParameter[]
+            {
+                DAL.Classes.DBHelper.MakeParam("@id_prof", SqlDbType.Decimal, 250, obtenerUserId()),
+                DAL.Classes.DBHelper.MakeParam("@dia_cancelado", SqlDbType.DateTime, 250, dia_cancelado),
+                DAL.Classes.DBHelper.MakeParam("@dia_cancelacion", SqlDbType.DateTime, 250, DateTime.Parse(ConfigurationManager.AppSettings.Get("FechaSistema"))),
+            };
+
+            DAL.Classes.DBHelper.ExecuteDataSet("NUL.sp_cancelar_dia", dbParams);
         }
 
         private void obtenerTurnosEnRango()
-        {
+        {//NUL.sp_turnos_profesional(@prof NUMERIC(18,0), @fecha_desde DATETIME, @fecha_hasta DATETIME)
 
                 SqlParameter[] dbParams = new SqlParameter[]
             {
@@ -463,6 +483,15 @@ namespace ClinicaFrba.Cancelar_Atencion
             {
                 MessageBox.Show(exc.Message, "Aviso", MessageBoxButtons.OK);
             }
+        }
+
+        private void salir()
+        {
+            Form1 form = new Form1(this.sesion);
+
+            form.Show();
+
+            this.Hide();
         }
 
     }
