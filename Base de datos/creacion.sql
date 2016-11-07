@@ -323,9 +323,9 @@ CREATE TABLE NUL.Dias_cancelados
 (
 		canceld_id			    numeric(18,0) IDENTITY(1,1),
 		canceld_prof			numeric(18,0),
-		calceld_dia				date,
+		canceld_dia				date,
 
-		CONSTRAINT pk_dias_cancel PRIMARY KEY (canceld_id,canceld_prof,calceld_dia),
+		CONSTRAINT pk_dias_cancel PRIMARY KEY (canceld_id,canceld_prof,canceld_dia),
 		CONSTRAINT FK_dc_profesional FOREIGN KEY (canceld_prof) REFERENCES NUL.Profesional (prof_id)
 	);   	                   
 GO
@@ -1313,7 +1313,7 @@ CREATE PROCEDURE NUL.sp_cancelar_dia(@id_prof numeric(18,0),@dia_cancelado datet
 AS
 BEGIN
  
-	INSERT INTO NUL.dias_cancelados (canceld_prof, calceld_dia) values (@id_prof, @dia_cancelado);
+	INSERT INTO NUL.dias_cancelados (canceld_prof, canceld_dia) values (@id_prof, @dia_cancelado);
 
 END
 GO
@@ -1482,7 +1482,7 @@ SELECT F.fecha,A.agenda_id, DATEPART(DW,F.fecha) as dia from FECHAS F
 JOIN NUL.Agenda A ON F.fecha BETWEEN A.agenda_disp_desde AND A.agenda_disp_hasta
 JOIN NUL.Agenda_dia AD ON AD.agenda_id = A.agenda_id AND CONVERT(time,F.fecha) >= AD.dia_hora_inicio AND CONVERT(time,F.fecha)< AD.dia_hora_fin AND DATEPART(DW,F.fecha) = AD.dia_id
 WHERE A.agenda_prof_id = @id_prof AND A.agenda_prof_esp_id = @esp_id 
-AND F.fecha NOT IN (SELECT turno_fecha_hora FROM TURNOS)
+AND F.fecha NOT IN (SELECT turno_fecha_hora FROM TURNOS) AND CONVERT(date,F.fecha) NOT IN (SELECT DISTINCT canceld_dia FROM NUL.Dias_cancelados WHERE canceld_prof = @id_prof)
 ORDER BY fecha,A.agenda_id
 
 
