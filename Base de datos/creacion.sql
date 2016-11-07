@@ -156,7 +156,7 @@ CREATE TABLE NUL.Afiliado
 		afil_plan_med 			numeric(18,0),
 		afil_nro_afiliado		numeric(18,0) UNIQUE,
 		afil_familiares 		tinyint DEFAULT 0,
-		afil_nro_consulta 		numeric(18,0) DEFAULT 1,
+		afil_nro_consulta 		numeric(18,0) DEFAULT 0,
 		afil_titular			numeric(18,0) DEFAULT NULL,
 
 		CONSTRAINT FK_afiliado_raiz FOREIGN KEY (afil_titular) REFERENCES NUL.Afiliado (afil_id),
