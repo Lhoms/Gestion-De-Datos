@@ -1,8 +1,8 @@
 USE GD2C2016
 GO
 
---CREATE SCHEMA [NUL]
---GO
+CREATE SCHEMA [NUL]
+GO
 
 --Drop de tablas por si existen
 BEGIN TRANSACTION
@@ -330,70 +330,6 @@ CREATE TABLE NUL.Dias_cancelados
 	);   	                   
 GO
 COMMIT TRANSACTION
-
-----TRIGGER
-/*
-IF OBJECT_ID ('NUL.v_afil_bonos', 'V') IS NOT NULL  
-	DROP VIEW NUL.v_afil_bonos ; 
-GO
-
-CREATE TRIGGER insert_bono ON NUL.Bono_compra
-AFTER INSERT 
-AS
-BEGIN 
-	DECLARE @bono_id numeric(18,0)
-	DECLARE @bono_compra numeric(18,0)
-	DECLARE @bono_plan numeric(18,0)
-	DECLARE @bono_nro_consulta numeric(18,0)
-	DECLARE @bono_usado bit
-	DECLARE @afil varchar(255)
-
-	DECLARE afil CURSOR FOR SELECT DISTINCT bonoc_id_usuario FROM inserted
-
-	OPEN afil
-
-	FETCH NEXT FROM afil
-	INTO @afil
-
-	WHILE @@FETCH_STATUS =0
-	BEGIN
-		
-		
-		CREATE TABLE #BONOS
-		(
-				bono_id 				numeric(18,0),	
-				bono_compra 			numeric(18,0),				
-				bono_plan				numeric(18,0),
-				bono_nro_consulta	    numeric(18,0) IDENTITY(1,1),
-				bono_usado			    bit,
-			);
-
-
-
-			INSERT INTO #BONOS(bono_id, bono_compra, bono_plan,  bono_usado)
-			(
-				SELECT DISTINCT M.Bono_Consulta_Numero, BC.bonoc_id, M.Plan_Med_Codigo,  1
-				FROM gd_esquema.Maestra M JOIN  NUL.Usuario U ON CAST(M.Paciente_Dni AS CHAR) = U.user_username
-															 AND U.user_tipodoc  = 1
-										  JOIN  NUL.Bono_compra BC ON U.user_id = BC.Bonoc_id_usuario
-																  AND BC.bonoc_fecha = M.Compra_Bono_Fecha
-				WHERE M.Bono_Consulta_Numero IS NOT NULL AND M.Turno_Numero IS NULL AND BC.bonoc_id_usuario = @afil
-				GROUP BY M.Bono_Consulta_Numero, BC.bonoc_id, M.Plan_Med_Codigo
-			)
-
-			INSERT INTO NUL.Bono SELECT * FROM #BONOS
-			DROP TABLE #BONOS
-
-		FETCH NEXT FROM bonos_insertados
-		INTO @bono_id, @bono_compra, @bono_plan, @bono_usado
-		
-	END
-
-	CLOSE bonos_insertados
-	DEALLOCATE bonos_insertados
-END
-GO
-*/
 
 --Migración de datos
 BEGIN TRANSACTION	
